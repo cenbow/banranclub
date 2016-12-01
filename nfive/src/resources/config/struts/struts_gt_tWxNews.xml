@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tWxNews" extends="struts_common">
+
+	  	<!-- Copy <include file="config/struts/struts_gt_tWxNews.xml" /> 到struts.xml  -->
+
+	  	<!-- TWxNews列表信息 -->
+        <action name="searchTWxNewsAction" class="searchTWxNewsAction">
+			<result name="success" >/jsp/material/news/searchTWxNewsPage.jsp</result>
+		</action>
+
+        <!-- TWxNews新增页面 -->
+        <action name="addTWxNewsPage" class="addTWxNewsPage">
+			<result name="success" >/jsp/material/news/addTWxNewsPage.jsp</result>
+		</action>
+
+		<!-- TWxNews新增动作 -->
+        <action name="addTWxNewsAction" class="addTWxNewsAction">
+			<!--<result name="success" type="chain"><param name="actionName">searchTWxNewsAction</param> </result>-->
+		</action>
+
+		<!-- TWxNews编辑页面 -->
+		<action name="editTWxNewsPage" class="editTWxNewsPage">
+			<result name="success" >/jsp/material/news/editTWxNewsPage.jsp</result>
+		</action>
+
+		<!-- TWxNews编辑动作  -->
+		<action name="editTWxNewsAction" class="editTWxNewsAction">
+			<result name="success" type="chain"><param name="actionName">searchTWxNewsAction</param> </result>
+			<result name="input">/jsp/material/news/error.jsp</result>
+		</action>
+
+		<!-- TWxNews删除页面 -->
+		<action name="delTWxNewsAction" class="delTWxNewsAction">
+			<!--<result name="success" type="chain"><param name="actionName">searchTWxNewsAction</param> </result>-->
+		</action>
+
+		<!-- 详细画面动作 -->
+		<action name="detailTWxNewsPage" class="detailTWxNewsPage">
+			<result name="success" >/jsp/material/news/detailTWxNewsPage.jsp</result>
+		</action>
+
+        <!-- TWxNews列表选择信息 -->
+        <action name="selectTWxNewsAction" class="selectTWxNewsAction">
+            <result name="success" >/jsp/commonselect/selectWxNewsPage.jsp</result>
+        </action>
+
+	</package>
+</struts>

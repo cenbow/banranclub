@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tWxPlatform">
+
+  <!--用于模糊查询-->
+     <select id="select_tWxPlatformList" parameterClass="com.wechat.platform.model.TWxPlatformQueryBean" resultClass="java.util.HashMap">
+          SELECT
+		 		PLATFORM_ID  <!--公众号业务ID-->
+		  		,PLATFORM_ACCOUNT  <!--公众号账号-->
+		  		,PLATFORM_NAME  <!--公众号名称-->
+		  		,PLATFORM_TYPE  <!--公众号类型【5010】-->
+		  		,APP_ID  <!--应用ID-->
+		  		,APP_SECRET  <!--应用秘钥-->
+		  		,TOKEN  <!--令牌-->
+                ,ACCESS_TOKEN  <!--微信调用凭据-->
+                ,UPDATED_DATE <!--更新时间-->
+		  FROM T_WX_PLATFORM
+		  WHERE 1=1 AND T_WX_PLATFORM.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) Like '%'||(#platform_id:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="platform_account">
+					(PLATFORM_ACCOUNT) Like '%'||(#platform_account:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="platform_name">
+					(PLATFORM_NAME) Like '%'||(#platform_name:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="platform_type">
+					(PLATFORM_TYPE) Like '%'||(#platform_type:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="app_id">
+					(APP_ID) Like '%'||(#app_id:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="app_secret">
+					(APP_SECRET) Like '%'||(#app_secret:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="token">
+					(TOKEN) Like '%'||(#token:VARCHAR#)||'%'
+			    </isNotEmpty>
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+
+     <!--用于查询总数-->
+     <select id="select_tWxPlatformList_count" parameterClass="com.wechat.platform.model.TWxPlatformQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_WX_PLATFORM
+			WHERE 1=1 AND T_WX_PLATFORM.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) Like '%'||(#platform_id:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="platform_account">
+					(PLATFORM_ACCOUNT) Like '%'||(#platform_account:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="platform_name">
+					(PLATFORM_NAME) Like '%'||(#platform_name:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="platform_type">
+					(PLATFORM_TYPE) Like '%'||(#platform_type:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="app_id">
+					(APP_ID) Like '%'||(#app_id:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="app_secret">
+					(APP_SECRET) Like '%'||(#app_secret:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="token">
+					(TOKEN) Like '%'||(#token:VARCHAR#)||'%'
+			    </isNotEmpty>
+	 </select>
+
+
+</sqlMap>

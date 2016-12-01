@@ -1,0 +1,26 @@
+*{margin:0;padding:0;}
+body{ font-family: '华文细黑' }
+.bluebg{width:100%;height:100%; position:absolute; top:0; left:0;z-index:1;}
+.index_center{width:100%;height:100%; position:absolute; top:0; left:0;z-index:2;}
+.indexbg{position:absolute; width:100%; top:0; left:0;}
+.btn_index_rule{position:absolute; width:12%; top:10px; left:10px;}
+.btn_index_ranking{position:absolute; width:12%; top:10px; right:10px;}
+.btn_start{width:54.8%; left:23%; top:33%;position:absolute; z-index:5;}
+.btn_share{width:60.4%; left:19.8%; top:75%;position:absolute;}
+/*排行榜*/
+.list_center{padding:0 10px; box-sizing:border-box;}
+.listtop{height:170px; padding-top:50px; box-sizing:border-box;border-bottom:1px solid #fdd960;}
+.listtop_cloud{width:100px;margin-top:20px;}
+.listtop_cloud img{width:100px; display:block;}
+.floatlf{float:left;}
+.floatrg{float:right;}
+.listtop_cloud p{font-size:14px; line-height:30px; text-align:center; color:#fff;}
+.listtop_center{width:152px; position:absolute; left:50%; margin-left:-76px;}
+.listtop_cloudwords{font-size:18px; line-height:34px; text-align:center;color:#fff;}
+.listtop_tx{width:75px; display:block; margin:0 auto;height:75px; border-radius: 38px;}
+.listtop_txtop{position:absolute; width:37px; left:50%; margin-left:-10px; top:-33px;}
+.list_return{width:50px; position:absolute; top:20px; left:0;}
+.list{height:78px; box-sizing:border-box; padding:13px 7px 13px 0; line-height:52px;color:#fdd960;font-size:18px; border-bottom:1px solid #fdd960;}
+.listlf{width:30px; float:left; font-weight:bold;}
+.listtx{width:48px;height:48px; border-radius:24px; border:1px solid #fdd960;float:left;margin-right:10px;}
+.listmore{width:190px; height:15px; font-size:12px; background-color:#fdd960; border-radius:8px; line-height:15px; color:#382b01; text-align:center;  margin:-8px auto 0;}

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tMaterialVoice"  extends="struts_common">
+	  
+	  	<!-- TMaterialVoice列表信息 -->
+        <action name="searchTMaterialVoiceAction" class="searchTMaterialVoiceAction">
+			<result name="success" >/jsp/voice/searchTMaterialVoicePage.jsp</result>
+		</action>
+		
+        <!-- TMaterialVoice新增页面-->
+        <action name="addTMaterialVoicePage" class="addTMaterialVoicePage">
+			<result name="success" >/jsp/voice/addTMaterialVoicePage.jsp</result>
+		</action>
+		
+		<!-- TMaterialVoice新增动作	-->
+        <action name="addTMaterialVoiceAction" class="addTMaterialVoiceAction"> 
+			<result name="success" type="chain"><param name="actionName">searchTMaterialVoiceAction</param> </result>
+		</action>
+		
+		<!-- TMaterialVoice编辑页面 -->
+		<action name="editTMaterialVoicePage" class="editTMaterialVoicePage">
+			 <result name="success" >/jsp/voice/editTMaterialVoicePage.jsp</result>
+		</action>
+
+		<!-- TMaterialVoice删除页面	-->
+		<action name="delTMaterialVoiceAction" class="delTMaterialVoiceAction">
+			<result name="success" type="chain"><param name="actionName">searchTMaterialVoiceAction</param> </result>
+		</action>		
+		
+		<!-- TMaterialVoice编辑动作-->
+		<action name="editTMaterialVoiceAction" class="editTMaterialVoiceAction">
+			<result name="success" type="chain"><param name="actionName">searchTMaterialVoiceAction</param> </result>
+		</action>
+		
+		
+		<!-- 详细画面动作-->
+		<action name="detailTMaterialVoicePage" class="detailTMaterialVoicePage">
+			<result name="success" >/jsp/voice/detailTMaterialVoicePage.jsp</result>
+		</action>
+		
+        <!-- 预览动作-->
+		<action name="showVoiceAction" class="showVoiceAction">
+		      <interceptor-ref name="nologin_stack"></interceptor-ref>
+        </action>
+	</package>
+</struts>

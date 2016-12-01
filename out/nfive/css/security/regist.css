@@ -1,0 +1,107 @@
+@charset "utf-8";
+/* CSS Document */
+h1{
+	font-size:12px;
+	line-height:48px;
+	text-align:center;
+	color:#bcbcbc;
+}
+h1 span{
+	color:#454545;
+	}
+h2{
+	font-size:14px;
+	height:14px;
+	margin-top:8px;
+	margin-bottom:27px;
+	text-align:center;
+	color:#bcbcbc;
+}
+h3{
+	font-size:14px;
+	height:14px;
+	text-align:center;
+	color:#ee4d4d;
+}
+h4{
+	font-size:15px;
+	color:#ee4d4d;
+	text-align:center;
+	margin-top:10px;
+}
+.con_div{
+	display:none;
+	 position: fixed;
+	 top:0px;
+	z-index:20000;
+	 background-color:white;
+	 filter:alpha(opacity=70);
+	 -moz-opacity:0.95;
+	 -khtml-opacity: 0.95;
+	 opacity: 0.95;
+	width:100%;
+	height:100%;
+	}
+.con_center{
+	display:none;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -80px;
+    position: fixed;
+    top: 50%;
+    z-index: 20001;
+	width:300px;
+	height:160px;
+	border:1px solid #dfdcdc;
+	background:#FFF;
+	}
+.con_firm{
+	width:auto;
+	height:40px;
+	background:#f6f6f6;
+	padding: 0 20px;
+	}
+.con_title{float:left;color:#c7000a;font-size:18px;  font-weight:bold;  height: 40px;line-height: 40px;margin: 0;}
+.con_clean{float:right; background:url(../../images/wap/clean.png) no-repeat;width:16px;height:16px;background-size:cover;  cursor:pointer;margin: 10px 0 0;}
+.con_text{ 
+	width: 100%;
+	height: 55px;
+	text-align: center;
+	font-size: 16px;
+	color: #5e6264;
+	line-height: 23px;
+	padding-top: 15px;
+}
+.con_bott{margin:0 20px;}
+.con_btntrue{
+	background: none repeat scroll 0 0 #cd2323;
+    border: 1px solid #a11212;
+    border-radius: 3px;
+    box-shadow: 0 3px 0 #cccccc;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    width: 45%;
+	float:left;
+	}
+.con_btnfalse{
+	background: none repeat scroll 0 0 #cd2323;
+    border: 1px solid #a11212;
+    border-radius: 3px;
+    box-shadow: 0 3px 0 #cccccc;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    width: 45%;
+	float:right;
+}
+
+

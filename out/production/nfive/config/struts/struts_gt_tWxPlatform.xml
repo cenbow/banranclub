@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tWxPlatform" extends="struts_common">
+
+	  	<!-- Copy <include file="config/struts/struts_gt_tWxPlatform.xml" /> 到struts.xml  -->
+
+	  	<!-- TWxPlatform列表信息 -->
+        <action name="searchTWxPlatformAction" class="searchTWxPlatformAction">
+			<result name="success" >/jsp/platform/searchTWxPlatformPage.jsp</result>
+		</action>
+
+        <!-- TWxPlatform新增页面 -->
+        <action name="addTWxPlatformPage" class="addTWxPlatformPage">
+			<result name="success" >/jsp/platform/addTWxPlatformPage.jsp</result>
+		</action>
+
+		<!-- TWxPlatform新增动作 -->
+        <action name="addTWxPlatformAction" class="addTWxPlatformAction">
+			<!--<result name="success" type="chain"><param name="actionName">searchTWxPlatformAction</param> </result>-->
+		</action>
+
+		<!-- TWxPlatform编辑页面 -->
+		<action name="editTWxPlatformPage" class="editTWxPlatformPage">
+			<result name="success" >/jsp/platform/editTWxPlatformPage.jsp</result>
+		</action>
+
+		<!-- TWxPlatform编辑动作  -->
+		<action name="editTWxPlatformAction" class="editTWxPlatformAction">
+			<result name="success" type="chain"><param name="actionName">searchTWxPlatformAction</param> </result>
+			<result name="input">/jsp/platform/error.jsp</result>
+		</action>
+
+		<!-- TWxPlatform删除页面 -->
+		<action name="delTWxPlatformAction" class="delTWxPlatformAction">
+			<!--<result name="success" type="chain"><param name="actionName">searchTWxPlatformAction</param> </result>-->
+		</action>
+
+		<!-- 详细画面动作 -->
+		<action name="detailTWxPlatformPage" class="detailTWxPlatformPage">
+			<result name="success" >/jsp/platform/detailTWxPlatformPage.jsp</result>
+		</action>
+
+	</package>
+</struts>

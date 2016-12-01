@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+    <description>德晟UI标签库</description>
+    <display-name>德晟UI</display-name>
+    <tlib-version>1.1</tlib-version>
+    <short-name>ldui</short-name>
+    <uri>http://www.dszbchina.com/ldui</uri>
+
+    <tag>
+        <description>下拉选择框</description>
+        <name>select</name>
+        <tag-class>com.platform.common.tools.opensymphony.web.tag.SelectBoxTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>items</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <dynamic-attributes>true</dynamic-attributes>
+     </tag>
+</taglib>

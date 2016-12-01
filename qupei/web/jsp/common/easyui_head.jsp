@@ -1,0 +1,36 @@
+<!--THIS IS COMMON HEAD CODE-->
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="expires" content="0">
+<!--------------------------------------------------------------->
+<%
+	String path = request.getScheme() + "://" + request.getServerName()
+			+ ":" + request.getServerPort() + request.getContextPath();
+	String basePath = path + "/";
+	String cssPath = path + "/css";
+	String jsPath = path + "/js";
+	String jspPath = path + "/jsp";
+	String imgPath = path + "/images";
+%>
+<!--------------------------------------------------------------->
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<%=jsPath%>/html5shiv.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="<%=cssPath%>/baseUI.css">
+<link rel="stylesheet" type="text/css" href="<%=cssPath%>/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="<%=cssPath%>/themes/icon.css">
+<script type="text/javascript" src="<%=jsPath%>/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="<%=jsPath%>/jquery/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="<%=jsPath%>/jquery/datagrid-cellediting.js"></script>
+<script type="text/javascript" src="<%=jsPath%>/jquery/datagrid-detailview.js"></script>
+<script type="text/javascript" src="<%=jsPath%>/jquery/datagrid-groupview.js"></script>
+<script type="text/javascript" src="<%=jsPath%>/easyui.validator.ext.js"></script>
+<script type="text/javascript" src="<%=jsPath%>/ui.lib.js"></script>
+<script type="text/javascript" src="<%=jsPath%>/json/json2.min.js"></script>

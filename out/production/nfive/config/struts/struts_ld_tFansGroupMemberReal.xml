@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tFansGroupMemberReal"  extends="struts_common">
+	  
+	  	<!-- TFansGroupMemberReal列表信息 -->
+        <action name="searchTFansGroupMemberRealAction" class="searchTFansGroupMemberRealAction">
+        	<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" >/jsp/tfansgroup/searchTFansGroupMemberRealPage.jsp</result>
+		</action>
+		
+        <!-- TFansGroupMemberReal新增页面-->
+        <action name="addTFansGroupMemberRealPage" class="addTFansGroupMemberRealPage">
+        	<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" >/jsp/tfansgroup/addTFansGroupMemberRealPage.jsp</result>
+		</action>
+		
+		<!-- TFansGroupMemberReal新增动作	-->
+        <action name="addTFansGroupMemberRealAction" class="addTFansGroupMemberRealAction"> 
+        	<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" type="chain"><param name="actionName">searchTFansGroupMemberRealAction</param> </result>
+		</action>
+		
+		<!-- 增加所有粉丝到群	-->
+        <action name="addAllFansToGroupMemberAction" class="addTFansGroupMemberRealAction" method="addAll"> 
+        	<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" type="chain"><param name="actionName">searchTFansGroupMemberRealAction</param> </result>
+		</action>
+				
+		<!-- TFansGroupMemberReal编辑页面 -->
+		<action name="editTFansGroupMemberRealPage" class="editTFansGroupMemberRealPage">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" >/jsp/tfansgroup/editTFansGroupMemberRealPage.jsp</result>
+		</action>
+
+		<!-- TFansGroupMemberReal删除页面	-->
+		<action name="delTFansGroupMemberRealAction" class="delTFansGroupMemberRealAction">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" type="chain"><param name="actionName">searchTFansGroupMemberRealAction</param> </result>
+		</action>		
+		
+		<!-- TFansGroupMemberReal编辑动作-->
+		<action name="editTFansGroupMemberRealAction" class="editTFansGroupMemberRealAction">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" type="chain"><param name="actionName">searchTFansGroupMemberRealAction</param> </result>
+			<result name="input">/jsp/tfansgroup/error.jsp</result>
+		</action>
+		
+		
+		<!-- 详细画面动作-->
+		<action name="detailTFansGroupMemberRealPage" class="detailTFansGroupMemberRealPage">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" >/jsp/tfansgroup/detailTFansGroupMemberRealPage.jsp</result>
+		</action>
+	</package>
+</struts>

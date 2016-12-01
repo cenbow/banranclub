@@ -1,0 +1,84 @@
+[{
+    "id": 1,
+    "text": "My Documents",
+    "parent_res_id": 0,
+    "code": "RS001001",
+    "children": [{
+        "id": 11,
+        "text": "Photos",
+        "state": "closed",
+        "parent_res_id": 11,
+        "code": "RS001002",
+        "children": [{
+            "id": 111,
+            "text": "Friend",
+            "parent_res_id": 11,
+            "code": "RS001003"
+        },
+        {
+            "id": 112,
+            "text": "Wife",
+             "parent_res_id": 11,
+             "code": "RS001004"
+        },
+        {
+            "id": 113,
+            "text": "Company",
+            "code": "RS001005",
+             "parent_res_id": 11
+        }]
+    },
+    {
+        "id": 12,
+        "text": "Program Files",
+        "code": "RS001005",
+        "parent_res_id": 12,
+        "children": [{
+            "id": 121,
+            "text": "Intel",
+            "code": "RS001008",
+             "parent_res_id": 12
+        },
+        {
+            "id": 122,
+            "text": "Java",
+            "code": "RS001007",
+            "attributes": {
+                "p1": "Custom Attribute1",
+                "p2": "Custom Attribute2"
+            },
+             "parent_res_id": 12
+        },
+        {
+            "id": 123,
+            "text": "Microsoft Office",
+            "code": "RS0010012",
+             "parent_res_id": 12
+        },
+        {
+            "id": 124,
+            "text": "Games",
+            "checked": true,
+            "code": "RS0010023",
+             "parent_res_id": 12
+        }]
+    },
+    {
+        "id": 13,
+        "text": "index.html",
+        "code": "RS0010052",
+         "parent_res_id": 12
+    },
+    {
+        "id": 14,
+        "text": "about.html",
+        "code": "RS0010042",
+         "parent_res_id": 12
+    },
+    {
+        "id": 15,
+        "text": "welcome.html",
+        "code": "RS0010025",
+         "parent_res_id": 12
+    }]
+}]

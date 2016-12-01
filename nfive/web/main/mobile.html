@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NFIVE电竞-游戏周边</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <script src="js/flexible.js"></script>
+    <script src="../js/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <meta name="description" content="上海半燃商贸有限公司-NFIVE电竞，我们致力于电竞游戏原创周边，秉持匠心，打造行业潮牌。" />
+    <meta name="keywords" content="游戏周边，英雄联盟 ，LOL ，守望先锋 ，OW，礼物 ，游戏 ，电子竞技，NFIVE电竞，上海半燃商贸有限公司" />
+</head>
+<body class="">
+<div class="header">
+    <div class="player">
+        <video id="player" class="b-theme" src="video/lol.mp4">
+            您的浏览器不支持，请升级浏览器，建议使用谷歌浏览器
+        </video>
+    </div>
+    <div id="videoMask" class="c-content poster_img">
+        <div class="carousel">
+            <div class="table">
+                <div class="carousel_content">
+                    <div class="carousel_content-img">
+                        <img src="img/code.jpg" alt="">
+                    </div>
+                    <div class="carousel_content-text">
+                        <h1>扫一扫关注微信公众号您可以</h1>
+                        <p>1、获取店铺最新产品动态</p>
+                        <p>2、天天抽奖免费获得店铺产品，英雄联盟皮肤，战网点卷等。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel">
+            <div class="table">
+                <div class="carousel_content">
+                    <div class="carousel_content-text">
+                        <h1>守望先锋</h1>
+                        <p>科技与魔法并存的世界！</p>
+                        <p>来吧，让我们一起狂欢吧！</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel">
+            <div class="table">
+                <div class="carousel_content">
+                    <div class="carousel_content-text">
+                        <h1>英雄联盟</h1>
+                        <p>兄弟，输了我们一起抗，赢了我们一起狂！！</p>
+                        <p>第一次五杀的酣畅，第一次王者的淋漓，你还记得吗？</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pagination" style="display: none">
+            <div id="lastBtn"><i class="icon icon-last"></i></div>
+            <div id="nextBtn"><i class="icon icon-next"></i></div>
+        </div>
+    </div>
+    <!--播放按钮-->
+    <div id="btnPlay" class="button-play paused animate-slow">
+        <span class="play"></span>
+        <span class="pause" style="display: none"></span>
+    </div>
+</div>
+
+<div class="content">
+    <!--图片展示区域-->
+    <!--<a href="#" class="content_img">-->
+        <!--<img src="/main/img/product_item.jpg" alt="">-->
+    <!--</a>-->
+    <a  class="content_img c-content">
+        <img src="/main/img/product_item.jpg" alt="">
+        <div class="introduce_mobile">
+            <h2>NFIVE电竞-匠心创造世界</h2>
+            <p>我们致力于电竞游戏原创周边，秉持匠心，打造行业潮牌。</p>
+            <p><span class="copyBtn buy border-theme" id="btnPlay0" class="copyBtn" ata-clipboard-target="fe_text">立即购买<i class="icon icon-next"></i></span></p>
+        </div>
+    </a>
+</div>
+<ul class="mobile_window clear">
+    <li>
+        <a>
+            <img src="/main/img/shop/product1.jpg">
+            <h2 id="btnPlay1" class="copyBtn" data-clipboard-target="fe_text">查看详情</h2>
+        </a>
+    </li>
+    <li>
+        <a>
+            <img src="/main/img/shop/product2.jpg">
+            <h2 id="btnPlay2" class="copyBtn" ata-clipboard-target="fe_text">查看详情</h2>
+        </a>
+    </li>
+    <li>
+        <a>
+            <img src="/main/img/shop/product3.jpg">
+            <h2 id="btnPlay3" class="copyBtn" ata-clipboard-target="fe_text">查看详情</h2>
+        </a>
+    </li>
+    <li>
+        <a>
+            <img src="/main/img/shop/product4.jpg">
+            <h2 id="btnPlay4" class="copyBtn" ata-clipboard-target="fe_text">查看详情</h2>
+        </a>
+    </li>
+    <li>
+        <a>
+            <img src="/main/img/shop/product5.jpg">
+            <h2 id="btnPlay5" class="copyBtn" ata-clipboard-target="fe_text">查看详情</h2>
+        </a>
+    </li>
+    <li>
+        <a>
+            <img src="/main/img/shop/product6.jpg">
+            <h2 id="btnPlay6" class="copyBtn" ata-clipboard-target="fe_text">查看详情</h2>
+        </a>
+    </li>
+    <li>
+        <a>
+            <img src="/main/img/shop/product7.jpg">
+            <h2 id="btnPlay7" class="copyBtn" ata-clipboard-target="fe_text">查看详情</h2>
+        </a>
+    </li>
+    <li>
+        <a>
+            <img src="/main/img/shop/product8.jpg">
+            <h2 id="btnPlay8" class="copyBtn" ata-clipboard-target="fe_text">查看详情</h2>
+        </a>
+    </li>
+</ul>
+<ul class="shops flex_space-around" style="display: none">
+    <li>
+        <a class="shops_goods b-theme" href="javascript:void(0)">
+            <div class="img-box">
+                <img src="img/shop/shop14.jpg" alt="">
+            </div>
+            <div class="shops_goods-detail">
+                <h2>查看详情</h2>
+            </div>
+        </a>
+    </li>
+    <li>
+        <a class="shops_goods b-theme" href="javascript:void(0)">
+            <div class="img-box">
+                <img src="img/shop/shop14.jpg" alt="">
+            </div>
+            <div class="shops_goods-detail animate">
+                <h2>查看详情</h2>
+            </div>
+        </a>
+    </li>
+    <li>
+        <a class="shops_goods b-theme" href="javascript:void(0)">
+            <div class="img-box">
+                <img src="img/shop/shop14.jpg" alt="">
+            </div>
+            <div class="shops_goods-detail animate">
+                <h2>查看详情</h2>
+            </div>
+        </a>
+    </li>
+
+    <!--空元素，布局需要，禁止删除，禁止改动-->
+    <li class="empty"></li>
+    <li class="empty"></li>
+    <li class="empty"></li>
+    <li class="empty"></li>
+    <li class="empty"></li>
+</ul>
+<footer class="mobile">
+    <div class="top">
+        <div class="logo-box">
+            <img class="logo" src="img/LOGO-N-FIVE.png">
+            <!--slogan选择使用图片或者直接文字描述，二选一-->
+            <img class="slogan" src="img/slogan.png" alt="">
+            <!--<h2>匠心创造世界</h2>-->
+        </div>
+        <div class="footer_content">
+            <h2 class="title">扫一扫关注微信公众号&gt;&gt;&gt;</h2>
+            <p>1、获取店铺最新产品动态</p>
+            <p>2、天天抽奖免费获得店铺产品，英雄联盟皮肤，战网点卷等。</p>
+        </div>
+
+        <div class="tel">
+            客服电话:
+            <span class="c-active">021-34315823</span>
+        </div>
+    </div>
+
+    <div class="bottom">
+        <ul class="clear">
+            <li>
+                <h2>微信公众号</h2>
+                <p><img src="img/code.png" alt=""></p>
+            </li>
+            <!--<li>-->
+                <!--<h2>微信客服</h2>-->
+                <!--<p><img src="img/code.png" alt=""></p>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<h2>新浪微博</h2>-->
+                <!--<p><img src="img/code.png" alt=""></p>-->
+            <!--</li>-->
+        </ul>
+    </div>
+
+    <div  class="copy-right">
+        <p>&c版权所有 @ 上海半燃商贸有限公司 沪ICP备16036466号-1</p>
+        <p>Copyright Shanghai BanRanShangMao Co., Ltd.</p>
+    </div>
+</footer>
+
+<textarea hidden id="fe_text" cols="50" rows="3">【NFIVE】复制这条信息，打开👉手淘👈￥AAQLvZDg￥</textarea>
+
+<script>
+
+</script>
+<script src="js/index.js"></script>
+<script type="text/javascript" src="js/ZeroClipboard.min.js"></script>
+<script>
+
+    $(".copyBtn").click(function(){
+        alert("扫码关注公众号，点击菜单\"买买买\"复制淘口令，打开手机淘宝即可进入店铺");
+    })
+</script>
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+</body>
+</html>

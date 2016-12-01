@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tWcmenu"  extends="struts_common">
+	  
+        <!-- T_WCMENU新增页面-->
+        <action name="addTWcmenuPage" class="addTWcmenuPage">
+			<result name="success" >/jsp/menu/addTWcmenuPage.jsp</result>
+		</action>
+		
+		<!-- T_WCMENU新增动作	-->
+        <action name="addTWcmenuAction" class="addTWcmenuAction"> 
+		</action>
+		
+		<!-- T_WCMENU编辑页面 -->
+		<action name="editTWcmenuPage" class="editTWcmenuPage">
+			<result name="success" >/jsp/menu/editTWcmenuPage.jsp</result>
+		</action>
+
+		<!-- T_WCMENU编辑动作-->
+		<action name="editTWcmenuAction" class="editTWcmenuAction">
+		</action>
+		
+		<!-- 迁移到财富农场微信版页面 -->
+		<action name="transferCaifuncPageAction" class="transferCaifuncPageAction">
+			<interceptor-ref name="cust_openid_stack_userinfo_act"></interceptor-ref>
+        	<result name="success" type="redirect" >https://caifunc.com/mobile/wechatBindPage.action?openId=${openId}</result>
+		</action>
+		
+		<!-- 取得用户的头像 -->
+		<action name="transferCaifuncHeadImgAction" class="transferCaifuncHeadImgAction">
+			<interceptor-ref name="nologin_stack"></interceptor-ref>
+		</action>
+		
+	</package>
+</struts>

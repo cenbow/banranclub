@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tMaterialPicture">
+
+  <!--用于模糊查询-->
+     <select id="select_tMaterialPictureList" parameterClass="com.wechat.picture.model.TMaterialPictureQueryBean" resultClass="java.util.HashMap">
+          SELECT  
+		 		picture.PICTURE_ID  <!--图片素材主键-->
+		  		,picture.PICTURE_NAME  <!--图片名称-->
+		  		,picture.PICTURE_URL  <!--图片URL-->
+		  		,attach.CONTENT_SIZE	AS	PICTURE_SIZE  <!--图片大小-->
+		  		,picture.PICTURE_WSIZE  <!--图片规格宽-->
+		  		,picture.PICTURE_HSIZE  <!--图片规格高-->
+		  		,picture.PICTURE_DESC  <!--图片描述-->
+		  		,picture.FILE_ID  <!--关联文件ID-->
+		  		,picture.CREATED_DATE  <!--创建日期-->
+		  		,picture.CREATED_USER_CD  <!--创建用户-->
+		  		,picture.UPDATED_DATE	<!--更新日期-->
+		  		,picture.UPDATED_USER_CD	<!--更新用户-->
+		  		,picture.CACHE_FLAG		<!-- 是否缓存 -->
+		  	
+		  FROM T_MATERIAL_PICTURE PICTURE
+ 				 LEFT JOIN T_ATTACH_MATERIAL  ATTACH  ON PICTURE.FILE_ID = ATTACH.FILE_ID				 
+		  WHERE 1=1
+		  		AND picture.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="picture_id">
+					(picture.PICTURE_ID) Like = (#picture_id:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="picture_name">
+					(picture.PICTURE_NAME) Like '%'||(#picture_name:VARCHAR#)||'%'
+			    </isNotEmpty>    				
+				 <isNotEmpty prepend=" and " property="picture_desc">
+					(picture.PICTURE_DESC) Like '%'||(#picture_desc:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				<isNotEmpty prepend=" and " property="file_id">
+					(picture.FILE_ID)  = (#file_id:VARCHAR#) 
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="search_updated_date">
+					TO_CHAR(picture.UPDATED_DATE,'yyyymmdd')+0	<![CDATA[>=]]> TO_CHAR((#search_updated_date:Date#),'yyyymmdd')+0
+			    </isNotEmpty>    
+			    <isNotEmpty prepend=" and " property="search_updated_date1">
+					TO_CHAR(picture.UPDATED_DATE,'yyyymmdd')+0	<![CDATA[<]]> TO_CHAR((#search_updated_date1:Date#),'yyyymmdd')+1
+			    </isNotEmpty>  
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(picture.UPDATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty> 
+			    <isNotEmpty prepend=" and " property="updated_user_cd">
+					(picture.UPDATED_USER_CD) Like '%'||(#updated_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>   
+			    <isNotEmpty prepend=" and " property="cache_flag" >
+					(picture.CACHE_FLAG)  = (#cache_flag:VARCHAR#) 
+			    </isNotEmpty>
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+     
+     <!--用于查询总数-->
+     <select id="select_tMaterialPictureList_count" parameterClass="com.wechat.picture.model.TMaterialPictureQueryBean" resultClass="int">
+			SELECT  count(picture.PICTURE_ID)
+		    FROM T_MATERIAL_PICTURE PICTURE
+ 				 LEFT JOIN T_ATTACH_MATERIAL  ATTACH  ON PICTURE.FILE_ID = ATTACH.FILE_ID
+				 LEFT JOIN T_MATERIAL_TXREF   TXREF  ON PICTURE.PICTURE_ID = TXREF.MATERIAL_ID AND TXREF.MATERIAL_TYPE = '501200000001'
+		  WHERE 1=1
+		  		AND picture.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="picture_id">
+					(picture.PICTURE_ID) Like = (#picture_id:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="picture_name">
+					(picture.PICTURE_NAME) Like '%'||(#picture_name:VARCHAR#)||'%'
+			    </isNotEmpty>    				
+				 <isNotEmpty prepend=" and " property="picture_desc">
+					(picture.PICTURE_DESC) Like '%'||(#picture_desc:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				<isNotEmpty prepend=" and " property="file_id">
+					(picture.FILE_ID)  = (#file_id:VARCHAR#) 
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="search_updated_date">
+					TO_CHAR(picture.UPDATED_DATE,'yyyymmdd')+0	<![CDATA[>=]]> TO_CHAR((#search_updated_date:Date#),'yyyymmdd')+0
+			    </isNotEmpty>    
+			    <isNotEmpty prepend=" and " property="search_updated_date1">
+					TO_CHAR(picture.UPDATED_DATE,'yyyymmdd')+0	<![CDATA[<]]> TO_CHAR((#search_updated_date1:Date#),'yyyymmdd')+1
+			    </isNotEmpty>  
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(picture.UPDATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty> 
+			    <isNotEmpty prepend=" and " property="updated_user_cd">
+					(picture.UPDATED_USER_CD) Like '%'||(#updated_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>   
+			    <isNotEmpty prepend=" and " property="cache_flag" >
+					(picture.CACHE_FLAG)  = (#cache_flag:VARCHAR#) 
+			    </isNotEmpty>
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+		</select>
+
+</sqlMap>

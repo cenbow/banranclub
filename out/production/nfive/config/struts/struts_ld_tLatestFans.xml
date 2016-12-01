@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tLatestFans" extends="struts_common">
+
+	  	<!-- Copy <include file="config/struts/struts_gt_tLatestFans.xml" /> 到struts.xml  -->
+
+	  	<!-- TLatestFans列表信息 -->
+        <action name="searchTLatestFansAction" class="searchTLatestFansAction">
+			<result name="success" >/jsp/fans/searchTLatestFansPage.jsp</result>
+		</action>
+
+        <!-- TLatestFans新增页面 -->
+        <action name="addTLatestFansPage" class="addTLatestFansPage">
+			<result name="success" >/jsp/fans/addTLatestFansPage.jsp</result>
+		</action>
+
+		<!-- TLatestFans新增动作 -->
+        <action name="addTLatestFansAction" class="addTLatestFansAction"> 
+			<!--<result name="success" type="chain"><param name="actionName">searchTLatestFansAction</param> </result>-->
+		</action>
+
+		<!-- TLatestFans编辑页面 -->
+		<action name="editTLatestFansPage" class="editTLatestFansPage">
+			<result name="success" >/jsp/fans/editTLatestFansPage.jsp</result>
+		</action>
+
+	</package>
+</struts>

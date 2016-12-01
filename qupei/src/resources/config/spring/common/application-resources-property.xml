@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd"
+       default-lazy-init="false">
+
+    <!--1. add by chenjia  使用annotation 自动注册bean,并保证@Required,@Autowired的属性被注入, -->
+    <context:component-scan base-package="com.hercules.*,com.pub.*,com.qupei.*" />
+    <task:annotation-driven/>
+
+    <!--2. add by chenjia  配置文件读取器  -->
+    <bean id="propertyConfigurer"
+          class="com.hercules.common.encryption.database.DecryptPropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>file:${qupei.config.path}/config/properties/jdbc.properties</value>
+                <value>file:${qupei.config.path}/config/properties/aix2.properties</value>
+                <value>file:${qupei.config.path}/config/properties/ws.properties</value>
+                <value>file:${qupei.config.path}/config/properties/util/util_config.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--3. add by chenjia 读取日志设定 -->
+    <bean id="log4jInitialization"
+          class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetClass" value="org.springframework.util.Log4jConfigurer" />
+        <property name="targetMethod" value="initLogging" />
+        <property name="arguments">
+            <list>
+                <value>file:${qupei.config.path}/config/log/log4j.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--4. 消息定义-->
+    <bean id="messageSource"
+          class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>config/spring/core/exception/exception_core</value>
+                <value>lang</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--5. 改造的 Webservice 动态发布配置读取 -->
+    <bean id="aixsCfg" class="com.pub.common.axis2.AixsCfg">
+        <property name="pubip"><value>${pubip}</value></property>
+    </bean>
+
+
+
+    <!---6.MEMCACHE    客户端配置 -->
+    <bean id="cacheClient" class="com.hercules.cache.CacheUtil" init-method="InitConfig">
+        <constructor-arg index="0">
+            <!--<value>D:\\works\\ds_config_file\\trunk\\local\\qupei\\config\\properties\\cache.properties</value>-->
+            <value>/usr/local/works/qupei/config/properties/cache.properties</value>
+            <!--<value>/media/ftp/ds_config_file/qupei/config/properties/cache.properties</value>-->
+        </constructor-arg>
+    </bean>
+
+    <!---6.MEMCACHE    生产环境配置
+    <bean id="cacheClient" class="com.hercules.cache.CacheUtil" init-method="InitConfig">
+        <constructor-arg index="0">
+            <value>/media/ftp/resin/work/app/src/resources/config/properties/cache.properties</value>
+        </constructor-arg>
+    </bean>
+    -->
+
+    <!--初始化配置 -->
+    <!--modify by hercules.chen  枚举工具类预加载-->
+    <bean id="codeStringUtil" class="com.pub.common.tools.codestring.CodeStringUtil" init-method="InitConfig"  autowire="byName"  depends-on="tCodestringDao"/>
+
+    <!--modify by wen.zhang  工具类预加载 -->
+    <bean id="utilConfig" class="com.pub.common.tools.properties.UtilConfig">
+        <!-- 外部访问action设置 -->
+        <property name="action_url"><value>${util_action_url}</value></property>
+
+        <!--文件工具类 -->
+        <property name="tmp_file_path"><value>${util_tmp_file_path}</value></property>
+        <property name="pub_file_path"><value>${util_pub_file_path}</value></property>
+        <property name="file_servers_url"><value>${util_file_servers_url}</value></property>
+        <property name="ftp_storage_path"><value>${util_ftp_storage_path}</value></property>
+    </bean>
+
+
+    <!-- 短信发送工具类 -->
+    <bean id="wsClientUtil" class="com.pub.common.tools.util.WsClientUtil">
+        <property name="url">
+            <value>${ws_client_url}</value>
+        </property>
+        <property name="username">
+            <value>${ws_client_username}</value>
+        </property>
+        <property name="password">
+            <value>${ws_client_password}</value>
+        </property>
+    </bean>
+</beans>

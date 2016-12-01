@@ -1,0 +1,27 @@
+[{
+    "children": [
+        {
+            "children": [
+                {
+                	"checked":'true',
+                    "children": [],
+                    "id": "10101",
+                    "pid": "101",
+                    "text": "三级"
+                }
+            ],
+            "id": "101",
+            "pid": "1",
+            "text": "二级-1"
+        },
+        {
+            "children": [],
+            "id": "102",
+            "pid": "1",
+            "text": "二级-2"
+        }
+    ],
+    "id": "1",
+    "pid": "0",
+    "text": "一级"
+}]

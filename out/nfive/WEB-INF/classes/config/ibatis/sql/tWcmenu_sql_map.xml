@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tWcmenu">
+
+  <!--用于模糊查询-->
+     <select id="select_tWcmenuList" parameterClass="com.wechat.menucfg.model.TWcmenuQueryBean" resultClass="java.util.HashMap">
+          SELECT  
+		 		MENU_ID  <!--菜单ID-->
+		  		,MENU_CODE  <!--菜单代码-->
+		  		,MENU_NAME  <!--菜单名称-->
+		  		,MENU_DESC  <!--资源描述-->
+		  		,ACTION_TYPE  <!--菜单动作类型[CS:5011]  1链接页面2图文消息3文本消息4图片消息5音频消息6视频消息-->
+		  		,TEXT_MSG  <!--工作关联文本-->
+		  		,MATERIAL_ID  <!--动作关联素材ID-->
+		  		,ACTION_URL  <!--动作URL（仅能用于链接）-->
+		  		,PLATFORM_ID  <!--公众平台号ID-->
+		  		,RELA_SORT  <!---->
+		  FROM T_WCMENU
+		  WHERE 1=1 AND T_WCMENU.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="menu_id">
+					(MENU_ID) Like '%'||(#menu_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="menu_code">
+					(MENU_CODE) Like '%'||(#menu_code:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="menu_name">
+					(MENU_NAME) Like '%'||(#menu_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="menu_desc">
+					(MENU_DESC) Like '%'||(#menu_desc:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="action_type">
+					(ACTION_TYPE) Like '%'||(#action_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="text_msg">
+					(TEXT_MSG) Like '%'||(#text_msg:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="material_id">
+					(MATERIAL_ID) Like '%'||(#material_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="action_url">
+					(ACTION_URL) Like '%'||(#action_url:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) Like '%'||(#platform_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				<isNotNull property="rela_sort" prepend="and" >
+				    (RELA_SORT) =#rela_sort#
+			    </isNotNull>
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+     
+     <!--用于查询总数-->
+     <select id="select_tWcmenuList_count" parameterClass="com.wechat.menucfg.model.dto.TWcmenuDto" resultClass="int">
+			SELECT  count(1)
+		    FROM T_WCMENU
+			WHERE 1=1 AND T_WCMENU.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	
+				 <isNotEmpty prepend=" and " property="menu_id">
+					(MENU_ID) =(#menu_id:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="menu_code">
+					(MENU_CODE)=(#menu_code:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="menu_name">
+					(MENU_NAME) Like '%'||(#menu_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="menu_desc">
+					(MENU_DESC) Like '%'||(#menu_desc:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="action_type">
+					(ACTION_TYPE)=(#action_type:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="text_msg">
+					(TEXT_MSG) Like '%'||(#text_msg:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="material_id">
+					(MATERIAL_ID) =(#material_id:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="action_url">
+					(ACTION_URL) Like '%'||(#action_url:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID)=(#platform_id:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotNull property="rela_sort" prepend="and" >
+					(RELA_SORT) =#rela_sort#
+				 </isNotNull>
+	 </select>
+
+
+</sqlMap>

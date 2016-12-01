@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_sample" extends="struts_common">
+
+		<!-- combo begin -->
+
+		<action name="comboSampleAction" class="comboSampleAction">
+			<result name="success">sample/validatebox/combo.jsp</result>
+		</action>
+
+		<!-- combo  end -->
+
+		<!-- ckeditor begin -->
+
+		<action name="ckeditorSampleAction" class="ckeditorSampleAction">
+			<result name="success">sample/ckeditor/ckeditor.jsp</result>
+		</action>
+
+		<!-- ckeditor  end -->
+
+		<!-- showfile begin -->
+		<action name="showFileSampleAction" class="showFileSampleAction">
+			<result name="success">sample/fileupload/showfile.jsp</result>
+		</action>
+
+		<!-- showfile  end -->
+	</package>
+</struts>

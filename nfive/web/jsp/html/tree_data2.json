@@ -1,0 +1,19 @@
+[{
+    "children": [{
+        "children": [{
+            "children": [],
+            "id": "10101",
+            "text": "三级"
+        }],
+        "id": "101",
+        "text": "二级-1",
+        "indeterminate":true
+    },
+    {
+        "children": [],
+        "id": "201",
+        "text": "二级-2"
+    }],
+    "id": "1",
+    "text": "一级"
+}]

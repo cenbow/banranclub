@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd"
+       default-lazy-init="false">
+
+    <!--1. add by chenjia  使用annotation 自动注册bean,并保证@Required,@Autowired的属性被注入 -->
+    <context:component-scan base-package="com.hercules.*,com.platform.*,*com.wechat.*" />
+    <task:annotation-driven/>
+    <!--2. add by chenjia  配置文件读取器  -->
+    <bean id="propertyConfigurer"
+          class="com.hercules.common.encryption.database.DecryptPropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:config/properties/jdbc.properties</value>
+                <value>classpath:config/properties/util/util_config.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--3. add by chenjia 读取日志设定 -->
+    <bean id="log4jInitialization"
+          class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetClass" value="org.springframework.util.Log4jConfigurer" />
+        <property name="targetMethod" value="initLogging" />
+        <property name="arguments">
+            <list>
+                <value>classpath:config/properties/log4j.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--初始化配置 -->
+    <!--modify by hercules.chen  枚举工具类预加载-->
+    <bean id="codeStringUtil" class="com.platform.common.tools.codestring.CodeStringUtil" init-method="InitConfig"  autowire="byName"  depends-on="tCodestringService"/>
+
+    <!--modify by hercules.chen  微信工具类预加载-->
+    <bean id="wechatInfoUtil" class="com.platform.common.tools.wechat.WechatInfoUtil"     init-method="InitConfig"  autowire="byName"  depends-on="tPubPlatformService"/>
+
+    <!--modify by hercules.chen  微信工具类预加载-->
+    <!--<bean id="wechatUtil" class="com.platform.common.tools.wechat.WechatUtil"     init-method="InitConfig"  autowire="byName"  depends-on="tWxPlatformDao"/>-->
+
+    <!--modify by hercules.chen  工具类预加载  注意util_前缀规则 -->
+    <!--<bean id="utilConfig" class="com.platform.common.tools.properties.UtilConfig">-->
+
+        <!--&lt;!&ndash; 外部访问action设置 &ndash;&gt;-->
+        <!--<property name="action_url"><value>${util_action_url}</value></property>-->
+
+        <!--&lt;!&ndash;客户服务绑定的公众号平台  唯一&ndash;&gt;-->
+        <!--<property name="vip_platform_id"><value>${util_vip_platform_id}</value></property>-->
+
+        <!--&lt;!&ndash;客户服务绑定的公众号平台对应域名  唯一&ndash;&gt;-->
+        <!--<property name="vip_platform_domain"><value>${util_vip_platform_domain}</value></property>-->
+
+        <!--&lt;!&ndash;文件工具类 &ndash;&gt;-->
+        <!--<property name="domain_weburl"><value>${util_domain_weburl}</value></property>-->
+        <!--<property name="tmp_file_path"><value>${util_tmp_file_path}</value></property>-->
+        <!--<property name="pub_file_path"><value>${util_pub_file_path}</value></property>-->
+        <!--<property name="wap_file_weburl"><value>${wap_file_weburl}</value></property>-->
+
+        <!--&lt;!&ndash; CRM文件和wechat文件路径转换 &ndash;&gt;-->
+        <!--<property name="util_ueditor_crm_path"><value>${util_ueditor_crm_path}</value></property>-->
+        <!--<property name="util_ueditor_wechat_path"><value>${util_ueditor_wechat_path}</value></property>-->
+        <!--<property name="fp_show_photo_crm_path"><value>${util_fp_show_photo_crm_path}</value></property>-->
+        <!--<property name="fp_show_photo_wechat_path"><value>${util_fp_show_photo_wechat_path}</value></property>-->
+
+        <!--&lt;!&ndash;多媒体工具类 &ndash;&gt;-->
+        <!--<property name="upload_media_url"><value>${util_upload_media_url}</value></property>-->
+        <!--<property name="download_media_url"><value>${util_download_media_url}</value></property>-->
+
+        <!--&lt;!&ndash;微信菜单配置 &ndash;&gt;-->
+        <!--<property name="menu_create_url"><value>${util_menu_create_url}</value></property>-->
+        <!--<property name="menu_get_url"><value>${util_menu_query_url}</value></property>-->
+        <!--<property name="menu_delete_url"><value>${util_menu_delete_url}</value></property>-->
+
+        <!--&lt;!&ndash;群发功能 &ndash;&gt;-->
+        <!--<property name="msg_interval"><value>${msg_interval}</value></property>-->
+        <!--<property name="msg_gp_cnt"><value>${msg_gp_cnt}</value></property>-->
+        <!--<property name="msg_gp_interval"><value>${msg_gp_interval}</value></property>-->
+        <!--<property name="pub_file_path"><value>${pub_file_path}</value></property>-->
+        <!--<property name="domain_weburl"><value>${domain_weburl}</value></property>-->
+    <!--</bean>-->
+
+
+    <!--&lt;!&ndash;modify by hercules.chen 文件工具类 &ndash;&gt;-->
+    <!--<bean id="fileUploadUtil" class="com.platform.common.tools.fileupload.FileUploadUtil" init-method="InitConfig"  autowire="byName"  depends-on="utilConfig"/>-->
+</beans>

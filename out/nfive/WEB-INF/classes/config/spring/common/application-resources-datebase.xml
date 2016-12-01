@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd 
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+	default-lazy-init="true">
+	
+	<!--1. add by chenjia 本系统数据源定义-->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>${jdbc.driverClassName}</value>
+		</property>
+		<property name="url">
+			<value>${jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc.password}</value>
+		</property>
+		<property name="initialSize">
+			<value>${jdbc.initialSize}</value>
+		</property>
+		<property name="maxActive">
+			<value>${jdbc.maxActive}</value>
+		</property>
+		<property name="maxIdle">
+			<value>${jdbc.maxIdle}</value>
+		</property>
+		<property name="defaultAutoCommit">
+			<value>${jdbc.defaultAutoCommit}</value>
+		</property>
+		<property name="removeAbandoned">
+			<value>${jdbc.removeAbandoned}</value>
+		</property>
+		<property name="removeAbandonedTimeout">
+			<value>${jdbc.removeAbandonedTimeout}</value>
+		</property>
+		<property name="maxWait">
+			<value>${jdbc.maxWait}</value>
+		</property>
+	</bean>
+	
+     <!-- LobHandler for Oracle JDBC drivers -->	
+	 <bean id="nativeJdbcExtractor" class="org.springframework.jdbc.support.nativejdbc.CommonsDbcpNativeJdbcExtractor" lazy-init="true"/>
+	
+	 <!-- (refers to the NativeJdbcExtractor above to get access to native OracleConnections) -->
+	 <bean id="oracleLobHandler" class="org.springframework.jdbc.support.lob.OracleLobHandler" lazy-init="true">
+	 	 <property name="nativeJdbcExtractor"><ref local="nativeJdbcExtractor"/></property>
+	 </bean>
+	
+
+    <!--2. add by chenjia 定义sqlMapClient-->
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation">
+			<value>classpath:config/ibatis/common/sql-map-config.xml</value>
+		</property>
+		<property name="dataSource" ref="dataSource" />
+		<property name="lobHandler"><ref local="oracleLobHandler"/></property>
+	</bean>
+	
+	 
+
+	
+	<!--3. add by chenjia 事务管理配 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+	</bean>
+	
+    <!--4. 自动事务扫描  自动事务扫描暂时不启用  和 4 不能同时存在用于复杂事务需求的项目 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<!-- 
+	      有关自动事务扫描的说明 
+	      默认需要在类上加注释
+	      如果有事务,那么加入事务,没有的话新建一个.隔离级别默认，异常回滚
+	  @Transactional (propagation = Propagation.REQUIRED,isolation=Isolation.DEFAULT,rollbackFor=Exception.class)
+	-->
+    
+ 
+ 	<!--增加其他的数据源配置 -->
+ 	
+ 	
+ 	
+
+
+	 
+</beans>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tEmpUser" extends="struts_common">
+
+		<!-- TEmpUser列表信息 -->
+		<action name="searchTEmpUserAction" class="searchTEmpUserAction">
+			<result name="success">/jsp/persistence/searchTEmpUserPage.jsp
+			</result>
+		</action>
+
+		<!-- TEmpUser新增页面-->
+		<action name="addTEmpUserPage" class="addTEmpUserPage">
+			<result name="success">/jsp/persistence/addTEmpUserPage.jsp
+			</result>
+		</action>
+
+		<!-- TEmpUser新增动作	-->
+		<action name="addTEmpUserAction" class="addTEmpUserAction">
+		</action>
+
+		<!-- TEmpUser编辑页面 -->
+		<action name="editTEmpUserPage" class="editTEmpUserPage">
+			<result name="success">/jsp/persistence/editTEmpUserPage.jsp
+			</result>
+		</action>
+
+		<!-- TEmpUser编辑动作-->
+		<action name="editTEmpUserAction" class="editTEmpUserAction">
+		</action>
+
+		<!-- 详细画面动作-->
+		<action name="detailTEmpUserPage" class="detailTEmpUserPage">
+			<result name="success">/jsp/persistence/detailTEmpUserPage.jsp
+			</result>
+		</action>
+
+		<!-- TEmpUser删除页面	-->
+		<action name="delTEmpUserAction" class="delTEmpUserAction">
+		</action>
+
+		<!-- 员工校验	-->
+		<action name="checkTEmpUserAction" class="checkTEmpUserAction">
+		</action>
+
+		<!-- 密码修改	-->
+		<action name="changePassPage" class="changePassPage">
+			<result name="success">/jsp/persistence/changeUserPassPage.jsp
+			</result>
+		</action>
+		<action name="changePassAction" class="changePassAction" method="changePass">
+		</action>
+		<!-- 密码重置 -->
+		<action name="resetPassAction" class="changePassAction" method="resetPass">
+		</action>
+
+	</package>
+</struts>

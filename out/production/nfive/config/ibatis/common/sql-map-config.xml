@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" maxRequests="320" maxSessions="100"
+		maxTransactions="100" useStatementNamespaces="true" />
+	<!-- add by hercules.chen for CLOB to String -->
+	<typeHandler jdbcType="CLOB" javaType="java.lang.String" callback="org.springframework.orm.ibatis.support.ClobStringTypeHandler"/>
+ 	<typeHandler jdbcType="BLOB" javaType="[B" callback="org.springframework.orm.ibatis.support.BlobByteArrayTypeHandler"/>
+
+
+    <!--system resource never delete-->
+	<sqlMap resource="config/ibatis/sqlmap_ibatis.xml" />
+
+	<!--demo resource-->
+	<sqlMap resource="config/ibatis/sql/tCodestring_sql_map.xml" />
+	<sqlMap resource="config/ibatis/sql/tEmpUser_sql_map.xml" />
+	<sqlMap resource="config/ibatis/sql/tEmpExtinfo_sql_map.xml" />
+	<sqlMap resource="config/ibatis/sql/tResource_sql_map.xml" />
+	<sqlMap resource="config/ibatis/sql/tResSelfRela_sql_map.xml" />
+	<sqlMap resource="config/ibatis/sql/tRole_sql_map.xml" />
+	<sqlMap resource="config/ibatis/sql/tRoleResRela_sql_map.xml" />
+	<sqlMap resource="config/ibatis/sql/tUserRoleRela_sql_map.xml" />
+	<sqlMap resource="config/ibatis/sql/tPubPlatform_sql_map.xml" />
+	<!-- 关键字回复规则 -->
+  	<sqlMap resource="config/ibatis/sql/tReplyKeyword_sql_map.xml" />
+	<!-- 特殊回复 -->
+	<sqlMap resource="config/ibatis/sql/tReplySpecial_sql_map.xml" />
+	<!-- 图片资源管理 -->
+	<sqlMap resource="config/ibatis/sql/tMaterialPicture_sql_map.xml" />
+
+	<sqlMap resource="config/ibatis/sql/tWcmenu_sql_map.xml" />
+	<sqlMap resource="config/ibatis/sql/tWcmSelfRela_sql_map.xml" />
+	<!-- 图文组 -->
+	<sqlMap resource="config/ibatis/sql/article_sql_map.xml" />
+	<!--素材附件管理-->
+	<sqlMap resource="config/ibatis/sql/tAttachMaterial_sql_map.xml" />
+    <!-- 粉丝 -->
+	<sqlMap resource="config/ibatis/sql/tWeixinFans_sql_map.xml"/>
+	<!-- 最新粉丝 -->
+	<sqlMap resource="config/ibatis/sql/tLatestFans_sql_map.xml"/>
+	<!-- 最新粉丝同步履历 -->
+	<sqlMap resource="config/ibatis/sql/tLatestfansSyncHistory_sql_map.xml"/>
+    <!-- 微信组-->
+	<sqlMap resource="config/ibatis/sql/tWeixinGroup_sql_map.xml"/>
+	<!-- 同步履历-->
+   <sqlMap resource="config/ibatis/sql/tFansSyncHistory_sql_map.xml"/>
+	<!-- 粉丝群管理表   add by  guoyan 2014.9.15 -->
+	<sqlMap resource="config/ibatis/sql/tFansGroup_sql_map.xml" />
+	<!-- 粉丝群成员管理 add by  guoyan 2014.9.15  -->
+	<sqlMap resource="config/ibatis/sql/tFansGroupMemberReal_sql_map.xml" />
+	<!-- 群发管理 -->
+	<sqlMap resource="config/ibatis/sql/tMsgSend_sql_map.xml" />
+
+    <!--add by jzh-->
+    <!-- 微信公众号基础信息表 -->
+    <sqlMap resource="config/ibatis/sql/tWxPlatform_sql_map.xml" />
+    <!--微信粉丝表-->
+    <sqlMap resource="config/ibatis/sql/tWxFans_sql_map.xml" />
+    <!--微信图文素材-->
+    <sqlMap resource="config/ibatis/sql/tWxNews_sql_map.xml"/>
+
+    <!--微信活动-->
+    <!--微信活动用户表-->
+    <sqlMap resource="config/ibatis/sql/tActUsers_sql_map.xml"/>
+</sqlMapConfig>
+
+

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="false" />
+    <package name="struts_ld_article"  extends="struts_common">
+        <!-- 图文组 -->
+        <!-- TArticleGroup列表信息 -->
+        <action name="searchTArticleGroupAction" class="searchTArticleGroupAction">
+            <result name="success" >/jsp/article/searchTArticleGroupPage.jsp</result>
+        </action>
+        <!-- TArticleGroup新增页面-->
+        <action name="addTArticleGroupPage" class="addTArticleGroupPage">
+            <result name="success" >/jsp/article/addTArticleGroupPage.jsp</result>
+        </action>
+        <!-- TArticleGroup新增动作  -->
+        <action name="addTArticleGroupAction" class="addTArticleGroupAction">
+        </action>
+        <!-- TArticleGroup编辑页面 -->
+        <action name="editTArticleGroupPage" class="editTArticleGroupPage">
+            <result name="success" >/jsp/article/editTArticleGroupPage.jsp</result>
+        </action>
+        <!-- TArticleGroup编辑动作-->
+        <action name="editTArticleGroupAction" class="editTArticleGroupAction">
+        </action>
+        <!-- TArticleGroup删除动作-->
+        <action name="delTArticleGroupAction" class="delTArticleGroupAction">
+        </action>
+        <!-- 图文组预览画面-->
+        <action name="previewArticleGroupPage" class="previewArticleGroupPage">
+            <interceptor-ref name="nologin_stack"></interceptor-ref>
+            <result name="success" >/jsp/article/previewArticleGroupPage.jsp</result>
+        </action>
+
+        <!-- 图文项 -->
+        <!-- TArticleItem列表信息 -->
+        <action name="searchTArticleItemAction" class="searchTArticleItemAction">
+            <result name="success" >/jsp/article/searchTArticleItemPage.jsp</result>
+        </action>
+        <!-- TArticleItem新增页面-->
+        <action name="addTArticleItemPage" class="addTArticleItemPage">
+            <result name="success" >/jsp/article/addTArticleItemPage.jsp</result>
+        </action>
+        <!-- TArticleItem新增动作-->
+        <action name="addTArticleItemAction" class="addTArticleItemAction">
+        </action>
+        <!-- TArticleItem编辑页面 -->
+        <action name="editTArticleItemPage" class="editTArticleItemPage">
+            <result name="success" >/jsp/article/editTArticleItemPage.jsp</result>
+        </action>
+        <!-- TArticleItem编辑动作-->
+        <action name="editTArticleItemAction" class="editTArticleItemAction">
+        </action>
+        <!-- TArticleItem引用页面-->
+        <action name="refTArticleItemPage" class="refTArticleItemPage">
+            <result name="success" >/jsp/article/refTArticleItemPage.jsp</result>
+        </action>
+        <!-- TArticleItem引用动作-->
+        <action name="refTArticleItemAction" class="refTArticleItemAction">
+            <result name="success" type="chain"><param name="actionName">searchTArticleItemAction</param> </result>
+        </action>
+        <!-- TArticleItem删除动作-->
+        <action name="delTArticleItemAction" class="delTArticleItemAction">
+            <result name="success" type="chain"><param name="actionName">searchTArticleItemAction</param> </result>
+        </action>
+        <!-- TArticleItem详细画面页面-->
+        <action name="detailTArticleItemPage" class="detailTArticleItemPage">
+            <result name="success" >/jsp/article/detailTArticleItemPage.jsp</result>
+        </action>
+        <!-- TArticleItem正文内容输出-->
+        <action name="showArticleItemContentAction" class="showArticleItemContentAction">
+            <interceptor-ref name="nologin_stack"></interceptor-ref>
+            <result name="success" >/jsp/article/previewArticleItemContentPage.jsp</result>
+        </action>
+
+        <!-- 图文组输出html预览  周要领 2014-08-30 -->
+        <action name="showArtcleGroupAction" class="showArtcleGroupAction"></action>
+
+    </package>
+</struts>

@@ -1,0 +1,15 @@
+@charset "utf-8";
+/* 注册成功 */
+
+.regsucc_title{width:457px; height:79px; margin:40px auto 30px;}
+.regsucc_title_font{color:#666666; line-height:28px; text-align:center;}
+.regsucc_title_font p{ font-size:24px; color:#ccaa49; line-height:28px; display:inline-block; margin:0 5px;}
+.regsucc_center{ width:1200px; height:387px; background:#fff; margin:40px auto 0; box-sizing:border-box; padding:20px 0 0 20px;}
+.regsucc_center_title{ color:#666666;  height:56px; line-height:56px;}
+.regsucc_center_title a{ float:right; color:#0033ff; text-decoration:underline;}
+.regsucc_center_list{ width:393px; height:155px; float:left; color:#555555;}
+.regsucc_center_list_icon{ width:96px; height:96px; float:left; }
+.regsucc_center_list_icon img{}
+.regsucc_center_list_font{ float:left; display:inline-block; width:276px; margin-left:18px;}
+.regsucc_center_list_fonttitle{ font-size:26px; line-height:26px;}
+.regsucc_center_list_fontp{ line-height:24px; width:240px; margin-top:14px;}

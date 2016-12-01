@@ -1,0 +1,70 @@
+@charset "utf-8";
+/* CSS Document */
+.hang46{
+	height:46px;
+	border-bottom:1px solid #cbc9c9;
+}
+.zhanghao{
+	background:#f1f0f0;
+	height:29px;
+	border-top:1px solid #e0e0e0;
+	border-bottom:1px solid #e0e0e0;
+	padding-left:19px;
+	box-sizing:border-box;
+	-o-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	font-size:15px;
+	color:#cd2323;
+	line-height:29px;
+}
+
+.hang_head103{
+	width:40%;
+	height:46px;
+	line-height:46px;
+	padding-left:15px;
+	box-sizing:border-box;
+	-o-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	color:#454545;
+	font-size:17px;
+	float:left;
+	font-weight:bold;
+}
+.nologin{
+	width:50px;
+	height:15px;
+	background:#2ac2d4;
+	font-weight:bold;
+	font-size:12px;
+	border-radius:8px;
+	float:right;
+	margin-top:16px;
+	margin-bottom:17px;
+	line-height:15px;
+	text-align:center;
+	color:#fff;
+}
+.zhanghu_xx{
+	width:60%;
+	float:left;
+	line-height:46px;
+	color:#bcbcbc;
+	text-align:right;
+	font-weight:bold;
+}
+.zhanghu_xx img{
+	width:16px;
+	margin:17px 0px 23px 8px;
+}
+
+.anquan_xx{
+	width:10%;
+	float:left;
+}
+.anquan_xx img{width:8px;margin:16px 10px 13px 15px;}
+
+
+

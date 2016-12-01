@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+     <!-- 请求参数的编码方式-->
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+    <!-- 指定被struts2处理的请求后缀类型。多个用逗号隔开-->
+    <constant name="struts.action.extension" value="action"/>
+    <!-- 当struts.xml改动后，是否重新加载。默认值为false(生产环境下使用),开发阶段最好打开  -->
+    <constant name="struts.configuration.xml.reload" value="false"/>
+    <!-- 是否使用struts的开发模式。开发模式会有更多的调试信息。默认值为false(生产环境下使用),开发阶段最好打开  -->
+    <constant name="struts.devMode" value="true"/>
+    <!-- 设置浏览器是否缓存静态内容。默认值为true(生产环境下使用),开发阶段最好关闭  -->
+    <constant name="struts.serve.static.browserCache" value="false" />
+    <!-- 名称首字母小写 -->
+    <constant name="struts.convention.action.name.lowercase" value="true"/>
+    <!-- for test surroundings 设置默认的临时文件存储位置  测试 	-->
+	<!--<constant name="struts.multipart.saveDir" value="D:\Users\server\tomcat6.0\webapps\file\temp\storage\" />-->
+	<!-- <constant name="struts.multipart.saveDir" value="/usr/local/resin/work/file/temp/storage/" />  -->
+
+   <!-- for official surroundings 设置默认的临时文件存储位置  生产
+   <constant name="struts.multipart.saveDir" value="/usr/local/resin/work/file/temp/storage/" />
+   -->
+
+	<!-- 设置最大文件  -->
+	<constant name="struts.multipart.maxSize" value="51000000"/>
+
+    <!-- 指定由spring负责action对象的创建
+    <constant name="struts.objectFactory" value="spring" />
+    -->
+
+    <!-- 是否开启动态方法调用-->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+    <include file="config/struts/struts_common.xml"/>
+    <include file="config/struts/struts_ld_wechat.xml"/>
+    <include file="config/struts/struts_ld_demo.xml"/>
+
+
+    <!--权限管理 -->
+    <include file="config/struts/struts_ld_tCodestring.xml"/>
+    <include file="config/struts/struts_ld_tEmpUser.xml"/>
+    <include file="config/struts/struts_ld_tResource.xml"/>
+    <include file="config/struts/struts_ld_tResSelfRela.xml"/>
+    <include file="config/struts/struts_ld_tRole.xml"/>
+    <include file="config/struts/struts_ld_tRoleResRela.xml"/>
+    <include file="config/struts/struts_ld_tUserRoleRela.xml"/>
+    <include file="config/struts/struts_ld_login.xml"/>
+
+    <!-- 公众号管理		 add by guoshijie 2014.8.13 -->
+    <include file="config/struts/struts_ld_tPubPlatform.xml"/>
+    <!-- 公众号管理		 add by guoshijie 2014.8.15 -->
+    <include file="config/struts/struts_ld_tPlatformempCfg.xml"/>
+    <!-- 微信菜单管理           add by zhang.hua 2014.8.13 -->
+    <include file="config/struts/struts_ld_tWcmenu.xml"/>
+    <include file="config/struts/struts_ld_tWcmSelfRela.xml"/>
+    <!--关键字特殊回复规则列表  add by zhaoshengsheng 2014.8.13-->
+    <include file="config/struts/struts_ld_tReplySpecial.xml"/>
+    <!--关键字 回复规则列表          add by  guoyan  2014.8.13-->
+	<include file="config/struts/struts_ld_tReplyKeyword.xml"/>
+    <!-- 图片资源  add by zhouyaoling  2014.8.13 -->
+    <include file="config/struts/struts_ld_tMaterialPicture.xml"/>
+    <!-- 图文管理  add by wly 2014.8.13 -->
+    <include file="config/struts/struts_ld_article.xml"/>
+    <!-- 素材引用  by zhaoshengsheng 2014.8.21  -->
+    <include file="config/struts/struts_commonselect.xml"/>
+    <!-- 音频  by zhaoshengsheng 2014.8.22  -->
+    <include file="config/struts/struts_ld_tMaterialVoice.xml"/>
+    <!-- 视频资源  by guoyan 2014.8.22  -->
+    <include file="config/struts/struts_ld_tMaterialVideo.xml"/>
+    <!-- 粉丝 by zhaoshengsheng 2014.9.16 -->
+    <include file="config/struts/struts_ld_tWeixinFans.xml"/>
+    <!-- 最新粉丝 -->
+    <include file="config/struts/struts_ld_tLatestFans.xml"/>
+    <!-- 数据同步by zhaoshengsheng 2014.9.22 -->
+    <include file="config/struts/struts_ld_tFansSyncHistory.xml"/>
+    <!-- 一帐通  by guoshijie 2014.9.16  -->
+    <include file="config/struts/struts_ld_tMianAccount.xml"/>
+
+    <!-- 粉丝群管理  by guoyan 2014.9.15  -->
+    <include file="config/struts/struts_ld_tFansGroup.xml"/>
+     <!-- 粉丝群成员管理  by guoyan 2014.9.15  -->
+    <include file="config/struts/struts_ld_tFansGroupMemberReal.xml"/>
+	<!-- 群发管理  by zhouyaoling 2014-09-16 -->
+	<include file="config/struts/struts_ld_tMsgSend.xml"/>
+
+    <!--JS-SDK -->
+    <include file="config/struts/struts_ld_jssdk.xml"/>
+
+    <!--add by jzh-->
+    <!--微信公众号基础信息表-->
+    <include file="config/struts/struts_gt_tWxPlatform.xml"/>
+    <!--微信粉丝信息表-->
+    <include file="config/struts/struts_gt_tWxFans.xml"/>
+    <!--微信图文素材-->
+    <include file="config/struts/struts_gt_tWxNews.xml"/>
+
+    <!--微信活动-->
+    <!--微信活动用户表-->
+    <include file="config/struts/struts_gt_tActUsers.xml"/>
+
+    <!--微信活动前台-->
+    <include file="config/struts/struts_app.xml"/>
+</struts>

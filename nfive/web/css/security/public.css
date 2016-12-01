@@ -1,0 +1,231 @@
+@charset "utf-8";
+/* CSS Document */
+*{margin:0;padding:0;font-family:"黑体";}
+a{ text-decoration:none;}
+
+.wrong{
+	font-size:14px;
+	color:#fff;
+	padding:10px 20px;
+	line-height:18px;
+	border-radius:5px;
+	width:60%;
+	max-width:240px;
+	background:#000;
+	text-align:center;
+	box-sizing:border-box;
+	-o-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	position: absolute;
+}
+.title{
+	width:100%;
+	height:44px;
+	background:#cd2323;
+	color:#fff;
+	line-height:44px;
+	font-size:20px;
+	text-align:center;
+	font-weight:bold;
+	position:relative;
+	}
+.title img{
+	position:absolute;
+	left:14px;
+	top:12px;
+	width:13px;
+	cursor:pointer;
+	}
+.body{
+	padding:0 2px;
+	box-sizing:border-box;
+	-o-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	height:100%;
+	background:#fff;
+	}
+.hang{
+	height:51px;
+	border-bottom:1px solid #cbc9c9;
+	font-size:17px;
+	position:relative;
+	}
+.yzm_text{
+	width:130px;
+}
+.yzm{
+	cursor: pointer;
+    float: right;
+    margin-right: 8px;
+    margin-top: 8px;
+    width: 92px;
+}
+.yzm img{width:100%;}
+.daojishi{
+	width:75px;
+	line-height:51px;
+	margin-right:-2px;
+	float:right;
+	color:#999;
+	font-size:12px;
+	background:#dcdcdc;
+	text-align:center;
+	}
+.clickyzm{line-height:46px;color:#cd2323; cursor:pointer;}
+.disableyzm{line-height:15px;padding-top:11px;height:35px;display:none;}
+.anniu{
+	width:249px;
+	height:34px;
+	background:#cd2323;
+	border:1px solid #a11212;
+	font-size:17px;
+	box-shadow:0px 3px 0px #cccccc;
+	color:#fff;
+	text-align:center;
+	line-height:34px;
+	margin:22px auto 0;
+	border-radius:3px;
+	font-weight:bold;
+	cursor:pointer;
+	}
+.regist_break{
+	width:249px;
+	height:34px;
+	margin:22px auto 0;
+	background:url(../../images/security/button_gray.png) repeat-x;
+	color:#ffffff;
+	font-size:17px;
+	line-height:34px;
+	text-align:center;
+	border:1px solid #aeaeae;
+	border-radius:3px;
+	font-weight:bold;
+	cursor:text;
+	position:relative;
+	text-shadow:0px 2px 0px #b0afaf;
+}
+.no{
+	position:absolute;
+	width:20px;
+	height:20px;
+	background:url('../../images/security/no.png') no-repeat;
+	background-size:cover;
+	top:7px;
+	left:80px;
+}
+.hang_head{
+	width:95px;
+	line-height:51px;
+	padding-left:15px;
+	box-sizing:border-box;
+	-o-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	color:#454545;
+	font-size:17px;
+	float:left;
+	font-weight:bold;
+}
+.hang input{
+	float:left;
+	color:#bcbcbc;
+	font-size:17px;
+	line-height:22px;
+	line-height:22px\9;
+	font-weight:bold;
+	padding:17px 0 12px 8px;
+	box-sizing:border-box;
+	-o-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	border:none;
+	outline: none;
+}
+.center-img{
+	margin:41px auto 7px;
+	width:115px;
+	height:114px;
+}
+.center-img img{width:100%;}
+.jym_tishi{
+	color:#bcbcbc;
+	font-size:14px;
+	line-height:51px;
+	text-align:center;
+}
+.name{
+	font-size:14px;
+	line-height:18px;
+	box-sizing:border-box;
+	-o-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	padding-left:33px;
+	padding-right:32px;
+	color:#bcbcbc;
+	margin-bottom:24px;
+	margin-top:15px;
+}
+.icon_head{
+	width:95px;
+	padding-left:15px;
+	box-sizing:border-box;
+	-o-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	color:#454545;
+	font-size:17px;
+	float:left;
+	font-weight:bold;
+}
+/*人工服务*/
+.rengongfw{
+	width:261px;
+	height:20px;
+	margin:24px auto 16px;
+}
+/*弹出框*/
+.tanbg{
+	background:#000;
+	opacity:0.42;
+	width:100%;
+	height:100%;
+	z-index:2;
+	display:none;
+	position:absolute;top:0;left:0;
+}
+.tan_div{
+	width:100%;
+	max-width:640px;
+	height:auto;
+	background:url(../../images/security/img/tan_divbg.png) top left no-repeat;
+	background-size:cover;
+	position:absolute;left:0;
+	display:none;
+	z-index:5;
+}
+.tan_div p{
+	font-size:17px;
+	color:#525252;
+	text-align:center;
+	margin:32% auto 0;
+	width:66%;
+}
+.tan_div_anniu{
+	width:129px;
+	height:34px;
+	background:#cd2323;
+	border:1px solid #a11212;
+	box-shadow:0px 3px 0px #cccccc;
+	color:#fff;
+	font-size:17px;
+	line-height:35px;
+	margin:4% auto 0;
+	border-radius:2px;
+	text-align:center;
+	cursor:pointer;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){ input[type="text"]{ line-height:17px; } }
+@media screen and (-webkit-min-device-pixel-ratio:0){ input[type="tel"]{ line-height:17px; } }

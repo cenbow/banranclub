@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tFansGroup">
+
+  <!--用于模糊查询-->
+     <select id="select_tFansGroupList" parameterClass="com.wechat.fans.model.TFansGroupQueryBean" resultClass="java.util.HashMap">
+          SELECT  
+          FANS_GROUP_ID,<!-- 主键 -->
+          GROUP_NAME,<!-- 群组名城 -->
+          REMARK,<!-- 备注说明 -->
+          PLATFORM_ID,<!-- 公众号 -->
+          CREATED_DATE,<!-- 创建日期 -->
+          CREATED_USER_CD,<!-- 创建人 -->
+          UPDATED_DATE,<!-- 更新日期-->
+          UPDATED_USER_CD<!-- 更新人 -->
+          
+		  FROM T_FANS_GROUP
+		  WHERE 1=1 AND T_FANS_GROUP.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="fans_group_id">
+					(FANS_GROUP_ID) =  (#fans_group_id:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="group_name">
+					(GROUP_NAME) Like '%'||(#group_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="remark">
+					(REMARK) Like '%'||(#remark:VARCHAR#)||'%'
+			    </isNotEmpty>   
+			     <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) = (#platform_id:VARCHAR#)
+			    </isNotEmpty>   
+			      
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			    
+				 <isNotEmpty prepend=" and " property="updated_user_cd">
+					(UPDATED_USER_CD) Like '%'||(#updated_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>  
+			    
+			     <!-- 更新时间 -->
+			 	<isNotEmpty prepend=" and " property="cxstartdate">
+					TO_CHAR(UPDATED_DATE, 'yyyy-MM-dd')	<![CDATA[>=]]> TO_CHAR((#cxstartdate:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="cxenddate">
+					TO_CHAR(UPDATED_DATE, 'yyyy-MM-dd')	<![CDATA[<=]]> TO_CHAR((#cxenddate:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>  
+				
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+     
+     <!--用于查询总数-->
+     <select id="select_tFansGroupList_count" parameterClass="com.wechat.fans.model.TFansGroupQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_FANS_GROUP
+			WHERE 1=1 AND T_FANS_GROUP.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	
+				 <isNotEmpty prepend=" and " property="fans_group_id">
+					(FANS_GROUP_ID) = (#fans_group_id:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="group_name">
+					(GROUP_NAME) Like '%'||(#group_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="remark">
+					(REMARK) Like '%'||(#remark:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			    
+			     <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) = (#platform_id:VARCHAR#)
+			    </isNotEmpty> 
+			    
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			    
+				 <isNotEmpty prepend=" and " property="updated_user_cd">
+					(UPDATED_USER_CD) Like '%'||(#updated_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>  
+			    
+			     <!-- 更新时间 -->
+			 	<isNotEmpty prepend=" and " property="cxstartdate">
+					TO_CHAR(UPDATED_DATE, 'yyyy-MM-dd')	<![CDATA[>=]]> TO_CHAR((#cxstartdate:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="cxenddate">
+					TO_CHAR(UPDATED_DATE, 'yyyy-MM-dd')	<![CDATA[<=]]> TO_CHAR((#cxenddate:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>     
+	 </select>
+
+
+	 <!--用于校验此数据是否存在-->
+     <select id="select_checktFansGroupExist" parameterClass="com.wechat.fans.model.dto.TFansGroupDto" resultClass="com.wechat.fans.model.dto.TFansGroupDto">
+          SELECT  
+          
+          FANS_GROUP_ID,<!-- 主键 -->
+          GROUP_NAME,<!-- 群组名城 -->
+          REMARK,<!-- 备注说明 -->
+          PLATFORM_ID,<!-- 公众号 -->
+          CREATED_DATE,<!-- 创建日期 -->
+          CREATED_USER_CD,<!-- 创建人 -->
+          UPDATED_DATE,<!-- 更新日期-->
+          UPDATED_USER_CD<!-- 更新人 -->
+          
+		  FROM T_FANS_GROUP
+		  WHERE 1=1 AND T_FANS_GROUP.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="fans_group_id">
+					(FANS_GROUP_ID) =  (#fans_group_id:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="group_name">
+					(GROUP_NAME) = (#group_name:VARCHAR#)
+			    </isNotEmpty>    
+			     <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) = (#platform_id:VARCHAR#)
+			    </isNotEmpty>   
+     </select>
+     
+      <!--开放接口，用于查询所有群组存在-->
+     <select id="select_alltFansGroupName" parameterClass="com.wechat.fans.model.TFansGroupQueryBean" resultClass="com.wechat.fans.model.dto.TFansGroupDto">
+          SELECT  
+          
+          FANS_GROUP_ID,<!-- 主键 -->
+          GROUP_NAME,<!-- 群组名城 -->
+          REMARK,<!-- 备注说明 -->
+          PLATFORM_ID,<!-- 公众号 -->
+          CREATED_DATE,<!-- 创建日期 -->
+          CREATED_USER_CD,<!-- 创建人 -->
+          UPDATED_DATE,<!-- 更新日期-->
+          UPDATED_USER_CD<!-- 更新人 -->
+          
+		  FROM T_FANS_GROUP
+		  WHERE 1=1 AND T_FANS_GROUP.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="fans_group_id">
+					(FANS_GROUP_ID) =  (#fans_group_id:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="group_name">
+					(GROUP_NAME) = (#group_name:VARCHAR#)
+			    </isNotEmpty>    
+			     <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) = (#platform_id:VARCHAR#)
+			    </isNotEmpty>   
+     </select>
+
+</sqlMap>

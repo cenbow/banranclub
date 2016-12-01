@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tResource"  extends="struts_common">
+	  
+	  	<!-- TResource列表信息 -->
+        <action name="searchTResourceAction" class="searchTResourceAction">
+			<result name="success" >/jsp/persistence/searchTResourcePage.jsp</result>
+		</action>
+		
+        <!-- TResource新增页面-->
+        <action name="addTResourcePage" class="addTResourcePage">
+			<result name="success" >/jsp/persistence/addTResourcePage.jsp</result>
+		</action>
+		
+		<!-- TResource新增动作	-->
+        <action name="addTResourceAction" class="addTResourceAction"> 
+        	<!-- 
+			<result name="success" type="chain"><param name="actionName">searchTResourceAction</param> </result>
+			 -->
+		</action>
+		
+		<!-- TResource编辑页面 -->
+		<action name="editTResourcePage" class="editTResourcePage">
+			<result name="success" >/jsp/persistence/editTResourcePage.jsp</result>
+		</action>
+
+		
+		<!-- TResource编辑动作-->
+		<action name="editTResourceAction" class="editTResourceAction">
+			<!-- 
+				<result name="success" type="chain"><param name="actionName">searchTResourceAction</param> </result>
+				<result name="input">/jsp/persistence/error.jsp</result>
+			 -->
+		</action>
+		
+		
+		<!-- 详细画面动作-->
+		<action name="detailTResourcePage" class="detailTResourcePage">
+			<result name="success" >/jsp/persistence/detailTResourcePage.jsp</result>
+		</action>
+		
+		
+		<!-- TResource删除页面	-->
+		<action name="delTResourceAction" class="delTResourceAction">
+		</action>	
+		
+		<!-- 资源校验	-->
+		<action name="checkTResourceAction" class="checkTResourceAction">
+		</action>		
+
+      
+	</package>
+</struts>

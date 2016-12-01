@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tMaterialVideo"  extends="struts_common">
+	  
+	  	<!-- TMaterialVideo列表信息 -->
+        <action name="searchTMaterialVideoAction" class="searchTMaterialVideoAction">
+           	<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" >/jsp/video/searchTMaterialVideoPage.jsp</result>
+		</action>
+		
+        <!-- TMaterialVideo新增页面-->
+        <action name="addTMaterialVideoPage" class="addTMaterialVideoPage">
+            <interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" >/jsp/video/addTMaterialVideoPage.jsp</result>
+		</action>
+		
+		<!-- TMaterialVideo新增动作	-->
+        <action name="addTMaterialVideoAction" class="addTMaterialVideoAction">
+        	<interceptor-ref name="admin_login_stack"></interceptor-ref> 
+			<result name="success" type="chain"><param name="actionName">searchTMaterialVideoAction</param> </result>
+		</action>
+		
+		<!-- TMaterialVideo编辑页面 -->
+		<action name="editTMaterialVideoPage" class="editTMaterialVideoPage">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" >/jsp/video/editTMaterialVideoPage.jsp</result>
+		</action>
+
+		<!-- TMaterialVideo删除页面	-->
+		<action name="delTMaterialVideoAction" class="delTMaterialVideoAction">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" type="chain"><param name="actionName">searchTMaterialVideoAction</param> </result>
+		</action>		
+		
+		<!-- TMaterialVideo编辑动作-->
+		<action name="editTMaterialVideoAction" class="editTMaterialVideoAction">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" type="chain"><param name="actionName">searchTMaterialVideoAction</param> </result>
+			<result name="input">/jsp/video/error.jsp</result>
+		</action>
+		
+		
+		<!-- 详细画面动作-->
+		<action name="detailTMaterialVideoPage" class="detailTMaterialVideoPage">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" >/jsp/video/detailTMaterialVideoPage.jsp</result>
+		</action>
+      
+	</package>
+</struts>

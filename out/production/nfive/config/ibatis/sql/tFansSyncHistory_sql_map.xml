@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tFansSyncHistory">
+
+  <!--用于模糊查询-->
+     <select id="select_tFansSyncHistoryList" parameterClass="com.wechat.fans.model.TFansSyncHistoryQueryBean" resultClass="java.util.HashMap">
+          SELECT  
+		 		H.HISTORY_ID  <!--历史ID-->
+		  		,H.SYNC_START_DATE  <!--同步开始时间-->
+		  		,H.SYNC_END_DATE  <!--同步结束时间-->
+		  		,H.SYNC_STATE  <!--同步状态-->
+		  		,H.REMARK  <!--备注-->
+		  		,U.USER_NAME AS USER_NAME  <!--公众平台号ID-->
+		  FROM T_FANS_SYNC_HISTORY H LEFT JOIN T_EMP_USER U ON U.USER_CD=H.CREATED_USER_CD
+		  WHERE 1=1 AND H.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+			    <isNotEmpty prepend=" and " property="platform_id">
+					(H.PLATFORM_ID) =(#platform_id:VARCHAR#)
+			    </isNotEmpty>    
+			    <isNotEmpty property="orderStr">
+					$orderStr$
+			    </isNotEmpty>
+     </select>
+     
+     <!--用于查询总数-->
+     <select id="select_tFansSyncHistoryList_count" parameterClass="com.wechat.fans.model.TFansSyncHistoryQueryBean" resultClass="int">
+			SELECT  count(H.HISTORY_ID)
+		    FROM T_FANS_SYNC_HISTORY H LEFT JOIN T_EMP_USER U ON U.USER_CD=H.CREATED_USER_CD
+			WHERE 1=1 AND H.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(H.PLATFORM_ID) =(#platform_id:VARCHAR#)
+			    </isNotEmpty>    
+	 </select>
+
+</sqlMap>

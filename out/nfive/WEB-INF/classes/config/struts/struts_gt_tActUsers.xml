@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tActUsers" extends="struts_common">
+
+	  	<!-- Copy <include file="config/struts/struts_gt_tActUsers.xml" /> 到struts.xml  -->
+
+	  	<!-- TActUsers列表信息 -->
+        <action name="searchTActUsersAction" class="searchTActUsersAction">
+			<result name="success" >/jsp/activity/searchTActUsersPage.jsp</result>
+		</action>
+
+        <!-- TActUsers新增页面 -->
+        <action name="addTActUsersPage" class="addTActUsersPage">
+			<result name="success" >/jsp/activity/addTActUsersPage.jsp</result>
+		</action>
+
+		<!-- TActUsers新增动作 -->
+        <action name="addTActUsersAction" class="addTActUsersAction">
+			<!--<result name="success" type="chain"><param name="actionName">searchTActUsersAction</param> </result>-->
+		</action>
+
+		<!-- TActUsers编辑页面 -->
+		<action name="editTActUsersPage" class="editTActUsersPage">
+			<result name="success" >/jsp/activity/editTActUsersPage.jsp</result>
+		</action>
+
+		<!-- TActUsers编辑动作  -->
+		<action name="editTActUsersAction" class="editTActUsersAction">
+			<result name="success" type="chain"><param name="actionName">searchTActUsersAction</param> </result>
+			<result name="input">/jsp/activity/error.jsp</result>
+		</action>
+
+		<!-- TActUsers删除页面 -->
+		<action name="delTActUsersAction" class="delTActUsersAction">
+			<!--<result name="success" type="chain"><param name="actionName">searchTActUsersAction</param> </result>-->
+		</action>
+
+		<!-- 详细画面动作 -->
+		<action name="detailTActUsersPage" class="detailTActUsersPage">
+			<result name="success" >/jsp/activity/detailTActUsersPage.jsp</result>
+		</action>
+
+	</package>
+</struts>

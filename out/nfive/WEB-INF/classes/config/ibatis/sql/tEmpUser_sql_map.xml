@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tEmpUser">
+
+  <!--用于模糊查询-->
+     <select id="select_tEmpUserList" parameterClass="com.platform.persistence.model.TEmpUserQueryBean" resultClass="java.util.HashMap">
+          SELECT  
+		 		t_user.USER_ID  <!--员工用户ID-->
+		  		,t_user.USER_CD  <!--员工用户CD-->
+		  		,t_user.USER_NAME  <!--用户名-->
+		  		,t_user.PASSWORD  <!--用户密码-->
+		  		,t_user.MOBILE  <!--手机-->
+		  		,t_user.EMAIL  <!--电子邮件-->
+		  		,t_user.LOCK_FLAG  <!--[CS:3000]用户锁定标识-->
+		  		,t_user.CREATED_DATE  <!--创建日期-->
+		  		,t_user.CREATED_USER_CD  <!--创建用户-->
+		  FROM T_EMP_USER t_user
+		  WHERE 1=1 AND t_user.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="user_id">
+					(USER_ID) Like '%'||(#user_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="user_cd">
+					(USER_CD) Like '%'||(#user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="user_name">
+					(USER_NAME) Like '%'||(#user_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="password">
+					(PASSWORD) Like '%'||(#password:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="mobile">
+					(MOBILE) Like '%'||(#mobile:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="email">
+					(EMAIL) Like '%'||(#email:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="lock_flag">
+					(LOCK_FLAG) Like '%'||(#lock_flag:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="created_date">
+					TO_CHAR(CREATED_DATE, 'yyyy-MM-dd')	=TO_CHAR((#created_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    <!-- 关联角色 -->    
+			    <isNotEmpty prepend=" and " property="role_id">
+					not exists ( select 1 from T_USER_ROLE_RELA tu where tu.ROLE_ID = (#role_id:VARCHAR#) and tu.USER_ID = t_user.USER_ID and tu.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd') ) 
+			    </isNotEmpty>
+			    <!-- 关联用户 t_platformemp_cfg  PLATFORM_ID-->
+			    <isNotEmpty prepend=" and " property="platform_id">
+					not exists ( select 1 from T_PLATFORMEMP_CFG tu where tu.PLATFORM_ID = (#platform_id:VARCHAR#) and tu.USER_CD = t_user.USER_CD and tu.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd') ) 
+			    </isNotEmpty>
+			      
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+     
+     <!--用于查询总数-->
+     <select id="select_tEmpUserList_count" parameterClass="com.platform.persistence.model.TEmpUserQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_EMP_USER t_user
+			WHERE 1=1 AND t_user.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	
+				 <isNotEmpty prepend=" and " property="user_id">
+					(USER_ID) Like '%'||(#user_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="user_cd">
+					(USER_CD) Like '%'||(#user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="user_name">
+					(USER_NAME) Like '%'||(#user_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="password">
+					(PASSWORD) Like '%'||(#password:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="mobile">
+					(MOBILE) Like '%'||(#mobile:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="email">
+					(EMAIL) Like '%'||(#email:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="lock_flag">
+					(LOCK_FLAG) Like '%'||(#lock_flag:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="created_date">
+					TO_CHAR(CREATED_DATE, 'yyyy-MM-dd')=TO_CHAR((#created_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>
+			     <!-- 关联角色 -->        
+			    <isNotEmpty prepend=" and " property="role_id">
+					not exists ( select 1 from T_USER_ROLE_RELA tu where tu.ROLE_ID = (#role_id:VARCHAR#) and tu.USER_ID = t_user.USER_ID and tu.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd') ) 
+			    </isNotEmpty>
+			    <!-- 关联用户 t_platformemp_cfg  PLATFORM_ID-->
+			    <isNotEmpty prepend=" and " property="platform_id">
+					not exists ( select 1 from T_PLATFORMEMP_CFG tu where tu.PLATFORM_ID = (#platform_id:VARCHAR#) and tu.USER_CD = t_user.USER_CD and tu.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd') ) 
+			    </isNotEmpty>
+	 </select>
+	  
+	 <update id="update_platformId" parameterClass="java.util.HashMap">
+		   update 
+		   		T_PLATFORMEMP_CFG
+		   set
+		   	    IS_USE=#isUse#
+	 	   where user_cd=#loginUserCD# and platform_id=#platformId#
+	 	   
+		   and end_date =to_date('9999-12-31','yyyy-mm-dd')
+	</update>
+	 
+	<!--登录成功后更新信息--> 
+	<update id="update_login_success" parameterClass="java.util.HashMap">
+		   update 
+		   		T_EMP_EXTINFO
+		   set
+		   	    IP_ADDRESS=#ipAddress#,
+		   	    LAST_LOGIN_TIME=SYSDATE,
+		   	    LOGIN_TRY_TIMES = 0
+	 	   where user_cd=#loginUserCD#
+		   and end_date =to_date('9999-12-31','yyyy-mm-dd')
+	</update>
+	
+	<!--密码不正确的情况下,更新登录次数--> 
+	<update id="update_login_failure" parameterClass="java.util.HashMap">
+		   update 
+		   		T_EMP_EXTINFO
+		   set
+		   	    IP_ADDRESS=#ipAddress#,
+		   	    LAST_LOGIN_TIME=SYSDATE,
+		   	    LOGIN_TRY_TIMES = LOGIN_TRY_TIMES + 1
+	 	   where user_cd=#loginUserCD#
+		   and end_date =to_date('9999-12-31','yyyy-mm-dd')
+	</update>
+		 
+</sqlMap>

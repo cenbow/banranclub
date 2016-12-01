@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tRoleResRela">
+
+  <!--用于模糊查询-->
+     <select id="select_tRoleResRelaList" parameterClass="com.platform.persistence.model.TRoleResRelaQueryBean" resultClass="java.util.HashMap">
+          SELECT  
+		 		 TRR.ROLE_RES_ID  <!--角色资源关系ID-->
+		  		,TRR.ROLE_ID  <!--角色ID-->
+		  		,TRR.RES_ID  <!--资源ID-->
+		  		<!-- ,TRR.CREATED_DATE 创建日期-->
+		  		<!-- ,TRR.CREATED_USER_CD  创建用户-->
+		  		,TR.ROLE_NAME
+		  		,TR.ROLE_GROUP
+		  		,TR.ROLE_DESC
+		  		,TR.CREATED_DATE
+		  		,TR.CREATED_USER_CD
+		  FROM T_ROLE_RES_RELA TRR
+		  JOIN T_ROLE TR ON TR.ROLE_ID = TRR.ROLE_ID
+		  WHERE 1=1 AND TRR.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="role_id">
+					(TRR.ROLE_ID) = (#role_id:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="res_id">
+					(TRR.RES_ID) = (#res_id:VARCHAR#)
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="created_date">
+					TO_CHAR(TRR.CREATED_DATE, 'yyyy-MM-dd')	=TO_CHAR((#created_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(TRR.CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+     
+     <!--用于查询总数-->
+     <select id="select_tRoleResRelaList_count" parameterClass="com.platform.persistence.model.TRoleResRelaQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_ROLE_RES_RELA TRR
+		    JOIN T_ROLE TR ON TR.ROLE_ID = TRR.ROLE_ID
+			WHERE 1=1 AND TRR.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	
+				 <isNotEmpty prepend=" and " property="role_res_id">
+					(TRR.ROLE_RES_ID) Like '%'||(#role_res_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="role_id">
+					(TRR.ROLE_ID) Like '%'||(#role_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="res_id">
+					(TRR.RES_ID) Like '%'||(#res_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="created_date">
+					TO_CHAR(TRR.CREATED_DATE, 'yyyy-MM-dd')=TO_CHAR((#created_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(TRR.CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+	 </select>
+	 
+
+</sqlMap>

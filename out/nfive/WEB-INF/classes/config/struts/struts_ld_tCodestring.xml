@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tCodestring"  extends="struts_common">
+	  
+	  	<!-- TCodestring列表信息 -->
+        <action name="searchTCodestringAction" class="searchTCodestringAction">
+			<result name="success" >/jsp/persistence/searchTCodestringPage.jsp</result>
+		</action>
+		
+        <!-- TCodestring新增页面-->
+        <action name="addTCodestringPage" class="addTCodestringPage">
+			<result name="success" >/jsp/persistence/addTCodestringPage.jsp</result>
+		</action>
+		
+		<!-- TCodestring新增动作	-->
+        <action name="addTCodestringAction" class="addTCodestringAction"> 
+			<result name="success" type="chain"><param name="actionName">searchTCodestringAction</param> </result>
+		</action>
+		
+		<!-- TCodestring编辑页面 -->
+		<action name="editTCodestringPage" class="editTCodestringPage">
+			<result name="success" >/jsp/persistence/editTCodestringPage.jsp</result>
+		</action>
+
+		
+		<!-- TCodestring编辑动作-->
+		<action name="editTCodestringAction" class="editTCodestringAction">
+			<result name="success" type="chain"><param name="actionName">searchTCodestringAction</param> </result>
+			<result name="input">/jsp/persistence/error.jsp</result>
+		</action>
+		
+		
+		<!-- 详细画面动作-->
+		<action name="detailTCodestringPage" class="detailTCodestringPage">
+			<result name="success" >/jsp/persistence/detailTCodestringPage.jsp</result>
+		</action>
+		
+		
+		<!-- TCodestring删除页面	-->
+		<action name="delTCodestringAction" class="delTCodestringAction">
+			<result name="success" type="chain"><param name="actionName">searchTCodestringAction</param> </result>
+		</action>		
+
+      
+	</package>
+</struts>

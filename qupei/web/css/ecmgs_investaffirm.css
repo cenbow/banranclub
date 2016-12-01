@@ -1,0 +1,63 @@
+@charset "utf-8";
+/* 投资确认 */
+.investaffirm_title{height:auto; padding-bottom:40px;}
+.investaffirm_center{width:1160px; height: 500px; margin:10px 20px 0; border-bottom:1px dashed #d2d2d2;}
+.investaffirm_centerlf{width:454px; height:48px; float:left; margin-right:22px; color:#666666; line-height:48px; text-align:right;}
+.investaffirm_centerrg{width:684px; height:auto; float:left; color:#333333; line-height:48px;}
+
+.color_c6981f{ color:#c6981f; font-size:20px;}
+.color_999999{ color:#999999;}
+.icon_yinlian{ margin-top:13px; float:left;}
+.icon_yinhang{ margin-top:12px; margin-right:8px; float:left;}
+.investaffirm_centerbtn{ margin-left:0px;background: #d2d2d2;border: 1px solid #d2d2d2;border-radius: 5px;color: #fff;font-size: 20px;height: 42px;line-height: 41px;margin-top: 31px;text-align: center;width: 200px; cursor:text;}
+.investaffirm_prebtn{ margin-left:0px;background: #d2d2d2;border: 1px solid #d2d2d2;border-radius: 5px;color: #fff;font-size: 20px;height: 42px;line-height: 41px;margin-top: 31px;text-align: center;width: 200px; cursor:text;}
+.investaffirm_centerbtnclick{background: #c6981f;border: 1px solid #d2d2d2;cursor: pointer;}
+.investaffirm_alert{width:1196px; height:650px; background:#fffbf1; border:2px solid #e6d19f; position:absolute; top:50%; left:50%; margin-left:-598px; margin-top:-325px; z-index:12;}
+.investaffirm_alert2{top:0; margin-top:0;height:790px;}
+.investaffirm_alert2 .investaffirm_alert_center{height:603px;}
+.investaffirm_alert_title{height:57px; width:100%; padding-right:14px; box-sizing:border-box; text-align:right; color:#c6981f; font-size:26px; line-height:36px;}
+.investaffirm_alert_title span{ cursor:pointer;}
+.investaffirm_alert_center{height:463px; background:#fff; border-top:2px solid #e6d19f;border-bottom:2px solid #e6d19f; padding:0 22px 0 18px; box-sizing:border-box; overflow:scroll; overflow-x: hidden;
+scrollbar-face-color:#e6d19f;
+scrollbar-shadow-color:#fff;
+scrollbar-highlight-color:#ccc;
+scrollbar-3dlight-color:#fff;
+scrollbar-arrow-color:#fff;
+scrollbar-track-color:#fff;
+}
+.investaffirm_alert_centertitle{font-size:18px; color:#666666; font-weight:bold; height:74px; line-height:74px;}
+.investaffirm_alert_centertitle span{ color:#999; font-size:14px;}
+.investaffirm_alert_marginbtm{ margin-bottom:24px;}
+.investaffirm_alert_textright{ text-align:right;}
+.investaffirm_alert_centerfont{line-height:28px; font-size:14px; color:#666666;}
+.investaffirm_alert_bottom{height:44px; line-height:44px; padding-left:18px; box-sizing:border-box; font-size:14px; color:#999999;}
+.investaffirm_alert_bottomcheck{ margin-top:15px; margin-right:7px;}
+.investaffirm_alert_bottomchecked{background:url(../images/investaffirm_checked.jpg);}
+.investaffirm_alert_btngray{width:382px; height:42px;  border:1px solid #d2d2d2; border-radius:5px; color:#fff; text-align:center; line-height:42px; margin:3px auto; background:#d2d2d2;}
+.investaffirm_alert_btn{background:#c6981f; cursor:pointer;}
+
+/*代金券*/
+.investaffirm_voucher_title{color:#666; font-weight:bold;height: 54px; line-height: 54px; padding-left: 20px;}
+.investaffirm_voucher_table{width:700px; padding:0 20px; margin:0 auto 36px; font-size:8px;}
+.investaffirm_voucher_trtitle{height:38px; background:#fcf7ea;}
+.investaffirm_voucher_tr{height:30px; padding:0 20px; border-bottom:1px solid #d2d2d2;}
+.investaffirm_voucher_td1{width:20px; padding-left:5px;}
+.investaffirm_voucher_check{ width:14px; height:14px; background:url(../images/voucher_check.png) no-repeat; cursor:pointer;}
+.investaffirm_voucher_checked{ background:url(../images/voucher_checked.png) no-repeat;}
+.investaffirm_voucher_td2{width:30px;text-align: left; font-weight:400;}
+td.investaffirm_voucher_td2{width:60px; font-size:8px;}
+.investaffirm_voucher_td3{width:60px;}
+.investaffirm_voucher_td4{width:60px;}
+.investaffirm_voucher_td5{width:180px;}
+
+.investaffirm_alert_cttspan{ color:#999; font-size:16px; font-weight:400;}
+
+.investaffirm_alert_cttbt{line-height:28px; font-size:14px; color:#333; font-weight:bold; text-align:center;}
+
+
+.investaffirm_alerttb{width:867px; margin:25px auto;border-collapse: collapse; height:auto;}
+.investaffirm_alerttb tr{ height:35px; width:100%; }
+.investaffirm_alerttb td{font-size:14px; width:25%;border:solid #000 2px;}
+.investaffirm_alerttbct{ text-align:center;}
+
+

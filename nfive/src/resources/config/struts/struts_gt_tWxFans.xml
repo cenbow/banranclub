@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tWxFans" extends="struts_common">
+
+	  	<!-- Copy <include file="config/struts/struts_gt_tWxFans.xml" /> 到struts.xml  -->
+
+	  	<!-- TWxFans列表信息 -->
+        <action name="searchTWxFansAction" class="searchTWxFansAction">
+			<result name="success" >/jsp/fans/searchTWxFansPage.jsp</result>
+		</action>
+
+        <!-- TWxFans新增页面 -->
+        <action name="addTWxFansPage" class="addTWxFansPage">
+			<result name="success" >/jsp/fans/addTWxFansPage.jsp</result>
+		</action>
+
+		<!-- TWxFans新增动作 -->
+        <action name="addTWxFansAction" class="addTWxFansAction">
+			<!--<result name="success" type="chain"><param name="actionName">searchTWxFansAction</param> </result>-->
+		</action>
+
+		<!-- TWxFans编辑页面 -->
+		<action name="editTWxFansPage" class="editTWxFansPage">
+			<result name="success" >/jsp/fans/editTWxFansPage.jsp</result>
+		</action>
+
+		<!-- TWxFans编辑动作  -->
+		<action name="editTWxFansAction" class="editTWxFansAction">
+			<result name="success" type="chain"><param name="actionName">searchTWxFansAction</param> </result>
+			<result name="input">/jsp/fans/error.jsp</result>
+		</action>
+
+		<!-- TWxFans删除页面 -->
+		<action name="delTWxFansAction" class="delTWxFansAction">
+			<!--<result name="success" type="chain"><param name="actionName">searchTWxFansAction</param> </result>-->
+		</action>
+
+		<!-- 详细画面动作 -->
+		<action name="detailTWxFansPage" class="detailTWxFansPage">
+			<result name="success" >/jsp/fans/detailTWxFansPage.jsp</result>
+		</action>
+
+	</package>
+</struts>

@@ -1,0 +1,508 @@
+@charset "UTF-8";
+body {
+  -webkit-user-select: none;
+  -webkit-text-adjust:none;
+  background: #e93908 url("../../../images/activity/national/bg.png") no-repeat;
+  background-size: 100% 90%;
+}
+a {color :#fff;}
+.slogan img {
+  width: 92%;
+  height: auto;
+  margin: 15px 4%;
+}
+/*主页内容*/
+.content {
+  position: relative;
+  min-height: 400px;
+  padding-top: 25px;
+  margin-top: -25px;
+}
+.content.home {
+  background: url("../../../images/activity/national/homeWallet.png") no-repeat;
+  background-size: 100% auto;
+}
+.content.game .explain {
+  top: .3rem;
+  right: .4rem;
+}
+.content .explain {
+  position: absolute;
+  top: .6rem;
+  right: .6rem;
+  display: inline-block;
+  font-size: .35rem;
+  line-height: 1;
+  color: #e93908;
+}
+.content .explain:before {
+  display: block;
+  float: left;
+  width: 1.1em;
+  height: 1.1em;
+  line-height:1.2em;
+  margin-top: -1px;
+  margin-right: 2px;
+  font-size: inherit;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  content: "?";
+  background-color: #e93908;
+  border-radius: 50%;
+}
+.content p {
+  color: #fff;
+  text-align: center;
+}
+.content .button-wrap {
+  padding-top: 80%;
+}
+.content img {
+  width: 180px;
+  height: auto;
+}
+.content .rules-down {
+  padding: .1rem 6% .6rem;
+  font-size: .3rem;
+  background-color: #e93908;
+}
+.content .rules-down h2 {
+  position: relative;
+  margin-bottom: 5px;
+  font-size: .4rem;
+  color: #fff;
+  text-align: center;
+}
+.content .rules-down h2 span {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  padding: 0 1em;
+  background-color: #e93908;
+}
+.content .rules-down h2:before {
+  position: absolute;
+  top: .6em;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  content: "";
+  border-bottom: 1px solid #fff;
+}
+.content .rules-down p {
+  text-align: left;
+}
+.content .rules-down p:before {
+  display: block;
+  float: left;
+  width: 1.2em;
+  margin-top: .2em;
+  margin-right: .6em;
+  line-height: 1.2em;
+  color: #e93908;
+  text-align: center;
+  content: "";
+  background-color: #f9d03a;
+  border-radius: 50%;
+}
+.content .rules-down p:nth-of-type(1):before {
+  content: "1";
+}
+.content .rules-down p:nth-of-type(2):before {
+  content: "2";
+}
+.content .rules-down p:nth-of-type(3):before {
+  content: "3";
+}
+.content .rules-down p:nth-of-type(4):before {
+  content: "4";
+}
+.content .rules-down a {
+  color: #073af8;
+  border-bottom: 1px solid #073af8;
+}
+/*活动页内容*/
+.content.game {
+  position: relative;
+  min-height: 400px;
+  margin-top: 0;
+  background: url("../../../images/activity/national/activeWallet.png") no-repeat;
+  background-size: 100% auto;
+}
+.content.game .money-board {
+  position: absolute;
+  top: 2rem;
+  width: 100%;
+  font-size: 1.4rem;
+}
+.content.game .money-board p {
+  padding-left: 1rem;
+  line-height: 1;
+  color: #fff9aa;
+}
+.content.game .money-board p #Integer {
+  font-size: 2.4rem;
+}
+.content.game .seal {
+  position: absolute;
+  top: 1.8rem;
+  right: 1.5rem;
+  width: 2.5rem;
+  height: auto;
+}
+.content.game .money-board p .decimal-wrap {
+  position: relative;
+  top: .2rem;
+  display: inline-block;
+  width: 1.85rem;
+  height: 1em;
+  overflow: hidden;
+}
+.content.game .money-board p .decimal-wrap span {
+  position: absolute;
+  right: 0;
+}
+.content.game .money-board p span.percent {
+  font-size: 1.2rem;
+}
+.content.game dl.progress {
+  position: absolute;
+  top: 6rem;
+  width: 7.2rem;
+  padding-left: 5em;
+  margin: 0 1.4rem;
+  font-size: .4rem;
+}
+.content.game dl.progress dt {
+  float: left;
+  margin-left: -5em;
+  color: #e93908;
+}
+.content.game dl.progress dd {
+  width: 5.4rem;
+  height: 1.6em;
+  background: url("../../../images/activity/national/dark.png") no-repeat;
+  background-size: 100% auto;
+}
+.content.game dl.progress dd span {
+  display: block;
+  width: 0%;
+  height: 1.4em;
+  overflow: hidden;
+  background: url("../../../images/activity/national/light.png") no-repeat;
+  background-size: 5.4rem auto;
+}
+.content.game dl.progress dd img {
+  width: auto;
+  height: 1.2em;
+}
+.content.game .button-wrap {
+  padding-top: 90%;
+}
+.content.game .button-wrap .fullShare {
+  padding-bottom : .4em;
+  border-bottom : 1px solid #fff;
+}
+.content.game .button-wrap .fullShare:before {
+  position : relative;
+  top :1px;
+  display : inline-block;
+  width: 1em;
+  height :1em;
+  content : "";
+  background: url("../../../images/activity/national/shareButton.png") no-repeat;
+  background-size:90% auto;
+}
+.content.game .steps {
+  padding:18px 0;
+  text-align: center;
+}
+.content.game .steps img {
+  width: 92%;
+}
+/*好友帮助列表*/
+.help-list {
+  padding: 0 4%;
+  margin: 20px 0;
+  background-color: #e93908;
+}
+.help-list li {
+  padding-left: 60px;
+  margin-bottom: 10px;
+}
+.help-list li:after {
+  display: block;
+  clear: both;
+  content: "";
+}
+.help-list li .head-img {
+  float: left;
+  width: 50px;
+  height: 50px;
+  margin-left: -60px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+.help-list li .head-img img {
+  width: 100%;
+  height: 100%;
+}
+.help-list li p {
+  font-size: 14px;
+  text-align: justify;
+}
+.help-list li p span {
+  font-size: 16px;
+  color: #f9d03a;
+}
+/*参与页顶部内容*/
+.head {
+  padding: 0 4%;
+  margin: 20px 0;
+  font-size: 16px;
+}
+.head .rules {
+  float: right;
+}
+.head a {
+  line-height: 1.2;
+  color: #666;
+  border-bottom :1px solid #666;
+}
+.head a:before {
+	position : relative;
+	top :2px ;
+	display :inline-block;
+	width :1em;
+	height :1em;
+	content : "";
+	background : url("../../../images/activity/national/text-doc.png") no-repeat;
+	background-size : 70% auto;
+}
+
+#date {margin-top:-16px;font-size: .30rem;color:#e93908 !important;text-align:center}
+/*提示分享遮罩层*/
+.share_tips {
+  position: fixed;
+  top: 0;
+  z-index: 9;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .6);
+}
+.share_tips img {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 90%;
+}
+.mask {
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .6);
+
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.mask .layer {
+  position: absolute;
+  top:40px;
+  right: 0;
+  left: 0;
+  z-index: 12;
+  width: 8rem;
+  margin: auto;
+  background-color: #fff;
+  border-radius: 5px;
+}
+.mask .layer:before,
+.mask .layer:after {
+  position: absolute;
+  top: 12px;
+  z-index: -3;
+  display: inline-block;
+  width: .5rem;
+  height: 200px;
+  content: "";
+  background: url("../../../images/activity/national/flagLeft.png") no-repeat;
+  background-size: 100% auto;
+}
+.mask .layer:before {
+  left: -.5rem;
+}
+.mask .layer:after {
+  right: -.5rem;
+  background-position: bottom right;
+  -ms-transform: rotate(180deg);
+      transform: rotate(180deg);
+}
+.mask .layer h1 {
+  position: absolute;
+  left: -2%;
+  width: 104%;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.1rem;
+  color: #fff;
+  text-align: center;
+  background-color: #fa553f;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  box-shadow: 0 3px #d41f15;
+}
+.mask .layer .close {
+  position: absolute;
+  right: .4rem;
+  display: inline-block;
+}
+.mask .pops {
+  padding: 1.3rem 6% .8rem;
+  font-size: .4rem;
+}
+.mask .pops.success h2,
+.mask .pops.success p {
+  line-height: 1.2;
+  text-align: center;
+}
+.mask .pops.success h2 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #e93908;
+}
+.mask .pops.success .validity {
+  color: #e93908;
+}
+.mask .pops h2 {
+  margin-top: .15rem;
+  color: #333;
+}
+.mask .pops p {
+  margin: 10px 0;
+  color: #333;
+  text-align: justify;
+}
+.mask .pops p .slogan {
+  width: 100%;
+}
+.mask .pops p.index {
+  margin: 0;
+  color: #666;
+}
+.mask .index a {
+  color: #073af8;
+  border-bottom: 1px solid #073af8;
+}
+.mask .pops p.index .red {
+  color: #e93908;
+}
+.mask .pops p.center {
+  margin: 0;
+  line-height: 1.2;
+  text-align: center;
+}
+.mask .pops p.center img {
+  width: 3rem;
+}
+.mask .pops p.phone-warn,
+.mask .pops p.code-warn,
+.mask .pops p.password-warn {
+  display: none;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.2;
+  color: #e93908;
+}
+.mask .pops p.password-warn {
+  display: inline-block;
+}
+.mask .pops p.password-warn:before {
+  display: block;
+  float: left;
+  width: 1.2em;
+  height: 1.2em;
+  margin-right: 2px;
+  line-height: 1.2;
+  text-align: center;
+  content: "!";
+  border: 1px solid #e93908;
+  border-radius: 50%;
+}
+.mask .pops input {
+  width: 100%;
+  padding: 0 .6em;
+  font-size: inherit;
+  line-height: 36px;
+  border: 1px solid #fa553f;
+  border-radius: 10px;
+}
+.mask .pops input[name="code"] {
+  width: 48%;
+}
+.mask .pops input[type="button"] {
+  border: none !important;
+}
+.mask .pops .get-code {
+  display: inline-block;
+  float: right;
+  width: 50%;
+  height: 32px;
+  line-height: 36px;
+  color: #fff;
+  text-align: center;
+  background-color: #fa553f;
+  border-radius: 10px;
+  box-shadow: 0 6px #d41f15;
+}
+.mask .pops .create,
+.mask .pops .use-it {
+  display: block;
+  width: 100%;
+  height: 32px;
+  margin-top: 10px;
+  line-height: 36px;
+  color: #e93908;
+  text-align: center;
+  background-color: #ffea36;
+  border-radius: 16px;
+  box-shadow: 0 5px #f9b40e;
+}
+input[disabled] {
+  color: #fff !important;
+  background-color: #d2d2d2 !important;
+  border: none !important;
+  box-shadow: 0 6px #b4b3b3 !important;
+}
+/*提示信息*/
+#tips {
+  position: fixed;
+  top: 40%;
+  right: 0;
+  left: 0;
+  z-index: 19;
+  display: none;
+  width: 70%;
+  padding: 30px 0;
+  margin: auto;
+  font-size: 1.2em;
+  color: #fff;
+  text-align: center;
+  background-color: rgba(0, 0, 0, .95);
+  border-radius: 5px;
+}
+
+.red {
+  color: #e93908 !important;
+}
+.clear:after {
+  display: block;
+  clear: both;
+  content: "";
+}

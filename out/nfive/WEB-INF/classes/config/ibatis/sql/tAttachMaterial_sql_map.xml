@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tAttachMaterial">
+
+
+	<!--图片上传要素-->
+     <select id="queryMaterialPictureVoByPictureIdForUpload" parameterClass="java.util.HashMap" resultClass="com.wechat.material.model.vo.MaterialPictureVo">
+          SELECT  
+		 		 T_MATERIAL_PICTURE.PICTURE_ID     <!--图片素材主键-->
+		  		,T_MATERIAL_PICTURE.PICTURE_NAME   <!--图片名称-->
+		  		,T_MATERIAL_PICTURE.PICTURE_URL    <!--图片URL-->
+		  		,T_MATERIAL_PICTURE.PICTURE_WSIZE  <!--图片规格宽-->
+		  		,T_MATERIAL_PICTURE.PICTURE_HSIZE  <!--图片规格高-->
+		  		,T_MATERIAL_PICTURE.PICTURE_DESC   <!--图片描述-->
+		  		,T_MATERIAL_PICTURE.FILE_ID  	   <!--关联文件ID-->
+		  		
+		  		,T_ATTACH_MATERIAL.FILE_NAME  	   <!--附件名称-->
+		  		,T_ATTACH_MATERIAL.FILE_PREFIX  <!--文件前缀-->
+		  		,T_ATTACH_MATERIAL.FILE_POSTFIX  <!--文件后缀-->
+		  		,T_ATTACH_MATERIAL.FILE_DESC  <!--文件说明-->
+		  		,T_ATTACH_MATERIAL.CONTENT_SIZE  <!--内容大小-->
+		  		,T_ATTACH_MATERIAL.STORET_NAME  <!--归档自动生成的存储名称 用于避免同目录下文件名冲突-->
+		  		,T_ATTACH_MATERIAL.STORE_PATH  <!--存储路径-->
+		  		,T_ATTACH_MATERIAL.STORE_SERVER  <!--存储服务器-->
+		  		,T_ATTACH_MATERIAL.MATERIAL_TYPE  <!--素材附件类型[CS:5012]-->
+		  		
+		  		, T_MATERIAL_TXREF.TXREF_ID           <!--关联主键-->
+		  		, T_MATERIAL_TXREF.MATERIAL_ID        <!--消息素材ID(不同类型关联不同表)-->
+		  		, T_MATERIAL_TXREF.TX_THUMB_MDEIA_ID  <!--媒体文件缩略图-->
+		  		, T_MATERIAL_TXREF.TX_MEDIA_ID  <!--媒体文件标识-->
+		  		, T_MATERIAL_TXREF.TX_TYPE  <!--媒体文件类型-->
+		  		, T_MATERIAL_TXREF.TX_CREATED_AT  <!--媒体文件上传时间-->
+		  		, T_MATERIAL_TXREF.TX_EXPIRATION_AT  <!--媒体文件默认过期时间-->
+		  		,T_MATERIAL_TXREF.PLATFORM_ID  <!--公众平台号ID-->		  		
+				FROM T_MATERIAL_PICTURE 
+				LEFT JOIN T_ATTACH_MATERIAL  ON T_MATERIAL_PICTURE.FILE_ID     =    T_ATTACH_MATERIAL.FILE_ID 
+				LEFT JOIN T_MATERIAL_TXREF ON  T_MATERIAL_TXREF.MATERIAL_ID = T_MATERIAL_PICTURE.PICTURE_ID 
+				AND T_MATERIAL_TXREF.END_DATE =       TO_DATE('9999-12-31', 'yyyy-MM-dd')
+  				AND T_MATERIAL_TXREF.PLATFORM_ID =  (#PLATFORM_ID:VARCHAR#)
+			 	WHERE
+			 	    T_MATERIAL_PICTURE.END_DATE    =    TO_DATE('9999-12-31', 'yyyy-MM-dd')
+				AND T_ATTACH_MATERIAL.END_DATE  =     TO_DATE('9999-12-31', 'yyyy-MM-dd')	
+		  	    AND T_MATERIAL_PICTURE.PICTURE_ID      =  (#PICTURE_ID:VARCHAR#)
+			 
+	</select>
+
+
+     <!--视频上传要素-->
+     <select id="queryMaterialVideoVoByVideoIdForUpload" parameterClass="java.util.HashMap" resultClass="com.wechat.material.model.vo.MaterialVideoVo">
+          SELECT  
+		 		 T_MATERIAL_VIDEO.VIDEO_ID  <!--视频素材主键-->
+		  		,T_MATERIAL_VIDEO.VIDEO_NAME  <!--名称-->
+		  		,T_MATERIAL_VIDEO.VIDEO_URL  <!--URL-->
+		  		,T_MATERIAL_VIDEO.VIDEO_DESC  <!--描述-->
+		  		,T_ATTACH_MATERIAL.CONTENT_SIZE <!-- 文件大小 -->
+
+		  		,T_ATTACH_MATERIAL.FILE_NAME     <!--附件名称-->
+		  		,T_ATTACH_MATERIAL.FILE_PREFIX   <!--文件前缀-->
+		  		,T_ATTACH_MATERIAL.FILE_POSTFIX  <!--文件后缀-->
+		  		,T_ATTACH_MATERIAL.FILE_DESC     <!--文件说明-->
+		  		,T_ATTACH_MATERIAL.CONTENT_SIZE  <!--内容大小-->
+		  		,T_ATTACH_MATERIAL.STORET_NAME   <!--归档自动生成的存储名称 用于避免同目录下文件名冲突-->
+		  		,T_ATTACH_MATERIAL.STORE_PATH    <!--存储路径-->
+		  		,T_ATTACH_MATERIAL.STORE_SERVER  <!--存储服务器-->
+		  		,T_ATTACH_MATERIAL.MATERIAL_TYPE  <!--素材附件类型[CS:5012]-->
+		  		
+		  		, T_MATERIAL_TXREF.TXREF_ID  <!--关联主键-->
+		  		, T_MATERIAL_TXREF.MATERIAL_ID  <!--消息素材ID(不同类型关联不同表)-->
+		  		, T_MATERIAL_TXREF.TX_THUMB_MDEIA_ID  <!--媒体文件缩略图-->
+		  		, T_MATERIAL_TXREF.TX_MEDIA_ID  <!--媒体文件标识-->
+		  		, T_MATERIAL_TXREF.TX_TYPE  <!--媒体文件类型-->
+		  		, T_MATERIAL_TXREF.TX_CREATED_AT  <!--媒体文件上传时间-->
+		  		, T_MATERIAL_TXREF.TX_EXPIRATION_AT  <!--媒体文件默认过期时间-->
+		  		,T_MATERIAL_TXREF.PLATFORM_ID  <!--公众平台号ID-->
+		  		
+			  	FROM T_MATERIAL_VIDEO
+			    LEFT JOIN T_ATTACH_MATERIAL ON T_ATTACH_MATERIAL.FILE_ID = T_MATERIAL_VIDEO.FILE_ID
+				LEFT JOIN T_MATERIAL_TXREF  ON  T_MATERIAL_TXREF.MATERIAL_ID = T_MATERIAL_VIDEO.VIDEO_ID
+				AND T_MATERIAL_TXREF.END_DATE =       TO_DATE('9999-12-31', 'yyyy-MM-dd')
+			    AND T_MATERIAL_TXREF.PLATFORM_ID =  (#PLATFORM_ID:VARCHAR#)
+	            WHERE
+	                T_MATERIAL_VIDEO.END_DATE    =    TO_DATE('9999-12-31', 'yyyy-MM-dd')
+				AND T_ATTACH_MATERIAL.END_DATE  =     TO_DATE('9999-12-31', 'yyyy-MM-dd')
+				AND T_MATERIAL_VIDEO.VIDEO_ID  =  (#VIDEO_ID:VARCHAR#)
+	</select>
+
+
+	<!--语音上传要素-->
+     <select id="queryMaterialVoiceByVoiceIdForUpload" parameterClass="java.util.HashMap" resultClass="com.wechat.material.model.vo.MaterialVoiceVo">
+         SELECT  
+		 		 T_MATERIAL_VOICE.VOICE_ID     <!--素材主键-->
+		  		,T_MATERIAL_VOICE.VOICE_NAME   <!--名称-->
+		  		,T_MATERIAL_VOICE.VOICE_URL    <!--URL-->
+		  		,T_MATERIAL_VOICE.VOICE_DESC   <!--描述-->
+		  		
+		  		,T_ATTACH_MATERIAL.FILE_NAME     <!--附件名称-->
+		  		,T_ATTACH_MATERIAL.FILE_PREFIX   <!--文件前缀-->
+		  		,T_ATTACH_MATERIAL.FILE_POSTFIX  <!--文件后缀-->
+		  		,T_ATTACH_MATERIAL.FILE_DESC     <!--文件说明-->
+		  		,T_ATTACH_MATERIAL.CONTENT_SIZE  <!--内容大小-->
+		  		,T_ATTACH_MATERIAL.STORET_NAME   <!--归档自动生成的存储名称 用于避免同目录下文件名冲突-->
+		  		,T_ATTACH_MATERIAL.STORE_PATH    <!--存储路径-->
+		  		,T_ATTACH_MATERIAL.STORE_SERVER  <!--存储服务器-->
+		  		,T_ATTACH_MATERIAL.MATERIAL_TYPE  <!--素材附件类型[CS:5012]-->
+		  		
+		  		, T_MATERIAL_TXREF.TXREF_ID  <!--关联主键-->
+		  		, T_MATERIAL_TXREF.MATERIAL_ID  <!--消息素材ID(不同类型关联不同表)-->
+		  		, T_MATERIAL_TXREF.TX_THUMB_MDEIA_ID  <!--媒体文件缩略图-->
+		  		, T_MATERIAL_TXREF.TX_MEDIA_ID  <!--媒体文件标识-->
+		  		, T_MATERIAL_TXREF.TX_TYPE  <!--媒体文件类型-->
+		  		, T_MATERIAL_TXREF.TX_CREATED_AT  <!--媒体文件上传时间-->
+		  		, T_MATERIAL_TXREF.TX_EXPIRATION_AT  <!--媒体文件默认过期时间-->
+		  		,T_MATERIAL_TXREF.PLATFORM_ID  <!--公众平台号ID-->
+
+			    FROM T_MATERIAL_VOICE
+			    LEFT JOIN T_ATTACH_MATERIAL ON T_ATTACH_MATERIAL.FILE_ID = T_MATERIAL_VOICE.FILE_ID
+				LEFT JOIN T_MATERIAL_TXREF  ON  T_MATERIAL_TXREF.MATERIAL_ID = T_MATERIAL_VOICE.VOICE_ID 
+				AND T_MATERIAL_TXREF.END_DATE =       TO_DATE('9999-12-31', 'yyyy-MM-dd')
+			    AND T_MATERIAL_TXREF.PLATFORM_ID =  (#PLATFORM_ID:VARCHAR#)
+	            WHERE
+	                T_MATERIAL_VOICE.END_DATE    =    TO_DATE('9999-12-31', 'yyyy-MM-dd')
+				AND T_ATTACH_MATERIAL.END_DATE  =     TO_DATE('9999-12-31', 'yyyy-MM-dd')
+			    AND T_MATERIAL_VOICE.VOICE_ID  =  (#VOICE_ID:VARCHAR#)
+				
+	</select>
+
+     <!--素材上传要素-->
+     <select id="queryMaterialVoByFileIdForUpload" parameterClass="java.util.HashMap" resultClass="com.wechat.material.model.vo.MaterialVo">
+         SELECT  T_ATTACH_MATERIAL.FILE_NAME     <!--附件名称-->
+		  		,T_ATTACH_MATERIAL.FILE_PREFIX   <!--文件前缀-->
+		  		,T_ATTACH_MATERIAL.FILE_POSTFIX  <!--文件后缀-->
+		  		,T_ATTACH_MATERIAL.FILE_DESC     <!--文件说明-->
+		  		,T_ATTACH_MATERIAL.CONTENT_SIZE  <!--内容大小-->
+		  		,T_ATTACH_MATERIAL.STORET_NAME   <!--归档自动生成的存储名称 用于避免同目录下文件名冲突-->
+		  		,T_ATTACH_MATERIAL.STORE_PATH    <!--存储路径-->
+		  		,T_ATTACH_MATERIAL.STORE_SERVER  <!--存储服务器-->
+		  		,T_ATTACH_MATERIAL.MATERIAL_TYPE  <!--素材附件类型[CS:5012]-->
+		  		
+		  		, T_MATERIAL_TXREF.TXREF_ID  <!--关联主键-->
+		  		, T_MATERIAL_TXREF.MATERIAL_ID  <!--消息素材ID(不同类型关联不同表)-->
+		  		, T_MATERIAL_TXREF.TX_THUMB_MDEIA_ID  <!--媒体文件缩略图-->
+		  		, T_MATERIAL_TXREF.TX_MEDIA_ID  <!--媒体文件标识-->
+		  		, T_MATERIAL_TXREF.TX_TYPE  <!--媒体文件类型-->
+		  		, T_MATERIAL_TXREF.TX_CREATED_AT  <!--媒体文件上传时间-->
+		  		, T_MATERIAL_TXREF.TX_EXPIRATION_AT  <!--媒体文件默认过期时间-->
+		  		,T_MATERIAL_TXREF.PLATFORM_ID  <!--公众平台号ID-->
+
+			    FROM T_ATTACH_MATERIAL
+			    LEFT JOIN T_MATERIAL_TXREF ON T_ATTACH_MATERIAL.FILE_ID = T_MATERIAL_TXREF.MATERIAL_ID
+				AND T_MATERIAL_TXREF.END_DATE =       TO_DATE('9999-12-31', 'yyyy-MM-dd')
+			    AND T_MATERIAL_TXREF.PLATFORM_ID =  (#PLATFORM_ID:VARCHAR#)
+	            WHERE
+	                T_ATTACH_MATERIAL.END_DATE    =    TO_DATE('9999-12-31', 'yyyy-MM-dd')
+			    AND T_ATTACH_MATERIAL.FILE_ID  =  (#FILE_ID:VARCHAR#)
+				
+	</select>
+
+
+</sqlMap>

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tWeixinFans">
+
+  <!--用于模糊查询-->
+     <select id="select_tWeixinFansList" parameterClass="com.wechat.fans.model.TWeixinFansQueryBean" resultClass="java.util.HashMap">
+         SELECT T.* FROM ( 
+              SELECT  
+		 		FANS.NICK_NAME  <!--昵称-->
+		  		,FANS.SEX   <!--性别-->
+		  		,FANS.REMARK_NAME  <!--备注名-->
+		  		,GUP.GROUP_NAME AS  GUP_NAME  <!--微信分组名-->
+		  		,FANS.SUBSCRIBE  <!--是否订阅 -->
+		  		,MAIN.MACCOUNT_NO AS MACCOUNT_NO <!--一帐通账号代码-->
+		  		,MAIN.MOBILE  AS  MOBILE  <!--手机-->
+		        ,RE.SACCOUNT_NO AS FINANCIAL  <!-- 财富账号 -->
+		        ,R.SACCOUNT_NO AS FUND  <!-- 基金账号 -->
+		  		,FANS.COUNTRY  <!--国家-->
+		  		,FANS.PROVINCE  <!--省份-->
+		  		,FANS.CITY  <!--城市-->
+		  		,FANS.SUBSCRIBE_TIME  <!--关注时间-->
+		  		,FANS.REMARK   <!-- 备注 -->
+                ,FANS.HEAD_IMG_URL  <!--头像URL-->
+                ,FANS.FANS_ID  <!--粉丝ID -->
+		  		,MAIN.MACCOUNT_ID AS MACCOUNT_ID <!--一帐通ID-->
+		  		,Nvl(MAIN.OPENID_VERIFY,'100000000002') AS OPENID_VERIFY <!--绑定标识-->  
+		        ,FANS.OPENID  <!--OPENID-->
+        FROM 
+           T_WEIXIN_FANS FANS LEFT JOIN T_WEIXIN_GROUP GUP ON FANS.WEIXIN_GROUP_ID = GUP.WEIXIN_GROUP_ID
+           LEFT JOIN T_MAIN_ACCOUNT MAIN ON MAIN.OPENID = FANS.OPENID
+            LEFT JOIN T_ACCOUNT_RELA RE ON MAIN.MACCOUNT_NO = RE.MACCOUNT_NO AND RE.REF_TYPE='500200000001'
+            LEFT JOIN T_ACCOUNT_RELA R ON MAIN.MACCOUNT_NO = R.MACCOUNT_NO  AND R.REF_TYPE='500200000002'  
+		  WHERE 1=1 AND FANS.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="subscribe">
+					(FANS.SUBSCRIBE) Like '%'||(#subscribe:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="nick_name">
+					(FANS.NICK_NAME) Like '%'||(#nick_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="sex">
+					(FANS.SEX) = (#sex:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="remark_name">
+					(FANS.REMARK_NAME) Like '%'||(#remark_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="country">
+					(FANS.COUNTRY) Like '%'||(#country:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="province">
+					(FANS.PROVINCE) Like '%'||(#province:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="city">
+					(FANS.CITY) Like '%'||(#city:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="subscribe_time_start">
+					<![CDATA[TO_CHAR(FANS.SUBSCRIBE_TIME, 'yyyy-MM-dd') >= TO_CHAR((#subscribe_time_start:DATE#),'yyyy-MM-dd')]]>
+			    </isNotEmpty>  
+			    <isNotEmpty prepend=" and " property="subscribe_time_end">
+					<![CDATA[TO_CHAR(FANS.SUBSCRIBE_TIME, 'yyyy-MM-dd') <= TO_CHAR((#subscribe_time_end:DATE#),'yyyy-MM-dd')]]>
+			    </isNotEmpty>      
+				 <isNotEmpty prepend=" and " property="weixin_group_id">
+					(FANS.WEIXIN_GROUP_ID) =(#weixin_group_id:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(FANS.PLATFORM_ID) = (#platform_id:VARCHAR#)
+			    </isNotEmpty>    
+			    <isNotEmpty property="groupId_list">
+   		             <iterate property="groupId_list">
+  			            AND 0!= (SELECT COUNT(REFREN.FANS_ID) FROM T_FANS_GROUP_MEMBER_REAL REFREN WHERE  1=1 AND REFREN.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd') AND REFREN.FANS_ID = FANS.FANS_ID AND REFREN.FANS_GROUP_ID =(#groupId_list[]:VARCHAR#))
+   		            </iterate>
+   		         </isNotEmpty>
+			      <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>) T
+			     WHERE 1=1	 
+		        <isNotEmpty prepend=" and " property="openid_verify">
+					(T.OPENID_VERIFY) Like '%'||(#openid_verify:VARCHAR#)||'%'
+			    </isNotEmpty>   
+     </select>
+     
+     <!--用于查询总数-->
+     <select id="select_tWeixinFansList_count" parameterClass="com.wechat.fans.model.TWeixinFansQueryBean" resultClass="int">
+			SELECT  count(T.FANS_ID) FROM (
+			   SELECT  
+		 		FANS.NICK_NAME  <!--昵称-->
+		  		,FANS.SEX   <!--性别-->
+		  		,FANS.REMARK_NAME  <!--备注名-->
+		  		,GUP.GROUP_NAME AS  GUP_NAME  <!--微信分组名-->
+		  		,FANS.SUBSCRIBE  <!--是否订阅 -->
+		  		,MAIN.MACCOUNT_NO AS MACCOUNT_NO <!--一帐通账号代码-->
+		  		,MAIN.MOBILE  AS  MOBILE  <!--手机-->
+		        ,RE.SACCOUNT_NO AS FINANCIAL  <!-- 财富账号 -->
+		        ,R.SACCOUNT_NO AS FUND  <!-- 基金账号 -->
+		  		,FANS.COUNTRY  <!--国家-->
+		  		,FANS.PROVINCE  <!--省份-->
+		  		,FANS.CITY  <!--城市-->
+		  		,FANS.SUBSCRIBE_TIME  <!--关注时间-->
+		  		,FANS.REMARK   <!-- 备注 -->
+                ,FANS.HEAD_IMG_URL  <!--头像URL-->
+                ,FANS.FANS_ID  <!--粉丝ID -->
+		  		,MAIN.MACCOUNT_ID AS MACCOUNT_ID <!--一帐通ID-->
+		  		,Nvl(MAIN.OPENID_VERIFY,'100000000002') AS OPENID_VERIFY <!--绑定标识-->  
+		        ,FANS.OPENID  <!--OPENID-->
+      FROM 
+           T_WEIXIN_FANS FANS LEFT JOIN T_WEIXIN_GROUP GUP ON FANS.WEIXIN_GROUP_ID = GUP.WEIXIN_GROUP_ID
+           LEFT JOIN T_MAIN_ACCOUNT MAIN ON MAIN.OPENID = FANS.OPENID
+           LEFT JOIN T_ACCOUNT_RELA RE ON MAIN.MACCOUNT_NO = RE.MACCOUNT_NO AND RE.REF_TYPE='500200000001'
+           LEFT JOIN T_ACCOUNT_RELA R ON MAIN.MACCOUNT_NO = R.MACCOUNT_NO  AND R.REF_TYPE='500200000002'  
+     WHERE 1=1 AND FANS.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	   
+				 <isNotEmpty prepend=" and " property="subscribe">
+					(FANS.SUBSCRIBE) Like '%'||(#subscribe:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="nick_name">
+					(FANS.NICK_NAME) Like '%'||(#nick_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="sex">
+					(FANS.SEX) = (#sex:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="remark_name">
+					(FANS.REMARK_NAME) Like '%'||(#remark_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="country">
+					(FANS.COUNTRY) Like '%'||(#country:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="province">
+					(FANS.PROVINCE) Like '%'||(#province:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="city">
+					(FANS.CITY) Like '%'||(#city:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="subscribe_time_start">
+					<![CDATA[TO_CHAR(FANS.SUBSCRIBE_TIME, 'yyyy-MM-dd') >= TO_CHAR((#subscribe_time_start:DATE#),'yyyy-MM-dd')]]>
+			    </isNotEmpty>  
+			    <isNotEmpty prepend=" and " property="subscribe_time_end">
+					<![CDATA[TO_CHAR(FANS.SUBSCRIBE_TIME, 'yyyy-MM-dd') <= TO_CHAR((#subscribe_time_end:DATE#),'yyyy-MM-dd')]]>
+			    </isNotEmpty>      
+				 <isNotEmpty prepend=" and " property="weixin_group_id">
+					(FANS.WEIXIN_GROUP_ID) =(#weixin_group_id:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(FANS.PLATFORM_ID) = (#platform_id:VARCHAR#)
+			    </isNotEmpty> 
+			    <isNotEmpty property="groupId_list">
+   		             <iterate property="groupId_list">
+  		               	AND 0!= (SELECT COUNT(REFREN.FANS_ID) FROM T_FANS_GROUP_MEMBER_REAL REFREN WHERE  1=1 AND REFREN.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd') AND REFREN.FANS_ID = FANS.FANS_ID AND REFREN.FANS_GROUP_ID =(#groupId_list[]:VARCHAR#))   		            </iterate>
+   		         </isNotEmpty> ) T
+   		          WHERE 1=1	 
+		        <isNotEmpty prepend=" and " property="openid_verify">
+					(T.OPENID_VERIFY) Like '%'||(#openid_verify:VARCHAR#)||'%'
+			    </isNotEmpty>   
+	 </select>
+     
+      <!--用于查询粉丝群的粉丝-->
+     <select id="query_AllWeixinFansGroup" parameterClass="com.wechat.fans.model.TWeixinFansQueryBean" resultClass="com.wechat.fans.model.vo.TWeixinFansGroupVo">
+     	SELECT
+     	      RE.REAL_ID
+             ,RE.FANS_ID         <!-- 粉丝ID-->
+             ,GUP.FANS_GROUP_ID   <!-- 粉丝群id -->
+     	     ,RE.MEMBER_NAME    <!-- 成员名称 -->
+     	     ,GUP.GROUP_NAME    <!-- 群名称 -->
+     	     ,GUP.REMARK        <!-- 群描述  -->
+     	FROM 
+     	    T_FANS_GROUP_MEMBER_REAL RE RIGHT JOIN T_FANS_GROUP GUP
+     	    ON RE.FANS_GROUP_ID=GUP.FANS_GROUP_ID  
+     	    AND RE.END_DATE = TO_DATE('9999-12-31', 'yyyy-MM-dd') AND   
+              <isNotEmpty property="fans_group">
+					$fans_group$
+			  </isNotEmpty>
+			  <isNotEmpty prepend=" and " property="platform_id">
+					(RE.PLATFORM_ID)=(#platform_id:VARCHAR#)
+		      </isNotEmpty>       	
+          WHERE 1=1 
+              AND GUP.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+                <isNotEmpty prepend=" and " property="platform_id">
+				(GUP.PLATFORM_ID)=(#platform_id:VARCHAR#)
+		      </isNotEmpty>    	 
+		</select>
+
+      <!--用于查询粉丝的基本信息-->
+     <select id="query_RowWeixinFans" parameterClass="com.wechat.fans.model.dto.TWeixinFansDto" resultClass="com.wechat.fans.model.vo.TWeixinFansVo">
+     	  SELECT  
+		 		FANS.NICK_NAME  <!--昵称-->
+		  		,FANS.SEX   <!--性别-->
+		  		,FANS.REMARK_NAME  <!--备注名-->
+		  		,GUP.GROUP_NAME AS  GUP_NAME  <!--微信分组名-->
+		  		,FANS.SUBSCRIBE  <!--是否订阅 -->
+		  		,MAIN.MACCOUNT_NO AS MACCOUNT_NO <!--一帐通账号代码-->
+		  		,MAIN.MOBILE  AS  MOBILE  <!--手机-->
+		        ,RE.SACCOUNT_NO AS FINANCIAL  <!-- 财富账号 -->
+		        ,R.SACCOUNT_NO AS FUND  <!-- 基金账号 -->
+		  		,FANS.COUNTRY  <!--国家-->
+		  		,FANS.PROVINCE  <!--省份-->
+		  		,FANS.CITY  <!--城市-->
+		  		,FANS.OPENID  <!--城市-->
+		  		,FANS.SUBSCRIBE_TIME  <!--关注时间-->
+		  		,FANS.REMARK   <!-- 备注 -->
+                ,FANS.HEAD_IMG_URL  <!--头像URL-->
+                ,FANS.FANS_ID  <!--粉丝ID -->
+		  		,MAIN.MACCOUNT_ID AS MACCOUNT_ID <!--一帐通ID-->
+		  		,Nvl(MAIN.OPENID_VERIFY,'100000000002') AS OPENID_VERIFY <!--绑定标识--> 
+		        ,FANS.OPENID  <!--OPENID-->
+        FROM 
+           T_WEIXIN_FANS FANS LEFT JOIN T_WEIXIN_GROUP GUP ON FANS.WEIXIN_GROUP_ID = GUP.WEIXIN_GROUP_ID
+           LEFT JOIN T_MAIN_ACCOUNT MAIN ON MAIN.OPENID = FANS.OPENID
+            LEFT JOIN T_ACCOUNT_RELA RE ON MAIN.MACCOUNT_NO = RE.MACCOUNT_NO AND RE.REF_TYPE='500200000001'
+            LEFT JOIN T_ACCOUNT_RELA R ON MAIN.MACCOUNT_NO = R.MACCOUNT_NO  AND R.REF_TYPE='500200000002'
+	  WHERE 1=1 AND FANS.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+			 <isNotEmpty prepend=" and " property="fans_id">
+					(FANS.FANS_ID) =(#fans_id:VARCHAR#)
+			    </isNotEmpty>
+     </select>
+     
+     <!--用于查询有效粉丝-->
+     <select id="select_AlltWeixinFans" parameterClass="com.wechat.fans.model.dto.TWeixinFansDto" resultClass="com.wechat.fans.model.dto.TWeixinFansDto">
+          SELECT  
+                  FANS.FANS_ID  <!--粉丝ID -->
+			      ,FANS.SUBSCRIBE <!--是否订阅 -->
+			      ,FANS.OPENID  <!-- OPENID -->
+			      ,FANS.NICK_NAME     <!--昵称-->
+			      ,FANS.SEX   <!--性别-->
+			      ,FANS.REMARK_NAME   <!--备注名-->
+			      ,FANS.COUNTRY  <!--国家-->
+		  		  ,FANS.PROVINCE  <!--省份-->
+		  		  ,FANS.CITY  <!--城市-->
+			      ,FANS.LANGUAGE   <!--语言-->
+			      ,FANS.HEAD_IMG_URL   <!--头像URL-->
+			      ,FANS.SUBSCRIBE_TIME  <!--关注时间-->
+			      ,FANS.UNIONID  <!-- 关联id -->
+			      ,FANS.GROUP_ID     <!--组id-->
+			      ,FANS.WEIXIN_GROUP_ID   <!-- 微信组ID -->
+			      ,FANS.PLATFORM_ID  <!-- 公众平台好ID -->
+			      ,FANS.REMARK  <!-- 备注 -->
+			      ,FANS.CREATED_DATE
+			      ,FANS.UPDATED_DATE
+			      ,FANS.CREATED_USER_CD
+			      ,FANS.UPDATED_USER_CD
+        FROM 
+           T_WEIXIN_FANS FANS   
+		  WHERE 1=1 AND FANS.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 	 
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(FANS.PLATFORM_ID) = (#platform_id:VARCHAR#)
+			    </isNotEmpty>    
+     </select>
+     
+      <!-- 更新WEIXIN_GROUP_ID -->
+	<update id="update_fansgroupid" parameterClass="com.wechat.fans.model.dto.TWeixinFansDto" >	
+		UPDATE T_WEIXIN_FANS F 
+        SET (F.WEIXIN_GROUP_ID) =(SELECT G.WEIXIN_GROUP_ID 　
+        FROM T_WEIXIN_GROUP G
+        WHERE G.GROUP_ID = F.GROUP_ID 
+         <isNotEmpty prepend=" and " property="platform_id">
+					(G.PLATFORM_ID) = (#platform_id:VARCHAR#)
+   	     </isNotEmpty>
+   	     <isNotEmpty prepend=" and " property="platform_id">
+					(F.PLATFORM_ID) = (#platform_id:VARCHAR#)
+   	     </isNotEmpty>       
+			    )
+	</update>
+  <!--更新所有微信关注	-->
+       <update id="update_AllFansSubscribe" parameterClass="com.wechat.fans.model.dto.TWeixinFansDto">
+         UPDATE 
+           T_WEIXIN_FANS F
+         SET SUBSCRIBE='100000000002'  
+         WHERE 1=1
+     	     <isNotEmpty prepend=" and " property="platform_id">
+					(F.PLATFORM_ID) = (#platform_id:VARCHAR#)
+   	     </isNotEmpty>       
+       </update>
+</sqlMap>

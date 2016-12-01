@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_demo" extends="struts_common">
+
+		<!-- 增删除改功能begin -->
+
+		<!-- Student列表信息 -->
+		<action name="searchStudentAction" class="searchStudentAction">
+			<result name="success">/jsp/demo/searchStudentPage.jsp
+			</result>
+		</action>
+
+		<!-- Student新增页面-->
+		<action name="addStudentPage" class="addStudentPage">
+			<result name="success">/jsp/demo/addStudentPage.jsp</result>
+		</action>
+
+		<!-- Student新增动作	-->
+		<action name="addStudentAction" class="addStudentAction">
+			<result name="success" type="chain">
+				<param name="actionName">searchStudentAction</param>
+			</result>
+		</action>
+
+		<!-- Student编辑页面 -->
+		<action name="editStudentPage" class="editStudentPage">
+			<result name="success">/jsp/demo/editStudentPage.jsp</result>
+		</action>
+
+		<!-- Student编辑动作-->
+		<action name="editStudentAction" class="editStudentAction">
+			<result name="success" type="chain">
+				<param name="actionName">searchStudentAction</param>
+			</result>
+		</action>
+
+
+		<!-- 详细画面动作-->
+		<action name="detailStudentPage" class="detailStudentPage">
+			<result name="success">/jsp/demo/detailStudentPage.jsp
+			</result>
+		</action>
+
+
+		<!-- Student删除页面	-->
+		<action name="delStudentAction" class="delStudentAction">
+			<result name="success" type="chain">
+				<param name="actionName">searchStudentAction</param>
+			</result>
+		</action>
+
+		<!-- 增删除改功能end -->
+
+
+		<!-- 缓存测试begin -->
+
+		<action name="cacheTestAction" class="cacheTestAction">
+			<result name="init">/jsp/demo/cacheInput.jsp</result>
+			<result name="success">/jsp/demo/cacheTest.jsp</result>
+		</action>
+
+		<!-- 缓存测试end -->
+		
+		
+		<!-- dubbo测试begin -->
+		<action name="dubboTestAction" class="dubboTestAction">
+			<result name="init">/jsp/demo/dubboInput.jsp</result>
+			<result name="success">/jsp/demo/dubboTest.jsp</result>
+		</action>
+
+		<!-- dubbo测试end -->
+		
+		
+		<!-- 通用附件上传Demo Begin-->
+		<action name="fileUploadDemo" class="fileUploadDemoAction">
+			<result name="success">/jsp/demo/fileUploadDemo.jsp</result>
+		</action>
+		
+		<action name="fileUploadSubmit" class="fileUploadDemoAction" method="submit">
+			<result name="success" type="redirect">fileUploadDemo.action</result>
+		</action>
+		<!-- 通用附件上传Demo End-->
+		
+		<!-- 产品附件上传Demo Begin-->
+		<action name="fileUploadProductDemo" class="fileUploadProductDemoAction">
+			<result name="success">/jsp/demo/fileUploadProductDemo.jsp</result>
+		</action>
+		
+		<action name="fileUploadProductSubmit" class="fileUploadProductDemoAction" method="submit">
+			<result name="success" type="redirect">fileUploadProductDemo.action</result>
+		</action>
+		<!-- 产品附件上传Demo End-->
+		
+	</package>
+</struts>

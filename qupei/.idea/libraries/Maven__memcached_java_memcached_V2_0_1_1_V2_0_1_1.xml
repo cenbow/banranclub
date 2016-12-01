@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: memcached:java_memcached-V2.0.1_1:V2.0.1_1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/memcached/java_memcached-V2.0.1_1/V2.0.1_1/java_memcached-V2.0.1_1-V2.0.1_1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/memcached/java_memcached-V2.0.1_1/V2.0.1_1/java_memcached-V2.0.1_1-V2.0.1_1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/memcached/java_memcached-V2.0.1_1/V2.0.1_1/java_memcached-V2.0.1_1-V2.0.1_1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

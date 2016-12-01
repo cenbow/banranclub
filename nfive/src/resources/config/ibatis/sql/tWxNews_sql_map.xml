@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tWxNews">
+
+    <!-- 生成批次号 -->
+    <select id="select_batch_no" resultClass="java.lang.String">
+        SELECT PKG_PUB_UTIL.LD_IDGENERATOR BATCH_NO FROM DUAL
+    </select>
+
+    <update id="delete_newsByBatchNo" parameterClass="java.lang.String">
+        update
+        T_WX_NEWS
+        set
+        end_date = sysdate
+        where update_batch!=#batch_no#
+        and end_date =to_date('9999-12-31','yyyy-mm-dd')
+    </update>
+
+  <!--用于模糊查询-->
+     <select id="select_tWxNewsList" parameterClass="com.wechat.material.model.TWxNewsQueryBean" resultClass="java.util.HashMap">
+          SELECT
+		 		NEWS_ID  <!--粉丝ID-->
+		  		,MEDIA_ID  <!--MEDIA_ID-->
+		  		,TITLE  <!--标题-->
+		  		,THUMB_MEDIA_ID  <!--封面图片素材ID-->
+		  		,SHOW_COVER_PIC  <!--是否显示为封面【1000】-->
+		  		,AUTHOR  <!--作者-->
+		  		,DIGEST  <!--单图文摘要-->
+		  		,CONTENT  <!--图文内容-->
+		  		,URL  <!--图文素材URL-->
+		  		,CONTENT_SOURCE_URL  <!--原文地址-->
+		  		,UPDATE_TIME  <!--最后更新时间-->
+                ,CHILD_NEWS <!--子图文数量-->
+                ,THUMB_URL <!--封面图片URL-->
+                ,UPDATE_BATCH <!--最新更新批次-->
+		  FROM T_WX_NEWS
+		  WHERE 1=1 AND T_WX_NEWS.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+				 <isNotEmpty prepend=" and " property="news_id">
+					(NEWS_ID) Like '%'||(#news_id:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="media_id">
+					(MEDIA_ID) Like '%'||(#media_id:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="title">
+					(TITLE) Like '%'||(#title:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="thumb_media_id">
+					(THUMB_MEDIA_ID) Like '%'||(#thumb_media_id:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="show_cover_pic">
+					(SHOW_COVER_PIC) Like '%'||(#show_cover_pic:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="author">
+					(AUTHOR) Like '%'||(#author:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="digest">
+					(DIGEST) Like '%'||(#digest:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="url">
+					(URL) Like '%'||(#url:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="content_source_url">
+					(CONTENT_SOURCE_URL) Like '%'||(#content_source_url:VARCHAR#)||'%'
+			    </isNotEmpty>
+			 	<isNotEmpty prepend=" and " property="update_time">
+					TO_CHAR(UPDATE_TIME, 'yyyy-MM-dd')	=TO_CHAR((#update_time:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+
+     <!--用于查询总数-->
+     <select id="select_tWxNewsList_count" parameterClass="com.wechat.material.model.TWxNewsQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_WX_NEWS
+			WHERE 1=1 AND T_WX_NEWS.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+				 <isNotEmpty prepend=" and " property="news_id">
+					(NEWS_ID) Like '%'||(#news_id:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="media_id">
+					(MEDIA_ID) Like '%'||(#media_id:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="title">
+					(TITLE) Like '%'||(#title:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="thumb_media_id">
+					(THUMB_MEDIA_ID) Like '%'||(#thumb_media_id:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="show_cover_pic">
+					(SHOW_COVER_PIC) Like '%'||(#show_cover_pic:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="author">
+					(AUTHOR) Like '%'||(#author:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="digest">
+					(DIGEST) Like '%'||(#digest:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="url">
+					(URL) Like '%'||(#url:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="content_source_url">
+					(CONTENT_SOURCE_URL) Like '%'||(#content_source_url:VARCHAR#)||'%'
+			    </isNotEmpty>
+			 	<isNotEmpty prepend=" and " property="update_time">
+					TO_CHAR(UPDATE_TIME, 'yyyy-MM-dd')=TO_CHAR((#update_time:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>
+	 </select>
+
+
+</sqlMap>

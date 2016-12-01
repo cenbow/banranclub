@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tActUsers">
+
+  <!--用于模糊查询-->
+     <select id="select_tActUsersList" parameterClass="com.wechat.activity.model.TActUsersQueryBean" resultClass="java.util.HashMap">
+          SELECT
+		 		USER_ID  <!--参加活动用户ID-->
+		  		,OPENID  <!--OPENID-->
+		  		,NICKNAME  <!--昵称-->
+		  		,SUBSCRIBE  <!--是否关注【1000】-->
+		  		,SEX  <!--性别【1015】-->
+		  		,LANGUAGE  <!--语言-->
+		  		,CITY  <!--城市-->
+		  		,PROVINCE  <!--省份-->
+		  		,COUNTRY  <!--国家-->
+		  		,HEADIMGURL  <!--头像地址-->
+		  		,SUBSCRIBE_TIME  <!--关注时间-->
+		  		,UNIONID  <!--unionid-->
+		  		,REMARK  <!--备注-->
+		  		,ADDRESS  <!--收货地址-->
+		  		,MOBILE  <!--手机号码-->
+		  FROM T_ACT_USERS
+		  WHERE 1=1 AND T_ACT_USERS.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+				 <isNotEmpty prepend=" and " property="user_id">
+					(USER_ID) Like '%'||(#user_id:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="openid">
+					(OPENID) Like '%'||(#openid:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="nickname">
+					(NICKNAME) Like '%'||(#nickname:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="subscribe">
+					(SUBSCRIBE) Like '%'||(#subscribe:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="sex">
+					(SEX) Like '%'||(#sex:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="language">
+					(LANGUAGE) Like '%'||(#language:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="city">
+					(CITY) Like '%'||(#city:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="province">
+					(PROVINCE) Like '%'||(#province:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="country">
+					(COUNTRY) Like '%'||(#country:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="headimgurl">
+					(HEADIMGURL) Like '%'||(#headimgurl:VARCHAR#)||'%'
+			    </isNotEmpty>
+			 	<isNotEmpty prepend=" and " property="subscribe_time">
+					TO_CHAR(SUBSCRIBE_TIME, 'yyyy-MM-dd')	=TO_CHAR((#subscribe_time:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="unionid">
+					(UNIONID) Like '%'||(#unionid:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="remark">
+					(REMARK) Like '%'||(#remark:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="address">
+					(ADDRESS) Like '%'||(#address:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="mobile">
+					(MOBILE) Like '%'||(#mobile:VARCHAR#)||'%'
+			    </isNotEmpty>
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+
+     <!--用于查询总数-->
+     <select id="select_tActUsersList_count" parameterClass="com.wechat.activity.model.TActUsersQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_ACT_USERS
+			WHERE 1=1 AND T_ACT_USERS.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+				 <isNotEmpty prepend=" and " property="user_id">
+					(USER_ID) Like '%'||(#user_id:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="openid">
+					(OPENID) Like '%'||(#openid:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="nickname">
+					(NICKNAME) Like '%'||(#nickname:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="subscribe">
+					(SUBSCRIBE) Like '%'||(#subscribe:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="sex">
+					(SEX) Like '%'||(#sex:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="language">
+					(LANGUAGE) Like '%'||(#language:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="city">
+					(CITY) Like '%'||(#city:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="province">
+					(PROVINCE) Like '%'||(#province:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="country">
+					(COUNTRY) Like '%'||(#country:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="headimgurl">
+					(HEADIMGURL) Like '%'||(#headimgurl:VARCHAR#)||'%'
+			    </isNotEmpty>
+			 	<isNotEmpty prepend=" and " property="subscribe_time">
+					TO_CHAR(SUBSCRIBE_TIME, 'yyyy-MM-dd')=TO_CHAR((#subscribe_time:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="unionid">
+					(UNIONID) Like '%'||(#unionid:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="remark">
+					(REMARK) Like '%'||(#remark:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="address">
+					(ADDRESS) Like '%'||(#address:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="mobile">
+					(MOBILE) Like '%'||(#mobile:VARCHAR#)||'%'
+			    </isNotEmpty>
+	 </select>
+
+
+</sqlMap>

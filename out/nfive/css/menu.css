@@ -1,0 +1,27 @@
+@charset "utf-8";
+.menusetshow,.menusetshow1{ width:300px; height:440px; float:left; border:1px solid #999; padding:10px 0px 0px 10px;margin-left:40px;}
+.menuparent,.menu{border-right:1px solid #707070;width:95px; height:66px; line-height:66px;
+background:#D4D4D4; float:left;text-align:center;position:relative; }
+.menu{}
+a.menu:hover{background:#6A6A6A;}
+
+.menuparent{height: 66px; width: 96px; position:relative; overflow:hidden;}
+.menuparent ul{ position:absolute;}
+.menuparent ul li{ width:98px; height:60px; line-height:60px;text-align:center;border-top:1px solid #808080;
+border-left:1px solid #808080;border-right:1px solid #808080;}
+.menuson1{top:-60px; border-bottom:1px solid #808080;}
+.menuson2{top:-120px; }
+
+
+.menusetshow1 ul{position: absolute;bottom: 0;}
+.menusetshow1 ul li{float: left;width: 98px;height: 50px;border: 1px solid gray;background: #999;line-height: 50px;font-size: 16px;text-align: center;position: relative;}
+.menusetshow1 ul li{color: white;}
+.menusetshow1 ul li ul{position: absolute;bottom: 50px;}
+.isdis{display: none;}
+.keyDiv{display: none;}
+.borDiv{border: 1px solid blue;height: 300px;margin-top: 5px;}
+.stRed{color: red;}
+
+
+.hide{display:none;height:100px; border:2px solid #999; margin:10px 0;}
+

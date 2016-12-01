@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tFansGroup"  extends="struts_common">
+	  
+	  	<!-- TFansGroup列表信息 -->
+        <action name="searchTFansGroupAction" class="searchTFansGroupAction">
+        	<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" >/jsp/tfansgroup/searchTFansGroupPage.jsp</result>
+		</action>
+		
+        <!-- TFansGroup新增页面-->
+        <action name="addTFansGroupPage" class="addTFansGroupPage">
+        	<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" >/jsp/tfansgroup/addTFansGroupPage.jsp</result>
+		</action>
+		
+		<!-- TFansGroup新增动作	-->
+        <action name="addTFansGroupAction" class="addTFansGroupAction"> 
+       		<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" type="chain"><param name="actionName">searchTFansGroupAction</param> </result>
+		</action>
+		
+		<!-- TFansGroup编辑页面 -->
+		<action name="editTFansGroupPage" class="editTFansGroupPage">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" >/jsp/tfansgroup/editTFansGroupPage.jsp</result>
+		</action>
+
+		<!-- TFansGroup删除页面	-->
+		<action name="delTFansGroupAction" class="delTFansGroupAction">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" type="chain"><param name="actionName">searchTFansGroupAction</param> </result>
+		</action>		
+		
+		<!-- TFansGroup编辑动作-->
+		<action name="editTFansGroupAction" class="editTFansGroupAction">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" type="chain"><param name="actionName">searchTFansGroupAction</param> </result>
+			<result name="input">/jsp/tfansgroup/error.jsp</result>
+		</action>
+		<!-- 详细画面动作-->
+		<action name="detailTFansGroupPage" class="detailTFansGroupPage">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" >/jsp/tfansgroup/detailTFansGroupPage.jsp</result>
+		</action>
+      
+	</package>
+</struts>

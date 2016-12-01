@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tRoleResRela"  extends="struts_common">
+	  
+	  	<!-- TRoleResRela列表信息 -->
+        <action name="searchTRoleResRelaAction" class="searchTRoleResRelaAction">
+			<result name="success" >/jsp/persistence/searchTRoleResRelaPage.jsp</result>
+		</action>
+		
+		<!-- TRoleResRela编辑页面 -->
+		<action name="editTRoleResRelaPage" class="editTRoleResRelaPage">
+			<result name="success" >/jsp/persistence/editTRoleResRelaPage.jsp</result>
+		</action>
+		
+		<!-- TRoleResRela编辑动作-->
+		<action name="editTRoleResRelaAction" class="editTRoleResRelaAction">
+			<result name="success" type="chain"><param name="actionName">searchTRoleResRelaAction</param> </result>
+		</action>
+		
+		<!-- 详细画面动作-->
+		<action name="detailTRoleResRelaPage" class="detailTRoleResRelaPage">
+			<result name="success" >/jsp/persistence/detailTRoleResRelaPage.jsp</result>
+		</action>
+		
+		<!-- TRoleResRela删除页面	-->
+		<action name="delTRoleResRelaAction" class="delTRoleResRelaAction">
+			<result name="success" type="chain"><param name="actionName">searchTRoleResRelaAction</param> </result>
+		</action>
+		
+		<!-- 为资源配置角色页面 -->
+        <action name="addTRoleResRelaPage" class="addTRoleResRelaPage">
+			<result name="success" >/jsp/persistence/configTResourcePage.jsp</result>
+		</action>
+		
+		<!-- 为角色分配资源页面 -->
+		<action name="configResourceToRolePage" class="addTRoleResRelaPage" method="configResourceToRolePage">
+			<result name="success" >/jsp/persistence/addTRoleResRelaPage.jsp</result>
+		</action>	
+		
+		<!-- 为资源配置角色	-->
+        <action name="addTRoleResRelaAction" class="addTRoleResRelaAction"> 
+			<result name="success" type="chain"><param name="actionName">searchTRoleResRelaAction</param> </result>
+		</action>	
+		
+		<!-- 为角色配置资源 -->
+		<action name="configResourceToRole" class="addTRoleResRelaAction" method="configResourceToRole">
+			<result name="success" >/jsp/persistence/addTRoleResRelaPage.jsp</result>
+		</action>
+      
+	</package>
+</struts>

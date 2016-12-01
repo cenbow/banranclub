@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tMaterialPicture"  extends="struts_common">
+	  	
+	  	<!-- TMaterialPicture列表信息 -->
+        <action name="searchTMaterialPictureAction" class="searchTMaterialPictureAction">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" >/jsp/picture/searchTMaterialPicturePage.jsp</result>
+		</action>
+		
+        <!-- TMaterialPicture新增页面-->
+        <action name="addTMaterialPicturePage" class="addTMaterialPicturePage">
+        	<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" >/jsp/picture/addTMaterialPicturePage.jsp</result>
+		</action>
+		
+		<!-- TMaterialPicture新增动作	-->
+        <action name="addTMaterialPictureAction" class="addTMaterialPictureAction"> 
+        	<interceptor-ref name="admin_login_stack"></interceptor-ref>
+		</action>
+		
+		<!-- TMaterialPicture编辑页面 -->
+		<action name="editTMaterialPicturePage" class="editTMaterialPicturePage">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" >/jsp/picture/editTMaterialPicturePage.jsp</result>
+		</action>
+
+		<!-- TMaterialPicture删除页面	-->
+		<action name="delTMaterialPictureAction" class="delTMaterialPictureAction">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" type="chain"><param name="actionName">searchTMaterialPictureAction</param> </result>
+		</action>		
+		
+		<!-- TMaterialPicture编辑动作-->
+		<action name="editTMaterialPictureAction" class="editTMaterialPictureAction">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" type="chain"><param name="actionName">searchTMaterialPictureAction</param> </result>
+		</action>
+		
+		
+		<!-- 详细画面动作-->
+		<action name="detailTMaterialPicturePage" class="detailTMaterialPicturePage">
+			<interceptor-ref name="admin_login_stack"></interceptor-ref>
+			<result name="success" >/jsp/picture/detailTMaterialPicturePage.jsp</result>
+		</action>
+	</package>
+</struts>

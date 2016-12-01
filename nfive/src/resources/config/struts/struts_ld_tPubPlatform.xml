@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tPubPlatform"  extends="struts_common">
+	  
+	  	<!-- TPubPlatform列表信息 -->
+        <action name="searchTPubPlatformAction" class="searchTPubPlatformAction">
+			<result name="success" >/jsp/pubPlatForm/searchTPubPlatformPage.jsp</result>
+		</action>
+		
+        <!-- TPubPlatform新增页面-->
+        <action name="addTPubPlatformPage" class="addTPubPlatformPage">
+			<result name="success" >/jsp/pubPlatForm/addTPubPlatformPage.jsp</result>
+		</action>
+		
+				<!-- 重复公众号验证 -->
+		<action name="checkTPubPlatformIdAction" class="addTPubPlatformAction" method="checkTPubPlatformIdAction">
+			<result name="success">/jsp/demo/hello.jsp</result>
+		</action>
+		
+		<!-- TPubPlatform新增动作	-->
+        <action name="addTPubPlatformAction" class="addTPubPlatformAction"> 
+		</action>
+		
+		<!-- TPubPlatform编辑页面 -->
+		<action name="editTPubPlatformPage" class="editTPubPlatformPage">
+			<result name="success" >/jsp/pubPlatForm/editTPubPlatformPage.jsp</result>
+		</action>
+
+		<!-- TPubPlatform删除页面	-->
+		<action name="delTPubPlatformAction" class="delTPubPlatformAction">
+			
+		</action>		
+		
+		<!-- TPubPlatform编辑动作-->
+		<action name="editTPubPlatformAction" class="editTPubPlatformAction">
+			<result name="success" type="chain"><param name="actionName">searchTPubPlatformAction</param> </result>
+			<result name="input">/jsp/persistence/error.jsp</result>
+		</action>
+		
+		<!-- 公众号选择 -->
+        <action name="selectTPlatformempAction" class="selectTPlatformempAction">
+			<result name="success" >/jsp/pubPlatForm/selectTPubPlatPage.jsp</result>
+		</action>	
+      
+      	<!-- 详细画面动作-->
+		<action name="detailTPubPlatformPage" class="detailTPubPlatformPage">
+			<result name="success" >/jsp/pubPlatForm/detailTPubPlatformPage.jsp</result>
+		</action>
+		
+		<!-- 图文项标题设置画面 -->
+		<action name="titleSettingPage" class="titleSettingPage">
+			<result name="success" >/jsp/pubPlatForm/titleSettingPage.jsp</result>
+		</action>
+		<action name="titleSettingAction" class="titleSettingAction">
+			<result name="success" type="chain"><param name="actionName">searchTPubPlatformAction</param> </result>
+			<result name="error">/jsp/persistence/error.jsp</result>
+		</action>
+
+	</package>
+</struts>

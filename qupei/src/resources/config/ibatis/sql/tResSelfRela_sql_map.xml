@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tResSelfRela">
+
+  <!--用于模糊查询-->
+     <select id="select_tResSelfRelaList" parameterClass="com.pub.persistence.model.TResSelfRelaQueryBean" resultClass="java.util.HashMap">
+          SELECT  
+		 		RES_RELATION_ID  <!---->
+		  		,PARENT_RES_ID  <!---->
+		  		,CHILD_RES_ID  <!---->
+		  		,RES_TYPE  <!---->
+		  		,CREATED_DATE  <!---->
+		  		,CREATED_USER_CD  <!---->
+		  FROM T_RES_SELF_RELA
+		  WHERE 1=1 AND T_RES_SELF_RELA.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="res_relation_id">
+					(RES_RELATION_ID) Like '%'||(#res_relation_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="parent_res_id">
+					(PARENT_RES_ID) Like '%'||(#parent_res_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="child_res_id">
+					(CHILD_RES_ID) Like '%'||(#child_res_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="res_type">
+					(RES_TYPE) Like '%'||(#res_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="created_date">
+					TO_CHAR(CREATED_DATE, 'yyyy-MM-dd')	=TO_CHAR((#created_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+     
+     <!--用于查询总数-->
+     <select id="select_tResSelfRelaList_count" parameterClass="com.pub.persistence.model.TResSelfRelaQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_RES_SELF_RELA
+			WHERE 1=1 AND T_RES_SELF_RELA.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	
+				 <isNotEmpty prepend=" and " property="res_relation_id">
+					(RES_RELATION_ID) Like '%'||(#res_relation_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="parent_res_id">
+					(PARENT_RES_ID) Like '%'||(#parent_res_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="child_res_id">
+					(CHILD_RES_ID) Like '%'||(#child_res_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="res_type">
+					(RES_TYPE) Like '%'||(#res_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="created_date">
+					TO_CHAR(CREATED_DATE, 'yyyy-MM-dd')=TO_CHAR((#created_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+	 </select>
+	 
+	  <!--用于查询资源关系-->
+     <select id="select_tResSelfRelaList_resource" parameterClass="com.pub.persistence.model.TResSelfRelaQueryBean" resultClass="java.util.HashMap">
+			SELECT tr.RES_RELATION_ID,tr.PARENT_RES_ID,tr.CHILD_RES_ID
+			,ts.RES_NAME,ts.RES_CODE,case when ro.role_id is null then 'false' else 'true' end CHECKED    
+			FROM T_RES_SELF_RELA  tr
+			LEFT JOIN T_RESOURCE ts on ts.RES_ID = tr.CHILD_RES_ID
+			LEFT JOIN ( SELECT ROLE_ID,RES_ID from T_ROLE_RES_RELA where ROLE_ID = (#role_id:VARCHAR#) 
+				and END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd') ) ro on ro.RES_ID = ts.RES_ID
+			WHERE tr.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	
+			START WITH 
+			 <isNotEmpty property="parent_res_id">
+				tr.CHILD_RES_ID = (#parent_res_id:VARCHAR#)
+			 </isNotEmpty>  
+			 <isEmpty property="parent_res_id">
+				tr.CHILD_RES_ID = 'RESC00000000000000000001'<!-- 默认写死的代码 RESC00000000000000000001-->
+			 </isEmpty>  
+	        CONNECT BY PRIOR tr.CHILD_RES_ID = tr.PARENT_RES_ID
+	        ORDER BY ts.RES_CODE asc
+	 </select>
+	 
+	 <!-- 通过父资源id删除与子资源对应的关系数据 逻辑删除 -->
+	 <delete id="deleteResRelaByParentId" parameterClass="com.pub.persistence.model.TResSelfRelaQueryBean">
+	 	UPDATE T_RES_SELF_RELA SET END_DATE = systimestamp
+		WHERE CHILD_RES_ID IN 
+		( 
+			SELECT CHILD_RES_ID FROM T_RES_SELF_RELA
+			START WITH PARENT_RES_ID = (#parent_res_id:VARCHAR#)
+			CONNECT BY PRIOR CHILD_RES_ID = PARENT_RES_ID 
+		)
+	 </delete>
+	 
+	
+	 
+
+</sqlMap>

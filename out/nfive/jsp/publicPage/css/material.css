@@ -1,0 +1,24 @@
+*{margin:0;padding:0;font-family:微软雅黑, microsoft yahei}
+.m_div{width: 800px;height: auto;margin: 10px; auto;}
+.m_moregraphic,.m_singlegraphic {width: 300px;height: 500px;float: left;border: 1px solid #999;margin-right: 20px;}
+.m_singlegraphic {margin-right: 0px;height: auto;}
+.m_moreseldate,.m_singleseldate {width: 100%;height: 50px;border:0px;border-bottom: 1px solid #999;text-align: center;line-height: 50px;}
+.m_moreconten,.m_singleconten {width: 270px;height: 420px;padding: 15px;}
+.m_singleconten{height: auto;}
+.m_singleconten{padding:0px;width:300px;}
+.m_moretitle {margin-top: 0px;margin-bottom: 20px;}
+.m_moreimg img {width: 100%;height: 80px;}
+.m_moretext {margin-top: 70px;width: 100%;height: auto;word-break: break-all;word-wrap: break-word;white-space: normal;color:#666;}
+.m_singlecoveritem {position: relative;margin: 0 14px 14px;}
+.m_singlecoveritem .appmsg_title {background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;bottom: 0;left: 0;position: absolute;width: 100%;}
+.m_single_title{width:100%;height: 45px;background: #666666;margin-top: 15px;}
+.m_single_title a{color: #fff;line-height: 45px;margin-left: 5px;text-decoration: none;font-size: 15px;}
+.m_single_title a:hover{text-decoration: underline;}
+.m_single_img{width:100%;height: 100px;}
+.m_single_img img{width:100%;}
+.m_single_item{width:270px;height: 78px;border: 0px;border-top: 1px solid #cacbcb;padding:20px 15px;}
+.m_single_itemimg{float: right;height: 78px;width: 78px;}
+.m_single_itemtext a{color: #666;text-decoration: none;font-size: 14px;line-height: 75px;}
+.m_single_itemtext a:hover{text-decoration: underline;}
+
+

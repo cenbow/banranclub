@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tWcmSelfRela">
+
+  <!--用于模糊查询-->
+     <select id="select_tWcmSelfRelaList" parameterClass="com.wechat.menucfg.model.TWcmSelfRelaQueryBean" resultClass="java.util.HashMap">
+          SELECT  
+		 		MENU_RELATION_ID  <!--菜单结构关系ID-->
+		  		,PARENT_ID  <!--父菜单ID-->
+		  		,CHILD_ID  <!--子菜单ID-->
+		  		,PLATFORM_ID  <!--公众平台号ID-->
+		  FROM T_WCM_SELF_RELA
+		  WHERE 1=1 AND T_WCM_SELF_RELA.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="menu_relation_id">
+					(MENU_RELATION_ID) Like '%'||(#menu_relation_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="parent_id">
+					(PARENT_ID) Like '%'||(#parent_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="child_id">
+					(CHILD_ID) Like '%'||(#child_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) Like '%'||(#platform_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+     
+     <!--用于查询总数-->
+     <select id="select_tWcmSelfRelaList_count" parameterClass="com.wechat.menucfg.model.TWcmSelfRelaQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_WCM_SELF_RELA
+			WHERE 1=1 AND T_WCM_SELF_RELA.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	
+				 <isNotEmpty prepend=" and " property="menu_relation_id">
+					(MENU_RELATION_ID) Like '%'||(#menu_relation_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="parent_id">
+					(PARENT_ID) Like '%'||(#parent_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="child_id">
+					(CHILD_ID) Like '%'||(#child_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) Like '%'||(#platform_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+	 </select>
+
+     <!--查询树结构-->
+     <select id="select_tWcmSelfRelaDto_list" parameterClass="com.wechat.menucfg.model.TWcmSelfRelaQueryBean" resultClass="java.util.HashMap">
+			SELECT TMR.MENU_RELATION_ID,<!--菜单结构关系ID-->
+			       TMR.PARENT_ID,<!--父菜单ID-->
+			       TMR.CHILD_ID,<!--子菜单ID-->
+			       TW.RELA_SORT,<!--权重-->
+			       TW.MENU_NAME,<!--菜单名-->
+			       TW.ACTION_TYPE,<!--菜单动作类型-->
+			       TW.MATERIAL_ID,<!--动作关联素材ID-->
+			       TW.ACTION_URL<!--动作URL-->
+			  FROM T_WCM_SELF_RELA TMR, T_WCMENU TW
+			 WHERE TMR.CHILD_ID = TW.MENU_ID
+			   AND TMR.END_DATE = TO_DATE('9999-12-31', 'yyyy-mm-dd')
+			   AND TW.END_DATE = TO_DATE('9999-12-31', 'yyyy-mm-dd')
+				 <isNotEmpty prepend=" and " property="platform_id">
+					TMR.PLATFORM_ID =(#platform_id:VARCHAR#)
+			    </isNotEmpty>    
+			 ORDER BY TW.RELA_SORT ASC
+	 </select>
+
+</sqlMap>

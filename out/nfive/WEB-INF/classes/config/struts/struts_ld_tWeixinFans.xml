@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tWeixinFans"  extends="struts_common">
+	  
+	  	<!-- TWeixinFans列表信息 -->
+        <action name="searchTWeixinFansAction" class="searchTWeixinFansAction">
+			<result name="success" >/jsp/fans/searchTWeixinFansPage.jsp</result>
+		</action>
+		
+	    <!-- TWeixinFans新增动作       将粉丝添加到粉丝群	-->
+        <action name="addTWeixinFansAction" class="addTWeixinFansAction"> 
+			<result name="success" type="chain"><param name="actionName">searchTWeixinFansAction</param> </result>
+		</action>
+		
+		<!-- TWeixinFans编辑页面 -->
+		<action name="editTWeixinFansPage" class="editTWeixinFansPage">
+			<result name="success" >/jsp/fans/editTWeixinFansPage.jsp</result>
+		</action>
+		
+		<!-- TWeixinFans编辑动作-->
+		<action name="editTWeixinFansAction" class="editTWeixinFansAction">
+			<result name="success" type="chain"><param name="actionName">searchTWeixinFansAction</param> </result>
+		</action>
+		
+		<!-- 详细画面动作-->
+		<action name="detailTWeixinFansPage" class="detailTWeixinFansPage">
+			<result name="success" >/jsp/fans/detailTWeixinFansPage.jsp</result>
+		</action>
+      
+	</package>
+</struts>

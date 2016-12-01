@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tMsgSend">
+
+	<!-- 生成批次号 -->
+	<select id="select_batch_no" resultClass="java.lang.String">
+		SELECT PKG_PUB_UTIL.LD_IDGENERATOR BATCH_NO FROM DUAL
+	</select>
+
+	<!-- 查询当日高级接口调用次数 -->
+	<select id="select_sendtime" resultClass="java.util.HashMap">
+		 SELECT
+		 	<!-- 剩余高级接口调用次数 -->
+		   ( SELECT 100-COUNT(1) FROM T_MSG_SEND
+		    WHERE PLATFORM_ID = #platform_id#
+				AND TO_CHAR(CREATED_DATE,'yyyy-MM-dd') = TO_CHAR(SYSDATE,'yyyy-MM-dd')
+				AND SEND_IF='506100000002'
+				AND (END_DATE)=TO_DATE('9999-12-31', 'yyyy-MM-dd')) all_count,
+			<!-- 剩余视频消息发送次数 -->
+		    (SELECT 10-COUNT(1) FROM T_MSG_SEND
+		    WHERE PLATFORM_ID = #platform_id#
+				AND TO_CHAR(CREATED_DATE,'yyyy-MM-dd') = TO_CHAR(SYSDATE,'yyyy-MM-dd')
+				AND SEND_IF='506100000002'
+				AND (END_DATE)=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+		    AND T_MSG_SEND.Msg_Type='506200000005') video_count,
+		    <!-- 剩余图文消息发送次数 -->
+		    (SELECT 10-COUNT(1)
+				FROM T_MSG_SEND
+		    WHERE PLATFORM_ID = #platform_id#
+				AND TO_CHAR(CREATED_DATE,'yyyy-MM-dd') = TO_CHAR(SYSDATE,'yyyy-MM-dd')
+				AND SEND_IF='506100000002'
+				AND (END_DATE)=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+		    AND T_MSG_SEND.Msg_Type='506200000003') artcle_count
+    	FROM dual
+	</select>
+
+	<!-- 批处理插入发送对象表 -->
+	<insert id="insert_user" parameterClass="com.wechat.crowdsend.model.dto.TMsgSendUesrDto">
+		INSERT INTO T_MSG_SEND_UESR(PKID,BATCH_NO,OPEN_ID,CREATED_DATE,UPDATED_DATE,CREATED_USER_CD,UPDATED_USER_CD,END_DATE)
+		VALUES((SELECT PKG_PUB_UTIL.LD_VIPNO_GENERATOR FROM DUAL)	<!-- id自动生成 -->
+		,(#batch_no:VARCHAR#)	<!-- 批次号 -->
+		,(#open_id:VARCHAR#)	<!-- openid -->
+		,SYSDATE,SYSDATE	<!-- 创建时间为当前日期 -->
+		,(#created_user_cd#)
+		,(#updated_user_cd#)
+		,to_DATE('9999-12-31','yyyy-mm-dd'))
+	</insert>
+
+	<!-- 获取自定义发送的粉丝 -->
+	<select id="select_customSendTarget" parameterClass="com.wechat.fans.model.TFansGroupMemberRealQueryBean" resultClass="java.lang.String">
+
+		SELECT LATEST_FANS.OPENID FROM
+		(
+		<!-- 获取自定义发送的粉丝开始  -->
+		SELECT
+			DISTINCT (SELECT FANS.OPENID FROM T_WEIXIN_FANS FANS WHERE FANS.FANS_ID=REALS.FANS_ID) OPENID
+		  FROM T_FANS_GROUP_MEMBER_REAL REALS
+		  WHERE REALS.FANS_GROUP_ID IN ($fans_group_id$) AND (END_DATE)=TO_DATE('9999-12-31', 'yyyy-MM-dd') <!-- 粉丝可能在多个粉丝群 -->
+		 <!-- 获取自定义发送的粉丝结束  -->
+		 ) GROUP_USERS
+		 INNER JOIN  T_LATEST_FANS  LATEST_FANS  ON GROUP_USERS.OPENID = LATEST_FANS.OPENID <!-- 关联最新粉丝表取出有效用户-->
+
+	</select>
+
+  	<!--用于模糊查询-->
+     <select id="select_tMsgSendList" parameterClass="com.wechat.crowdsend.model.TMsgSendQueryBean" resultClass="java.util.HashMap">
+     	SELECT * FROM (
+          SELECT
+		 		SEND.MSG_ID  <!---->
+		  		,SEND.BATCH_NO  <!--每10000个一个批次号-->
+		  		,SEND.PLATFORM_ID  <!--公众平台号ID-->
+		  		,SEND.SEND_DIST  <!--[CS:5059] 微信群发，自定义群发-->
+		  		,(SELECT T.CS_VALUE FROM T_CODESTRING T WHERE T.CS_CODE=SEND.SEND_TARGET AND T.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')) SEND_TARGET  <!--[CS:5060] 全部用户，微信分组，粉丝群，活动组-->
+		  		,(SELECT T.CS_VALUE FROM T_CODESTRING T WHERE T.CS_CODE=SEND.SEND_IF AND T.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD') ) SEND_IF  <!--[CS:5061] 客服消息接口，高级群发接口-->
+		  		,(SELECT T.CS_VALUE FROM T_CODESTRING T WHERE T.CS_CODE=SEND.MSG_TYPE AND T.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD') ) MSG_TYPE  <!--[CS:5062] 消息类型-->
+		  		,SEND.WEIXIN_GROUP_ID  <!--微信分组ID-->
+		  		,SEND.ACTIVITY_GROUP_ID  <!--活动组ID-->
+		  		,SEND.FANS_GROUP_FLG  <!--是否粉丝群-->
+		  		,SEND.TEXT_MSG  <!--文本消息-->
+		  		,SEND.MATERIAL_ID  <!--素材ID-->
+		  		,SEND.SEND_TIME  <!--发送时间-->
+		  		,(SELECT T.CS_VALUE FROM T_CODESTRING T WHERE T.CS_CODE=SEND.SEND_STATUS  AND T.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')) SEND_STATUS  <!--[CS:5063] 处理中，发送成功，发送失败，审核失败-->
+		  		,SEND.TOTAL_COUNT  <!--粉丝数（总计）-->
+		  		,SEND.FILTER_COUNT  <!--发送人数（总计）-->
+		  		,SEND.SENT_COUNT  <!--成功人数（总计）-->
+		  		,SEND.ERROR_COUNT  <!--失败人数（总计）-->
+		  		,SEND.REMARK  <!--消息备注-->
+		  		,SEND.CREATED_DATE  <!--创建日期-->
+		  		,SEND.CREATED_USER_CD  <!--创建用户-->
+		  		,CASE SEND.MSG_TYPE
+		           WHEN '506200000002' THEN (SELECT PICTURE_NAME FROM T_MATERIAL_PICTURE WHERE PICTURE_ID = SEND.MATERIAL_ID  AND T_MATERIAL_PICTURE.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD'))
+		           WHEN '506200000003' THEN (SELECT AG_NAME      FROM T_ARTICLE_GROUP    WHERE ARTICLE_GROUP_ID=SEND.MATERIAL_ID  AND T_ARTICLE_GROUP.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD'))
+		           WHEN '506200000004' THEN (SELECT VOICE_NAME   FROM T_MATERIAL_VOICE   WHERE VOICE_ID=SEND.MATERIAL_ID  AND T_MATERIAL_VOICE.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD'))
+		           WHEN '506200000005' THEN (SELECT VIDEO_NAME   FROM T_MATERIAL_VIDEO   WHERE VIDEO_ID=SEND.MATERIAL_ID  AND T_MATERIAL_VIDEO.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD'))
+		           ELSE SEND.TEXT_MSG
+		           END MSG	<!-- 消息内容，若非文本则为相应素材的名称 -->
+		        ,CASE SEND.SEND_TARGET
+		           WHEN '506000000001' THEN
+		           	(SELECT GROUP_NAME FROM T_WEIXIN_GROUP WHERE T_WEIXIN_GROUP.WEIXIN_GROUP_ID = SEND.WEIXIN_GROUP_ID AND T_WEIXIN_GROUP.PLATFORM_ID=(#platform_id:VARCHAR#) AND T_WEIXIN_GROUP.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD'))
+		           WHEN '506000000002' THEN (SELECT GROUP_NAME FROM T_WEIXIN_GROUP WHERE T_WEIXIN_GROUP.WEIXIN_GROUP_ID = SEND.WEIXIN_GROUP_ID AND T_WEIXIN_GROUP.PLATFORM_ID=(#platform_id:VARCHAR#) AND T_WEIXIN_GROUP.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD'))
+		           WHEN '506000000003' THEN (
+		           	   	CASE CROWD.GROUP_ID
+		           	   	   WHEN '506000000001' THEN '全部粉丝'
+		           	   	ELSE
+		           		   ( SELECT GROUP_NAME FROM T_FANS_GROUP WHERE T_FANS_GROUP.FANS_GROUP_ID=CROWD.GROUP_ID)
+		           		END
+		           )
+		           WHEN '506000000004' THEN ''
+		           ELSE ''
+		           END GROUP_NAME	<!-- 组名：微信分组，本地群组 -->
+		         ,CROWD.PKID
+		  FROM T_MSG_SEND SEND LEFT JOIN  T_MSG_SEND_GROUP CROWD ON send.batch_no=crowd.batch_no AND CROWD.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')
+		  WHERE 1=1 AND SEND.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+		  		<!-- 消息id：非微信返回值 -->
+				 <isNotEmpty prepend=" and " property="msg_id">
+					(SEND.MSG_ID) = (#msg_id:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 批次号 -->
+				 <isNotEmpty prepend=" and " property="batch_no">
+					(SEND.BATCH_NO) Like '%'||(#batch_no:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    <!-- 公众账号id -->
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(SEND.PLATFORM_ID) = (#platform_id:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 群发区分 -->
+				 <isNotEmpty prepend=" and " property="send_dist">
+					(SEND.SEND_DIST) = (#send_dist:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 群发对象 -->
+				 <isNotEmpty prepend=" and " property="send_target">
+					(SEND.SEND_TARGET) = (#send_target:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 群发接口 -->
+				 <isNotEmpty prepend=" and " property="send_if">
+					(SEND.SEND_IF)  = (#send_if:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 消息类型 -->
+				 <isNotEmpty prepend=" and " property="msg_type">
+					(SEND.MSG_TYPE) = (#msg_type:VARCHAR#)
+			    </isNotEmpty>
+			     <!-- 微信分组 -->
+				 <isNotEmpty prepend=" and " property="weixin_group_id">
+					(SEND.WEIXIN_GROUP_ID) = (#weixin_group_id:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 活动组id -->
+				 <isNotEmpty prepend=" and " property="activity_group_id">
+					(SEND.ACTIVITY_GROUP_ID) = (#activity_group_id:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 消息备注 -->
+			    <isNotEmpty prepend=" and " property="remark">
+					(SEND.REMARK) Like '%'||(#remark:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    <!-- 发送状态 -->
+			    <isNotEmpty prepend=" and " property="send_status">
+					(SEND.SEND_STATUS) =(#send_status:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 发送人 -->
+			    <isNotEmpty prepend=" and " property="created_user_cd">
+					(SEND.CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    <!-- 粉丝所在粉丝群 -->
+				 <isNotEmpty prepend=" and " property="fans_crowd">
+					(CROWD.GROUP_ID) = (#fans_crowd:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 关注时间：开始 -->
+			 	<isNotEmpty prepend=" and " property="search_sendTime_start">
+					(SEND.SEND_TIME)	<![CDATA[>=]]> TO_DATE((#search_sendTime_start:VARCHAR#),'yyyy-mm-dd')
+			    </isNotEmpty>
+			    <!-- 关注时间：结束 -->
+				<isNotEmpty prepend=" and " property="search_sendTime_end">
+					(SEND.SEND_TIME)	<![CDATA[<]]> TO_DATE((#search_sendTime_end:VARCHAR#),'yyyy-mm-dd')+1
+			    </isNotEmpty>
+			    )
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+
+     <!--用于查询总数-->
+     <select id="select_tMsgSendList_count" parameterClass="com.wechat.crowdsend.model.TMsgSendQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_MSG_SEND SEND LEFT JOIN  T_MSG_SEND_GROUP CROWD ON send.batch_no=crowd.batch_no AND CROWD.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')
+		  WHERE 1=1 AND SEND.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+				 <isNotEmpty prepend=" and " property="msg_id">
+					(SEND.MSG_ID) = (#msg_id:VARCHAR#)
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="batch_no">
+					(SEND.BATCH_NO) Like '%'||(#batch_no:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(SEND.PLATFORM_ID) = (#platform_id:VARCHAR#)
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="send_dist">
+					(SEND.SEND_DIST) = (#send_dist:VARCHAR#)
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="send_target">
+					(SEND.SEND_TARGET) = (#send_target:VARCHAR#)
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="send_if">
+					(SEND.SEND_IF)  = (#send_if:VARCHAR#)
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="weixin_group_id">
+					(SEND.WEIXIN_GROUP_ID) = (#weixin_group_id:VARCHAR#)
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="msg_type">
+					(SEND.MSG_TYPE) = (#msg_type:VARCHAR#)
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="activity_group_id">
+					(SEND.ACTIVITY_GROUP_ID) = (#activity_group_id:VARCHAR#)
+			    </isNotEmpty>
+			    <isNotEmpty prepend=" and " property="remark">
+					(SEND.REMARK) Like '%'||(#remark:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    <isNotEmpty prepend=" and " property="send_status">
+					(SEND.SEND_STATUS) =(#send_status:VARCHAR#)
+			    </isNotEmpty>
+			    <isNotEmpty prepend=" and " property="created_user_cd">
+					(SEND.CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>
+				 <isNotEmpty prepend=" and " property="fans_crowd">
+					(CROWD.GROUP_ID) = (#fans_crowd:VARCHAR#)
+			    </isNotEmpty>
+			 	<isNotEmpty prepend=" and " property="search_sendTime_start">
+					(SEND.SEND_TIME)	<![CDATA[>=]]> TO_DATE((#search_sendTime_start:VARCHAR#),'yyyy-mm-dd')
+			    </isNotEmpty>
+				<isNotEmpty prepend=" and " property="search_sendTime_end">
+					(SEND.SEND_TIME)	<![CDATA[<]]> TO_DATE((#search_sendTime_end:VARCHAR#),'yyyy-mm-dd')+1
+			    </isNotEmpty>
+	 </select>
+	 <!-- 查询消息详细  -->
+	<select id="sel_msgDetail" parameterClass="com.wechat.crowdsend.model.TMsgSendQueryBean" resultClass="com.wechat.crowdsend.model.dto.TMsgSendDto">
+		SELECT SEND.MSG_ID
+		   , SEND.BATCH_NO	<!-- 批次号 -->
+	       ,(SELECT CSCODE.CS_VALUE FROM  T_CODESTRING CSCODE WHERE CSCODE.CS_CODE=SEND.SEND_STATUS AND CSCODE.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')) SEND_STATUS <!-- 发送状态 -->
+	       ,(SELECT CSCODE.CS_VALUE FROM  T_CODESTRING CSCODE WHERE CSCODE.CS_CODE=SEND.SEND_DIST AND CSCODE.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')) SEND_DIST	<!-- 群发区分 -->
+	       ,(SELECT CSCODE.CS_VALUE FROM  T_CODESTRING CSCODE WHERE CSCODE.CS_CODE=SEND.SEND_TARGET AND CSCODE.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')) SEND_TARGET	<!-- 群发对象 -->
+	       ,(SELECT CSCODE.CS_VALUE FROM  T_CODESTRING CSCODE WHERE CSCODE.CS_CODE=SEND.SEND_IF AND CSCODE.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')) SEND_IF	<!-- 群发接口 -->
+	       ,(SELECT CSCODE.CS_VALUE FROM  T_CODESTRING CSCODE WHERE CSCODE.CS_CODE=SEND.MSG_TYPE AND CSCODE.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD'))  FANS_GROUP_FLG	<!-- 消息类型：暂时放在是否粉丝群中 -->
+	       ,SEND.CREATED_USER_CD	<!-- 创建人即发送人 -->
+	       ,SEND.SEND_TIME	<!-- 发送时间：微信端 -->
+	       ,CASE SEND.SEND_TARGET
+	               WHEN '506000000001' THEN (SELECT GROUP_NAME FROM T_WEIXIN_GROUP WHERE T_WEIXIN_GROUP.WEIXIN_GROUP_ID=SEND.WEIXIN_GROUP_ID AND T_WEIXIN_GROUP.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd'))
+	               WHEN '506000000002' THEN (SELECT GROUP_NAME FROM T_WEIXIN_GROUP WHERE T_WEIXIN_GROUP.WEIXIN_GROUP_ID=SEND.WEIXIN_GROUP_ID AND T_WEIXIN_GROUP.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd'))
+			           WHEN '506000000003' THEN (SELECT GROUP_NAME FROM T_FANS_GROUP WHERE T_FANS_GROUP.FANS_GROUP_ID=CROWD.GROUP_ID AND T_FANS_GROUP.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd'))
+			           WHEN '506000000004' THEN ''
+			           ELSE ''
+			           END ACTIVITY_GROUP_ID	<!-- 发送对象：暂时放在ACTIVITY_GROUP_ID中 -->
+	       ,SEND.REMARK	<!-- 消息备注 -->
+	       ,SEND.TEXT_MSG	<!-- 文本消息内容 -->
+	       ,SEND.TEMPLET_FLAG	<!-- 是否动态模版 -->
+	       ,SEND.MATERIAL_ID	<!-- 素材id -->
+	       ,SEND.MSG_TYPE	<!-- 消息类型code -->
+		 FROM T_MSG_SEND SEND LEFT JOIN T_MSG_SEND_GROUP CROWD ON SEND.BATCH_NO=CROWD.BATCH_NO
+		 		LEFT JOIN T_MSG_SEND_RESULT RESU ON SEND.BATCH_NO=RESU.BATCH_NO AND RESU.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')
+		 WHERE SEND.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+		 <isNotEmpty property="msg_id">
+		 	AND SEND.MSG_ID=(#msg_id:VARCHAR#)
+		 </isNotEmpty>
+		 <isNotEqual property="result_pkid" compareValue="null">
+			 <isNotEmpty property="result_pkid">
+			 	AND CROWD.PKID=(#result_pkid:VARCHAR#)
+			 </isNotEmpty>
+	 	 </isNotEqual>
+		 <isNotEmpty property="msg_code">
+		 	AND RESU.MSG_CODE=(#msg_code:VARCHAR#)
+		 </isNotEmpty>
+		 <isNotEmpty property="platform_id">
+		 	AND SEND.PLATFORM_ID=(#platform_id:VARCHAR#)
+		 </isNotEmpty>
+	</select>
+
+	<!-- 单批次内发送对象信息列表 -->
+	<select id="select_tMsgSendMemberList" parameterClass="com.wechat.fans.model.TWeixinFansQueryBean" resultClass="java.util.HashMap">
+		SELECT * FROM (
+		SELECT FANS.FANS_ID,	<!-- 粉丝ID -->
+	     	(SELECT CODES.CS_VALUE FROM T_CODESTRING CODES WHERE CODES.CS_CODE = FANS.SUBSCRIBE AND CODES.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')) SUBSCRIBE_FLG,<!-- 中文是否关注 -->
+	       	FANS.OPENID,<!-- 粉丝openid -->
+	       	FANS.NICK_NAME,<!-- 粉丝昵称 -->
+	     	(SELECT CODES.CS_VALUE FROM T_CODESTRING CODES WHERE CODES.CS_CODE= FANS.SEX AND CODES.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')) SEX,<!-- 粉丝性别 -->
+	       	FANS.REMARK_NAME, <!-- 粉丝备注名 -->
+	       	FANS.COUNTRY,	<!-- 粉丝国家 -->
+	       	FANS.PROVINCE,	<!-- 粉丝省份 -->
+	       	FANS.CITY,		<!-- 粉丝城市 -->
+	       	FANS.LANGUAGE,	<!-- 粉丝语言 -->
+	       	FANS.HEAD_IMG_URL,<!-- 粉丝头像URL -->
+	       	FANS.SUBSCRIBE_TIME,<!-- 粉丝关注时间 -->
+	       	FANS.UNIONID,	<!--  -->
+	      	(SELECT WEIXIN.GROUP_NAME FROM T_WEIXIN_GROUP WEIXIN WHERE WEIXIN.WEIXIN_GROUP_ID =  FANS.WEIXIN_GROUP_ID AND WEIXIN.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')) WEIXIN_GROUP,<!-- 粉丝所在微信分组 -->
+	       	FANS.GROUP_ID,
+	       	FANS.PLATFORM_ID,	<!-- 公众帐号id -->
+	       	FANS.REMARK, <!-- 粉丝备注 -->
+	       	<!-- 粉丝所在粉丝群 -->
+	       	(SELECT CODES.CS_VALUE FROM T_CODESTRING CODES WHERE CODES.CS_CODE= MIAN.OPENID_VERIFY AND CODES.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')) VERIFY <!-- 是否订阅 -->
+  		FROM T_WEIXIN_FANS FANS LEFT JOIN T_MAIN_ACCOUNT MIAN ON MIAN.OPENID=FANS.OPENID AND MIAN.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')
+ 		WHERE FANS.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')
+ 		AND FANS.OPENID  IN (SELECT SEND.OPEN_ID FROM T_MSG_SEND_UESR SEND  WHERE SEND.BATCH_NO = (#batch_no:VARCHAR#) AND SEND.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD'))
+ 		<!-- 是否订阅 -->
+   		<isNotEmpty property="subscribe">
+   			AND FANS.SUBSCRIBE = (#subscribe:VARCHAR#)
+   		</isNotEmpty>
+   		<isNotEmpty property="openid_verify">
+	   		<!-- 已绑定一账通 -->
+	   		<isEqual property="openid_verify" compareValue="100000000001">
+	   			AND 0 != (SELECT COUNT(1) FROM T_MAIN_ACCOUNT TMP WHERE TMP.openid_verify = (#openid_verify:VARCHAR#) AND TMP.OPENID=FANS.OPENID AND TMP.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD'))
+	   		</isEqual>
+	   		<!-- 未绑定一账通：无记录或者未绑定状态条数不为零 -->
+	   		<isEqual property="openid_verify" compareValue="100000000002">
+	   			AND (
+	   			0 =  (SELECT COUNT(1) FROM T_MAIN_ACCOUNT TMP WHERE TMP.OPENID=FANS.OPENID AND TMP.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')) or
+	   			0 != (SELECT COUNT(1) FROM T_MAIN_ACCOUNT TMP WHERE TMP.openid_verify = (#openid_verify:VARCHAR#) AND TMP.OPENID=FANS.OPENID AND TMP.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')))
+	   		</isEqual>
+   		</isNotEmpty>
+  		<!-- 国家 -->
+   		<isNotEmpty property="country">
+   			AND FANS.COUNTRY LIKE '%' || (#country:VARCHAR#) || '%'
+   		</isNotEmpty>
+   		<!-- 省份 -->
+   		<isNotEmpty property="province">
+   			AND FANS.PROVINCE LIKE '%' || (#province:VARCHAR#) || '%'
+   		</isNotEmpty>
+   		<!-- 城市 -->
+   		<isNotEmpty property="city">
+   			AND fans.city LIKE '%' || (#city:VARCHAR#) || '%'
+   		</isNotEmpty>
+   		<!-- 昵称 -->
+   		<isNotEmpty property="nick_name">
+   			AND fans.nick_name LIKE  '%' || (#nick_name:VARCHAR#) || '%'
+   		</isNotEmpty>
+   		<!-- 性别 -->
+   		<isNotEmpty property="sex">
+   			AND fans.sex =(#sex:VARCHAR#)
+   		</isNotEmpty>
+   		<!-- 备注名 -->
+   		<isNotEmpty property="remark_name">
+	   		AND fans.remark_name LIKE  '%' || (#remark_name:VARCHAR#) || '%'
+   		</isNotEmpty>
+   		<!-- 关注时间：开始 -->
+   		<isNotEmpty property="subscribe_time_start">
+   			AND TO_CHAR(fans.subscribe_time,'yyyy-MM-dd')  <![CDATA[>=]]> TO_CHAR((#subscribe_time_start:DATE#),'yyyy-MM-dd')
+   		</isNotEmpty>
+   		<!-- 关注时间：结束 -->
+   		<isNotEmpty property="subscribe_time_end">
+	   		AND TO_CHAR(fans.subscribe_time,'yyyy-MM-dd')  <![CDATA[<=]]> TO_CHAR((#subscribe_time_end:DATE#),'yyyy-MM-dd')
+   		</isNotEmpty>
+   		<!-- 微信分组 -->
+   		<isNotEmpty property="weixin_group_id">
+   			AND fans.weixin_group_id=(#weixin_group_id:VARCHAR#)
+   		</isNotEmpty>
+   		<!-- 本地粉丝群 -->
+   		<isNotEmpty property="groupId_list">
+   		<iterate property="groupId_list">
+  			AND 0!= (SELECT COUNT(REFREN.FANS_ID) FROM T_FANS_GROUP_MEMBER_REAL REFREN WHERE REFREN.FANS_ID = FANS.FANS_ID AND REFREN.FANS_GROUP_ID =(#groupId_list[]:VARCHAR#) AND REFREN.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD'))
+   		</iterate></isNotEmpty>
+   		)
+   		<isNotEmpty property="orderStr">
+					$orderStr$
+		</isNotEmpty>
+	</select>
+
+	<select id="select_tMsgSendMemberList_count" parameterClass="com.wechat.fans.model.TWeixinFansQueryBean" resultClass="int">
+		SELECT COUNT(FANS.FANS_ID)
+  		FROM T_WEIXIN_FANS FANS LEFT JOIN T_MAIN_ACCOUNT MIAN ON MIAN.OPENID=FANS.OPENID AND MIAN.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')
+ 		WHERE FANS.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')
+ 		AND FANS.OPENID  IN (SELECT SEND.OPEN_ID FROM T_MSG_SEND_UESR SEND  WHERE SEND.BATCH_NO = (#batch_no:VARCHAR#) AND SEND.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD'))
+ 		<!-- 是否订阅 -->
+   		<isNotEmpty property="subscribe">
+   			AND FANS.SUBSCRIBE = (#subscribe:VARCHAR#)
+   		</isNotEmpty>
+   		<isNotEmpty property="openid_verify">
+	   		<!-- 已绑定一账通 -->
+	   		<isEqual property="openid_verify" compareValue="100000000001">
+	   			AND 0 != (SELECT COUNT(1) FROM T_MAIN_ACCOUNT TMP WHERE TMP.openid_verify = (#openid_verify:VARCHAR#) AND TMP.OPENID=FANS.OPENID AND TMP.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD'))
+	   		</isEqual>
+	   		<!-- 未绑定一账通：无记录或者未绑定状态条数不为零 -->
+	   		<isEqual property="openid_verify" compareValue="100000000002">
+	   			AND (
+	   			0 =  (SELECT COUNT(1) FROM T_MAIN_ACCOUNT TMP WHERE TMP.OPENID=FANS.OPENID AND TMP.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')) or
+	   			0 != (SELECT COUNT(1) FROM T_MAIN_ACCOUNT TMP WHERE TMP.openid_verify = (#openid_verify:VARCHAR#) AND TMP.OPENID=FANS.OPENID AND TMP.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD')))
+	   		</isEqual>
+   		</isNotEmpty>
+  		<!-- 国家 -->
+   		<isNotEmpty property="country">
+   			AND FANS.COUNTRY LIKE '%' || (#country:VARCHAR#) || '%'
+   		</isNotEmpty>
+   		<!-- 省份 -->
+   		<isNotEmpty property="province">
+   			AND FANS.PROVINCE LIKE '%' || (#province:VARCHAR#) || '%'
+   		</isNotEmpty>
+   		<!-- 城市 -->
+   		<isNotEmpty property="city">
+   			AND fans.city LIKE '%' || (#city:VARCHAR#) || '%'
+   		</isNotEmpty>
+   		<!-- 昵称 -->
+   		<isNotEmpty property="nick_name">
+   			AND fans.nick_name LIKE  '%' || (#nick_name:VARCHAR#) || '%'
+   		</isNotEmpty>
+   		<!-- 性别 -->
+   		<isNotEmpty property="sex">
+   			AND fans.sex =(#sex:VARCHAR#)
+   		</isNotEmpty>
+   		<!-- 备注名 -->
+   		<isNotEmpty property="remark_name">
+	   		AND fans.remark_name LIKE  '%' || (#remark_name:VARCHAR#) || '%'
+   		</isNotEmpty>
+   		<!-- 关注时间：开始 -->
+   		<isNotEmpty property="subscribe_time_start">
+   			AND TO_CHAR(fans.subscribe_time,'yyyy-MM-dd')  <![CDATA[>=]]> TO_CHAR((#subscribe_time_start:DATE#),'yyyy-MM-dd')
+   		</isNotEmpty>
+   		<!-- 关注时间：结束 -->
+   		<isNotEmpty property="subscribe_time_end">
+	   		AND TO_CHAR(fans.subscribe_time,'yyyy-MM-dd')  <![CDATA[<=]]> TO_CHAR((#subscribe_time_end:DATE#),'yyyy-MM-dd')
+   		</isNotEmpty>
+   		<!-- 微信分组 -->
+   		<isNotEmpty property="weixin_group_id">
+   			AND fans.weixin_group_id=(#weixin_group_id:VARCHAR#)
+   		</isNotEmpty>
+   		<!-- 本地粉丝群 -->
+   		<isNotEmpty property="groupId_list">
+   		<iterate property="groupId_list">
+  			AND 0!= (SELECT COUNT(REFREN.FANS_ID) FROM T_FANS_GROUP_MEMBER_REAL REFREN WHERE REFREN.FANS_ID = FANS.FANS_ID AND REFREN.FANS_GROUP_ID =(#groupId_list[]:VARCHAR#) AND REFREN.END_DATE=TO_DATE('9999-12-31', 'YYYY-MM-DD'))
+   		</iterate></isNotEmpty>
+	</select>
+</sqlMap>

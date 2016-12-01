@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" build-on-make="true" name="nfive_image:war exploded">
+    <output-path>$PROJECT_DIR$/../out/nfive_image</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="nfive_image/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="nfive_image" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Common">
+
+	<!-- 查询所有的CodeString -->
+	<select id="select_codeStringAll" parameterClass="com.pub.common.local.model.dto.TCodestringDto" resultClass="com.pub.common.local.model.dto.TCodestringDto">
+		SELECT CS_TYPE,         <!-- 参数类型 -->
+			   CS_CODE,         <!-- 参数代码 -->
+		       CS_SUB_TYPE,     <!-- 子类           -->
+		       CS_NAME,         <!-- 参数名称 -->
+		       CS_VALUE,        <!-- 参数内容 -->
+		       CS_DESC,         <!-- 参数描述 -->
+		       CREATED_DATE,    <!-- 创建日期 -->
+		       UPDATED_DATE,    <!-- 更新日期 -->
+		       CREATED_USER_CD, <!-- 创建用户 -->
+		       UPDATED_USER_CD, <!-- 更新用户 -->
+		       END_DATE         <!-- 终止期间 -->
+		  FROM T_CODESTRING
+		  WHERE 1=1
+			<isNotEmpty prepend=" and " property="cs_type">
+				CS_TYPE = #cs_type:VARCHAR#
+			</isNotEmpty>
+			<isNotEmpty prepend=" and " property="cs_code">
+				CS_CODE = #cs_code:VARCHAR#
+			</isNotEmpty>
+		 ORDER BY CS_TYPE, CS_CODE
+     </select>
+
+
+</sqlMap>

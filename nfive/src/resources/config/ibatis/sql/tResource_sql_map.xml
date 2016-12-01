@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tResource">
+
+  <!--用于模糊查询-->
+     <select id="select_tResourceList" parameterClass="com.platform.persistence.model.TResourceQueryBean" resultClass="java.util.HashMap">
+          SELECT  
+		 		RES_ID  <!--资源ID-->
+		  		,RES_CODE  <!--资源代码-->
+		  		,RES_NAME  <!--资源名称-->
+		  		,RES_DESC  <!--资源描述-->
+		  		,RES_URL  <!--资源路径-->
+		  		,PARAMETER  <!--资源参数-->
+		  		,TARGET  <!--资源目标-->
+		  		,NETWORK  <!--资源网络-->
+		  		,RES_TYPE  <!--[CS:3001]资源类型区分-->
+		  		,FUNC_TYPE  <!--[CS:3003]功能类型区分-->
+		  		,CREATED_DATE  <!--创建日期-->
+		  		,CREATED_USER_CD  <!--创建用户-->
+		  FROM T_RESOURCE
+		  WHERE 1=1 AND T_RESOURCE.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="res_id">
+					(RES_ID) Like '%'||(#res_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="res_code">
+					(RES_CODE) Like '%'||(#res_code:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="res_name">
+					(RES_NAME) Like '%'||(#res_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="res_desc">
+					(RES_DESC) Like '%'||(#res_desc:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="res_url">
+					(RES_URL) Like '%'||(#res_url:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="parameter">
+					(PARAMETER) Like '%'||(#parameter:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="target">
+					(TARGET) Like '%'||(#target:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="network">
+					(NETWORK) Like '%'||(#network:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="res_type">
+					(RES_TYPE) Like '%'||(#res_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="func_type">
+					(FUNC_TYPE) Like '%'||(#func_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="created_date">
+					TO_CHAR(CREATED_DATE, 'yyyy-MM-dd')	=TO_CHAR((#created_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+     
+     <!--用于查询总数-->
+     <select id="select_tResourceList_count" parameterClass="com.platform.persistence.model.TResourceQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_RESOURCE
+			WHERE 1=1 AND T_RESOURCE.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	
+				 <isNotEmpty prepend=" and " property="res_id">
+					(RES_ID) Like '%'||(#res_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="res_code">
+					(RES_CODE) Like '%'||(#res_code:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="res_name">
+					(RES_NAME) Like '%'||(#res_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="res_desc">
+					(RES_DESC) Like '%'||(#res_desc:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="res_url">
+					(RES_URL) Like '%'||(#res_url:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="parameter">
+					(PARAMETER) Like '%'||(#parameter:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="target">
+					(TARGET) Like '%'||(#target:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="network">
+					(NETWORK) Like '%'||(#network:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="res_type">
+					(RES_TYPE) Like '%'||(#res_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="func_type">
+					(FUNC_TYPE) Like '%'||(#func_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="created_date">
+					TO_CHAR(CREATED_DATE, 'yyyy-MM-dd')=TO_CHAR((#created_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+	 </select>
+	 
+	 <!-- 查询父id对应的子的最大code -->
+	 <select id="select_max_code" parameterClass="com.platform.persistence.model.TResourceQueryBean" resultClass="String">
+	 	select max(res_code) from t_resource 
+			where 1 = 1 
+			 <isNotEmpty prepend=" and " property="parent_res_id">
+					res_id in ( select child_res_id from t_res_self_rela
+									 where parent_res_id = (#parent_res_id:VARCHAR#) )
+			 </isNotEmpty>    
+	 </select>
+	 <!-- 查询父id对应的code -->
+	 <select id="select_code" parameterClass="com.platform.persistence.model.TResourceQueryBean" resultClass="String">
+	 	select res_code from t_resource 
+			where 1 = 1 
+			 <isNotEmpty prepend=" and " property="res_id">
+					res_id  = (#res_id:VARCHAR#)
+			 </isNotEmpty>    
+	 </select>
+	 
+	 <!-- 通过父节点删除所有的子节点 逻辑删除 -->
+	 <delete id="deleteResourceByParentId" parameterClass="com.platform.persistence.model.TResourceQueryBean">
+	 	UPDATE T_RESOURCE SET END_DATE = systimestamp
+	 	WHERE RES_ID IN 
+	 	( 
+	 		SELECT CHILD_RES_ID FROM T_RES_SELF_RELA
+			START WITH PARENT_RES_ID = (#parent_res_id:VARCHAR#)
+			CONNECT BY PRIOR CHILD_RES_ID = PARENT_RES_ID 
+		)
+	 </delete>
+	 
+	 <!-- 通过父节点查询所有的一级子节点 -->
+	 <select id="selectResourceByParentRe" parameterClass="com.platform.persistence.model.TResourceQueryBean" resultClass="com.platform.persistence.model.dto.TResourceDto">
+	 	select tr.* from t_resource tr
+		join t_res_self_rela trs on trs.child_res_id = tr.res_id
+		where trs.parent_res_id = (#parent_res_id:VARCHAR#) AND tr.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+		<isNotEmpty prepend=" and " property="res_name">
+			res_name  = (#res_name:VARCHAR#)
+		</isNotEmpty>    
+	 </select>
+	 
+	  
+	  <!-- 获取子节点对应的所有的父节点,并判断是否为父节点赋予特定的角色 -->
+	 <select id="selectParentReByChildAndRole" parameterClass="com.platform.persistence.model.TResourceQueryBean" resultClass="java.util.HashMap">
+	 	  select r.res_id,r.res_name,
+	 	  case when tr1.res_id is null then 'false' else 'true' end ISVAL
+			from (
+				select PARENT_RES_ID from t_res_self_rela t
+				START WITH CHILD_RES_ID = (#res_id:VARCHAR#)
+				CONNECT BY PRIOR PARENT_RES_ID = CHILD_RES_ID
+			) t
+			join t_resource r on t.PARENT_RES_ID = r.res_id
+			left join ( select tr.res_id from t_role_res_rela tr where tr.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+				and tr.role_id = (#role_id:VARCHAR#)
+				 ) tr1 on tr1.res_id = t.PARENT_RES_ID 
+	 </select>
+	 
+	 <select id="selectResourceByUserId" parameterClass="com.platform.persistence.model.TResourceQueryBean" resultClass="com.platform.persistence.model.dto.TResourceDto">
+	 	select distinct res.*
+		 from t_resource res
+		 join t_role_res_rela ro on ro.res_id = res.res_id
+		 join t_user_role_rela us on us.role_id = ro.role_id
+		 where us.user_id = (#user_id:VARCHAR#)
+		 and res.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+		 and ro.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+		 and us.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+	 </select>
+	 
+
+
+</sqlMap>

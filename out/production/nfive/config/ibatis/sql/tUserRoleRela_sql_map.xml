@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tUserRoleRela">
+
+  <!--用于模糊查询-->
+     <select id="select_tUserRoleRelaList" parameterClass="com.platform.persistence.model.TUserRoleRelaQueryBean" resultClass="java.util.HashMap">
+          SELECT  
+		 		 tur.USER_ROLE_ID                      <!--用户角色关系ID-->
+		  		,tur.ROLE_ID                           <!--角色ID-->
+		  		,tur.USER_ID                           <!--用户ID-->
+		  		,tur.CREATED_DATE                      <!--创建日期-->
+		  		,tur.CREATED_USER_CD                   <!--创建用户-->
+		  		,tr.ROLE_NAME                          <!--角色名称-->
+                ,tr.ROLE_GROUP                         <!--角色组-->
+                ,tr.ROLE_DESC                          <!--角色描述-->
+                ,tr.CREATED_DATE R_CREATED_DATE        <!--创建用户-->
+                ,tr.CREATED_USER_CD R_CREATED_USER_CD  <!--修改用户-->
+		  		,teu.USER_CD U_USER_CD                 <!--用户CD-->
+				,teu.USER_NAME U_USER_NAME             <!--用户名-->
+				,teu.mobile U_MOBILE                   <!--手机号-->
+				,teu.email U_EMAIL                     <!--邮箱-->
+				,teu.lock_flag U_LOCK_FLAG             <!--:3000]锁定状态-->
+				,teu.CREATED_DATE U_CREATED_DATE       <!--创建用户-->
+				,teu.CREATED_USER_CD U_CREATED_USER_CD <!--创建用户-->
+		  FROM T_USER_ROLE_RELA tur
+		  JOIN T_ROLE tr on tr.ROLE_ID = tur.ROLE_ID
+		  JOIN T_EMP_USER teu on teu.USER_ID = tur.USER_ID
+		  WHERE 1=1 AND tur.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="user_role_id">
+					(tur.USER_ROLE_ID) Like '%'||(#user_role_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="role_id">
+					(tur.ROLE_ID) Like '%'||(#role_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="user_id">
+					(tur.USER_ID) Like '%'||(#user_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="created_date">
+					TO_CHAR(tur.CREATED_DATE, 'yyyy-MM-dd')	=TO_CHAR((#created_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(tur.CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+     
+     <!--用于查询总数-->
+     <select id="select_tUserRoleRelaList_count" parameterClass="com.platform.persistence.model.TUserRoleRelaQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_USER_ROLE_RELA tur
+		    JOIN T_ROLE tr on tr.ROLE_ID = tur.ROLE_ID
+		    JOIN T_EMP_USER teu on teu.USER_ID = tur.USER_ID
+			WHERE 1=1 AND tur.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	
+				 <isNotEmpty prepend=" and " property="user_role_id">
+					(tur.USER_ROLE_ID) Like '%'||(#user_role_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="role_id">
+					(tur.ROLE_ID) Like '%'||(#role_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="user_id">
+					(tur.USER_ID) Like '%'||(#user_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="created_date">
+					TO_CHAR(tur.CREATED_DATE, 'yyyy-MM-dd')=TO_CHAR((#created_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(tur.CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+	 </select>
+
+
+</sqlMap>

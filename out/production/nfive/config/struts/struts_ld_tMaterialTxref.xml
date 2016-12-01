@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tMaterialTxref"  extends="struts_common">
+	  
+	  	<!-- TMaterialTxref列表信息 -->
+        <action name="searchTMaterialTxrefAction" class="searchTMaterialTxrefAction">
+			<result name="success" >/jsp/persistence/searchTMaterialTxrefPage.jsp</result>
+		</action>
+		
+        <!-- TMaterialTxref新增页面-->
+        <action name="addTMaterialTxrefPage" class="addTMaterialTxrefPage">
+			<result name="success" >/jsp/persistence/addTMaterialTxrefPage.jsp</result>
+		</action>
+		
+		<!-- TMaterialTxref新增动作	-->
+        <action name="addTMaterialTxrefAction" class="addTMaterialTxrefAction"> 
+			<!--<result name="success" type="chain"><param name="actionName">searchTMaterialTxrefAction</param> </result>-->
+		</action>
+		
+		<!-- TMaterialTxref编辑页面 -->
+		<action name="editTMaterialTxrefPage" class="editTMaterialTxrefPage">
+			<!--<result name="success" >/jsp/persistence/editTMaterialTxrefPage.jsp</result>-->
+		</action>
+
+		<!-- TMaterialTxref删除页面	-->
+		<action name="delTMaterialTxrefAction" class="delTMaterialTxrefAction">
+			<!--<result name="success" type="chain"><param name="actionName">searchTMaterialTxrefAction</param> </result>-->
+		</action>		
+		
+		<!-- TMaterialTxref编辑动作-->
+		<action name="editTMaterialTxrefAction" class="editTMaterialTxrefAction">
+			<result name="success" type="chain"><param name="actionName">searchTMaterialTxrefAction</param> </result>
+			<result name="input">/jsp/persistence/error.jsp</result>
+		</action>
+		
+		
+		<!-- 详细画面动作-->
+		<action name="detailTMaterialTxrefPage" class="detailTMaterialTxrefPage">
+			<result name="success" >/jsp/persistence/detailTMaterialTxrefPage.jsp</result>
+		</action>
+      
+	</package>
+</struts>

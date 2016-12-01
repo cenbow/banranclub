@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tLatestFans">
+
+  <!--用于模糊查询-->
+     <select id="select_tLatestFansList" parameterClass="com.wechat.fans.model.TLatestFansQueryBean" resultClass="java.util.HashMap">
+          SELECT  
+		 		LF.FANS_ID  <!--粉丝ID-->
+		  		,LF.OPENID  <!--OPENID-->
+		  		,LF.PLATFORM_ID  <!--公众平台号ID-->
+		  		,WF.HEAD_IMG_URL  <!-- 头像 -->
+		  		,WF.NICK_NAME  <!-- 昵称 -->
+		  		,WF.SEX  <!-- 性别 -->
+		  		,WF.REMARK_NAME <!-- 备注名 -->
+		  		,WF.WEIXIN_GROUP_ID  <!-- 微信组id -->
+		  		,WG.GROUP_NAME <!-- 微信组 -->
+		  		,WF.COUNTRY  <!-- 国家 -->
+		  		,WF.PROVINCE  <!-- 省份 -->
+		  		,WF.CITY  <!-- 城市 -->
+		  		,LF.CREATED_DATE  <!-- 更新日期(最新粉丝表创建时间) -->
+		  FROM T_LATEST_FANS LF
+		  	LEFT JOIN T_WEIXIN_FANS WF ON WF.OPENID = LF.OPENID
+		  	LEFT JOIN T_WEIXIN_GROUP WG ON WG.WEIXIN_GROUP_ID = WF.WEIXIN_GROUP_ID
+		  WHERE 1=1 AND LF.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="fans_id">
+					(LF.FANS_ID) Like '%'||(#fans_id:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    <isNotEmpty prepend=" and " property="nick_name">
+					(WF.NICK_NAME) Like '%'||(#nick_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="openid">
+					(LF.OPENID) Like '%'||(#openid:VARCHAR#)||'%'
+			    </isNotEmpty>  
+			    <isNotEmpty prepend=" and " property="remark_name">
+					(WF.REMARK_NAME) Like '%'||(#remark_name:VARCHAR#)||'%'
+			    </isNotEmpty>   
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(LF.PLATFORM_ID) Like '%'||(#platform_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+     
+     <!--用于查询总数-->
+     <select id="select_tLatestFansList_count" parameterClass="com.wechat.fans.model.TLatestFansQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_LATEST_FANS LF
+		    	LEFT JOIN T_WEIXIN_FANS WF ON WF.OPENID = LF.OPENID
+		  		LEFT JOIN T_WEIXIN_GROUP WG ON WG.WEIXIN_GROUP_ID = WF.WEIXIN_GROUP_ID
+			WHERE 1=1 AND LF.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	
+				 <isNotEmpty prepend=" and " property="fans_id">
+					(LF.FANS_ID) Like '%'||(#fans_id:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    <isNotEmpty prepend=" and " property="nick_name">
+					(WF.NICK_NAME) Like '%'||(#nick_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="openid">
+					(LF.OPENID) Like '%'||(#openid:VARCHAR#)||'%'
+			    </isNotEmpty>  
+			    <isNotEmpty prepend=" and " property="remark_name">
+					(WF.REMARK_NAME) Like '%'||(#remark_name:VARCHAR#)||'%'
+			    </isNotEmpty>   
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(LF.PLATFORM_ID) Like '%'||(#platform_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+	 </select>
+	 
+	 <!-- 清空【T_LATEST_FANS】所有记录 -->
+	 <delete id="truncateLatestFans">
+	 	 TRUNCATE TABLE T_LATEST_FANS
+	 </delete>
+	 
+	 <!-- 获取SSID -->
+	 <select id="getSSID" resultClass="string">
+	 	SELECT PKG_PUB_UTIL.ld_idgenerator() FROM DUAL
+	 </select>
+	 
+	 <!-- 保存dto -->
+	 <insert id="saveLatestFans" parameterClass="com.wechat.fans.model.dto.TLatestFansDto">
+	 		INSERT INTO T_LATEST_FANS(
+	 					FANS_ID, 
+				 		OPENID, 
+				 		PLATFORM_ID, 
+				 		CREATED_DATE, 
+				 		UPDATED_DATE, 
+				 		CREATED_USER_CD, 
+				 		UPDATED_USER_CD, 
+				 		END_DATE
+	 			) 
+	 				SELECT PKG_PUB_UTIL.ld_idgenerator(),
+						#openid#,
+						#platform_id#,
+		 				#created_date#,
+		 				#updated_date#,
+		 				#created_user_cd#,
+		 				#updated_user_cd#,
+		 				#end_date#
+	 				FROM DUAL
+	 			
+	 </insert>
+
+</sqlMap>

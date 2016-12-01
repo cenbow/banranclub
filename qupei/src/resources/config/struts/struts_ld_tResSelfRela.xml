@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tResSelfRela"  extends="struts_common">
+	  
+	  	<!-- TResSelfRela列表信息 -->
+        <action name="searchTResSelfRelaAction" class="searchTResSelfRelaAction">
+			<result name="success" >/jsp/persistence/searchTResSelfRelaPage.jsp</result>
+		</action>
+		
+        <!-- TResSelfRela新增页面-->
+        <action name="addTResSelfRelaPage" class="addTResSelfRelaPage">
+			<result name="success" >/jsp/persistence/addTResSelfRelaPage.jsp</result>
+		</action>
+		
+		<!-- TResSelfRela新增动作	-->
+        <action name="addTResSelfRelaAction" class="addTResSelfRelaAction"> 
+			<result name="success" type="chain"><param name="actionName">searchTResSelfRelaAction</param> </result>
+		</action>
+		
+		<!-- TResSelfRela编辑页面 -->
+		<action name="editTResSelfRelaPage" class="editTResSelfRelaPage">
+			<result name="success" >/jsp/persistence/editTResSelfRelaPage.jsp</result>
+		</action>
+		
+		<!-- TResSelfRela编辑动作-->
+		<action name="editTResSelfRelaAction" class="editTResSelfRelaAction">
+			<result name="success" type="chain"><param name="actionName">searchTResSelfRelaAction</param> </result>
+		</action>
+		
+		<!-- 详细画面动作-->
+		<action name="detailTResSelfRelaPage" class="detailTResSelfRelaPage">
+			<result name="success" >/jsp/persistence/detailTResSelfRelaPage.jsp</result>
+		</action>
+		
+		<!-- TResSelfRela删除页面	-->
+		<action name="delTResSelfRelaAction" class="delTResSelfRelaAction">
+			<result name="success" type="chain"><param name="actionName">searchTResSelfRelaAction</param> </result>
+		</action>		
+      
+	</package>
+</struts>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_file_upload" extends="struts_common">
+
+		<!-- 文件上传 -->
+		<action name="fileUpload" class="fileUploadAction" method="fileUpload"></action>
+
+		<!-- 文件删除 -->
+		<action name="fileDel" class="fileUploadAction" method="fileDel"></action>
+
+		<!-- 文件列表 -->
+		<action name="fileList" class="fileUploadAction" method="fileList"></action>
+
+		<!-- 文件下载 -->
+		<action name="fileDownload" class="fileUploadAction" method="fileDownload"></action>
+
+
+		<!-- Ecweb上传文件列表 -->
+		<action name="caifuncFileList" class="fileUploadAction" method="caifuncFileList"></action>
+
+	</package>
+</struts>

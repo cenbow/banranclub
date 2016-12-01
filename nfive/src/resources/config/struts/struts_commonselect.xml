@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="false" />
+    <package name="struts_commonselect"  extends="struts_common">
+
+    
+        <!--图片选择-->
+        <action name="selectTMaterialPictureAction" class="selectTMaterialPictureAction">
+            <result name="success" >/jsp/commonselect/selectPicturePage.jsp</result>
+        </action>
+        <!--图文组选择-->
+        <action name="selectTArticleGroupAction" class="selectTArticleGroupAction">
+            <result name="success">/jsp/commonselect/selectArticleGroupPage.jsp</result>
+        </action>
+        <!--图文项选择-->
+        <action name="selectTArticleItemAction" class="selectTArticleItemAction">
+            <result name="success" >/jsp/commonselect/selectArticleItemPage.jsp</result>
+        </action>
+         <!--语音选择-->
+        <action name="selectTMaterialVoiceAction" class="selectTMaterialVoiceAction">
+            <result name="success" >/jsp/commonselect/selectVoicePage.jsp</result>
+        </action>
+        <!--员工选择-->
+        <action name="selectUserAction" class="selectUserAction">
+            <result name="success" >/jsp/commonselect/selectUserPage.jsp</result>
+        </action>
+         <!-- 视频选择 -->
+         <action name="selectTMaterialVideoAction" class="selectTMaterialVideoAction">
+            <result name="success" >/jsp/commonselect/selectVideoPage.jsp</result>
+        </action>
+         <!-- 粉丝群选择 -->
+         <action name="selectTFansGroupAction" class="selectTFansGroupAction">
+			<result name="success" >/jsp/commonselect/selectTFansGroupPage.jsp</result>
+		</action>
+		<!-- 粉丝成员选择 -->
+		<action name="selectTWeixinFansAction" class="selectTWeixinFansAction">
+			<result name="success" >/jsp/commonselect/selectTWeixinFansPage.jsp</result>
+		</action>
+    </package>
+</struts>

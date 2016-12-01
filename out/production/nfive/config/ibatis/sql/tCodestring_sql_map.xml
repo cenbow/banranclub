@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tCodestring">
+
+  <!--用于模糊查询-->
+     <select id="select_tCodestringList" parameterClass="com.platform.persistence.model.TCodestringQueryBean" resultClass="java.util.HashMap">
+          SELECT  
+		 		CS_CODE  <!--参数代码-->
+		  		,CS_TYPE  <!--参数类型-->
+		  		,CS_SUB_TYPE  <!--参数类型项下的子类值,应用可依次进行加载-->
+		  		,CS_NAME  <!--参数名称-->
+		  		,CS_VALUE  <!--参数值-->
+		  		,CS_DESC  <!--参数描述-->
+		  		,CREATED_DATE  <!--创建日期-->
+		  		,CREATED_USER_CD  <!--创建用户-->
+		  FROM T_CODESTRING
+		  WHERE 1=1 AND T_CODESTRING.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="cs_code">
+					(CS_CODE) Like '%'||(#cs_code:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="cs_type">
+					(CS_TYPE) Like '%'||(#cs_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="cs_sub_type">
+					(CS_SUB_TYPE) Like '%'||(#cs_sub_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="cs_name">
+					(CS_NAME) Like '%'||(#cs_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="cs_value">
+					(CS_VALUE) Like '%'||(#cs_value:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="cs_desc">
+					(CS_DESC) Like '%'||(#cs_desc:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="created_date">
+					TO_CHAR(CREATED_DATE, 'yyyy-MM-dd')	=TO_CHAR((#created_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+     
+     <!--用于查询总数-->
+     <select id="select_tCodestringList_count" parameterClass="com.platform.persistence.model.TCodestringQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_CODESTRING
+			WHERE 1=1 AND T_CODESTRING.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	
+				 <isNotEmpty prepend=" and " property="cs_code">
+					(CS_CODE) Like '%'||(#cs_code:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="cs_type">
+					(CS_TYPE) Like '%'||(#cs_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="cs_sub_type">
+					(CS_SUB_TYPE) Like '%'||(#cs_sub_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="cs_name">
+					(CS_NAME) Like '%'||(#cs_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="cs_value">
+					(CS_VALUE) Like '%'||(#cs_value:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="cs_desc">
+					(CS_DESC) Like '%'||(#cs_desc:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="created_date">
+					TO_CHAR(CREATED_DATE, 'yyyy-MM-dd')=TO_CHAR((#created_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+	 </select>
+
+
+</sqlMap>

@@ -1,0 +1,70 @@
+package com.platform.persistence.web.action;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import com.platform.common.tools.opensymphony.web.action.BaseAction;
+import com.platform.persistence.model.dto.TUserRoleRelaDto;
+import com.platform.persistence.service.ITUserRoleRelaService;
+
+ /**
+ * 类功能:用户角色关系明细
+ * <p>创建者:zhangzhiqiang</p>
+ * <p>创建时间:</p>
+ * <p>修改者:</p>
+ * <p>修改时间:</p>
+ * <p>修改原因：</p>
+ * <p>审核者:</p>
+ * <p>审核时间:</p>
+ * <p>审核意见：</p>
+ */
+ 
+@Controller("detailTUserRoleRelaPage")
+@Scope("prototype")
+public class DetailTUserRoleRelaPage extends BaseAction {
+	private static final long serialVersionUID = 1L;
+
+	@Autowired
+	private ITUserRoleRelaService tUserRoleRelaService;
+	
+	//入参
+	private  String     pkid;
+	
+	//出参
+	private TUserRoleRelaDto tUserRoleRelaDto;
+
+	
+	public String execute() throws Exception {
+		try {
+		    TUserRoleRelaDto paramTUserRoleRelaDto = new TUserRoleRelaDto();
+		//设置主键
+			paramTUserRoleRelaDto.setUser_role_id(pkid);
+			tUserRoleRelaDto = tUserRoleRelaService.getRow(paramTUserRoleRelaDto );
+			return SUCCESS;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		return ERROR;
+
+	}
+
+	public final TUserRoleRelaDto getTUserRoleRelaDto() {
+		return tUserRoleRelaDto;
+	}
+
+	public final void setStudentDto(TUserRoleRelaDto tUserRoleRelaDto) {
+		this.tUserRoleRelaDto = tUserRoleRelaDto;
+	}
+	
+	
+	public final String getPkid() {
+		return pkid;
+	}
+
+	public final void setPkid(String pkid) {
+		this.pkid = pkid;
+	}
+
+}

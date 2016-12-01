@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: zxing:zxing:core:2.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/zxing/zxing/2.0/zxing-2.0-core.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/zxing/zxing/2.0/zxing-2.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/zxing/zxing/2.0/zxing-2.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

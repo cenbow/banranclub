@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tRole"  extends="struts_common">
+	  
+	  	<!-- TRole列表信息 -->
+        <action name="searchTRoleAction" class="searchTRoleAction">
+			<result name="success" >/jsp/persistence/searchTRolePage.jsp</result>
+		</action>
+		
+        <!-- TRole新增页面-->
+        <action name="addTRolePage" class="addTRolePage">
+			<result name="success" >/jsp/persistence/addTRolePage.jsp</result>
+		</action>
+		
+		<!-- TRole新增动作	-->
+        <action name="addTRoleAction" class="addTRoleAction"> 
+		</action>
+		
+		<!-- TRole编辑页面 -->
+		<action name="editTRolePage" class="editTRolePage">
+			<result name="success" >/jsp/persistence/editTRolePage.jsp</result>
+		</action>
+
+		
+		<!-- TRole编辑动作-->
+		<action name="editTRoleAction" class="editTRoleAction">
+			<result name="input">/jsp/persistence/error.jsp</result>
+		</action>
+		
+		
+		<!-- 详细画面动作-->
+		<action name="detailTRolePage" class="detailTRolePage">
+			<result name="success" >/jsp/persistence/detailTRolePage.jsp</result>
+		</action>
+		
+		
+		<!-- TRole删除页面	-->
+		<action name="delTRoleAction" class="delTRoleAction">
+		</action>	
+		
+		<!-- 角色校验	-->
+		<action name="checkTRoleAction" class="checkTRoleAction">
+		</action>	
+		
+		<!-- 角色选择 -->
+		 <action name="selectTRoleAction" class="selectTRoleAction">
+			<result name="success" >/jsp/persistence/selectTRolePage.jsp</result>
+		</action>	
+		
+		
+      
+	</package>
+</struts>

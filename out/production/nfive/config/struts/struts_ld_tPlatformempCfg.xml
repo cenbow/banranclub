@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tPlatformempCfg"  extends="struts_common">
+	  
+	  	<!-- TPlatformempCfg列表信息 -->
+        <action name="searchTPlatformempCfgAction" class="searchTPlatformempCfgAction">
+			<result name="success" >/jsp/platuserform/searchTPlatformempCfgPage.jsp</result>
+		</action>
+		
+        <!-- TPlatformempCfg新增页面-->
+        <action name="addTPlatformempCfgPage" class="addTPlatformempCfgPage">
+			<result name="success" >/jsp/platuserform/addTPlatformempCfgPage.jsp</result>
+		</action>
+		
+		<!-- TPlatformempCfg新增动作	-->
+        <action name="addTPlatformempCfgAction" class="addTPlatformempCfgAction"> 
+			<!--<result name="success" type="chain"><param name="actionName">searchTPlatformempCfgAction</param> </result>-->
+		</action>
+		
+		<!-- TPlatformempCfg编辑页面 -->
+		<action name="editTPlatformempCfgPage" class="editTPlatformempCfgPage">
+			<!--<result name="success" >/jsp/persistence/editTPlatformempCfgPage.jsp</result>-->
+		</action>
+
+		<!-- TPlatformempCfg删除页面	-->
+		<action name="delTPlatformempCfgAction" class="delTPlatformempCfgAction">
+			<!--<result name="success" type="chain"><param name="actionName">searchTPlatformempCfgAction</param> </result>-->
+		</action>		
+		
+		<!-- TPlatformempCfg编辑动作-->
+		<action name="editTPlatformempCfgAction" class="editTPlatformempCfgAction">
+			<result name="success" type="chain"><param name="actionName">searchTPlatformempCfgAction</param> </result>
+			<result name="input">/jsp/persistence/error.jsp</result>
+		</action>
+		
+		
+		<!-- 详细画面动作-->
+		<action name="detailTPlatformempCfgPage" class="detailTPlatformempCfgPage">
+			<result name="success" >/jsp/platuserform/detailTPlatformempCfgPage.jsp</result>
+		</action>
+		
+		<!-- 为员工分配公众号-->
+        <action name="configplatuserformPage" class="addTPlatformempCfgPage" method="configTPlatformCfg">
+			<result name="success" >/jsp/platuserform/configTPlatformempCfgPage.jsp</result>
+		</action>
+      
+      
+
+	</package>
+</struts>

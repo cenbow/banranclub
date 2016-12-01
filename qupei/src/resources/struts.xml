@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <!-- 请求参数的编码方式-->
+    <constant name="struts.i18n.encoding" value="UTF-8" />
+    <!-- 指定被struts2处理的请求后缀类型。多个用逗号隔开-->
+    <constant name="struts.action.extension" value="action" />
+    <!-- 当struts.xml改动后，是否重新加载。默认值为false(生产环境下使用),开发阶段最好打开  -->
+    <constant name="struts.configuration.xml.reload" value="true" />
+    <!-- 是否使用struts的开发模式。开发模式会有更多的调试信息。默认值为false(生产环境下使用),开发阶段最好打开  -->
+    <constant name="struts.devMode" value="false" />
+    <!-- 设置浏览器是否缓存静态内容。默认值为true(生产环境下使用),开发阶段最好关闭  -->
+    <constant name="struts.serve.static.browserCache" value="false" />
+    <!-- 名称首字母小写 -->
+    <constant name="struts.convention.action.name.lowercase" value="true" />
+    <!-- for test surroundings 设置默认的临时文件存储位置  测试 -->
+    <constant name="struts.multipart.saveDir" value="D:\Users\server\tomcat6.0\webapps\file\temp\struts\" />
+
+    <!-- for official surroundings 设置默认的临时文件存储位置 生产
+    <constant name="struts.multipart.saveDir" value="/media/ftp/resin/work/file/temp/storage/" /> -->
+
+
+    <!-- 设置最大文件  -->
+    <constant name="struts.multipart.maxSize" value="51000000" />
+
+    <!-- 指定由spring负责action对象的创建
+    <constant name="struts.objectFactory" value="spring" />
+    -->
+
+    <!-- 是否开启动态方法调用-->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <include file="config/struts/struts_common.xml" />
+
+    <!-- Demo Sample -->
+    <include file="config/struts/struts_ld_demo.xml" />
+    <include file="config/struts/struts_ld_sample.xml" />
+    <!-- 文件上传 -->
+    <include file="config/struts/struts_file_upload.xml" />
+    <include file="config/struts/struts_qupei_common.xml" />
+
+    <!--权限管理 -->
+    <include file="config/struts/struts_ld_tCodestring.xml" />
+    <include file="config/struts/struts_ld_tEmpUser.xml" />
+    <include file="config/struts/struts_ld_tResource.xml" />
+    <include file="config/struts/struts_ld_tResSelfRela.xml" />
+    <include file="config/struts/struts_ld_tRole.xml" />
+    <include file="config/struts/struts_ld_tRoleResRela.xml" />
+    <include file="config/struts/struts_ld_tUserRoleRela.xml" />
+    <include file="config/struts/struts_ld_login.xml" />
+
+
+</struts>

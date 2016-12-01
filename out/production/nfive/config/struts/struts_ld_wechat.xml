@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_wechat"  extends="struts_common">
+	
+		<!--用于OAuth的  openId 跳转 -->
+		<action name="weChatOpenidCallBackAction" class="com.platform.common.tools.opensymphony.web.action.openid.WeChatOpenidCallBackAction">
+			<interceptor-ref name="nologin_stack"></interceptor-ref>
+		</action>
+
+
+		<!--仅用于测试获取的数据-->
+
+		<!--弱授权-->
+		<action name="getInfoBase" class="com.platform.common.tools.opensymphony.web.action.openid.WeChatOAuthInfoAction">
+			<interceptor-ref name="cust_openid_stack_base"></interceptor-ref>
+			<result name="success" >/jsp/wechat/weChatOAuth.jsp</result>
+		</action>
+
+		<!--强授权-->
+		<action name="getInfoMore" class="com.platform.common.tools.opensymphony.web.action.openid.WeChatOAuthInfoAction">
+			<interceptor-ref name="cust_openid_stack_userinfo"></interceptor-ref>
+			<result name="success" >/jsp/wechat/weChatOAuth.jsp</result>
+		</action>
+
+		<!--强授权（营销活动）-->
+		<action name="getInfoMoreAct" class="com.platform.common.tools.opensymphony.web.action.openid.WeChatOAuthInfoAction">
+			<interceptor-ref name="cust_openid_stack_userinfo_act"></interceptor-ref>
+			<result name="success" >/jsp/wechat/weChatOAuth.jsp</result>
+		</action>
+		
+		<!--转发-->
+		<action name="transfer" class="com.platform.common.tools.opensymphony.web.action.openid.WeChatOAuthInfoTransferAction">
+			<interceptor-ref name="nologin_stack"></interceptor-ref>
+		</action>
+		
+		<!--微信绑定-->
+		<action name="bindCaifuNcAct" class="com.platform.common.tools.opensymphony.web.action.openid.CaifuNcOAuthInfoAction">
+			<interceptor-ref name="cust_openid_stack_userinfo_act"></interceptor-ref>
+			<!--   <result name="success" >/jsp/wechat/caifuNcbind.jsp</result> -->
+			<result name="success" type="redirect">http://farmfortune.com/ecwap/#account/wxbindresult</result>
+		</action>
+		
+	</package>
+</struts>

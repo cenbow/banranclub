@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tFansGroupMemberReal">
+
+  <!--用于模糊分页查询某个粉丝群组下的所有群成员  -->
+     <select id="select_tFansGroupMemberRealList" parameterClass="com.wechat.fans.model.TFansGroupMemberRealQueryBean" resultClass="java.util.HashMap">
+          SELECT   T_FANS_GROUP_MEMBER_REAL.REAL_ID,<!--关系表主键-->
+			       T_FANS_GROUP_MEMBER_REAL.MEMBER_NAME,<!--关系表成员名称-->
+			       T_FANS_GROUP_MEMBER_REAL.CREATED_DATE, <!-- 关系表创建时间：入群时间-->
+			       T_WEIXIN_FANS.HEAD_IMG_URL, <!--头像-->
+			       T_WEIXIN_FANS.NICK_NAME, <!--昵称-->
+			       T_WEIXIN_FANS.SEX, <!--性别-->
+			       T_WEIXIN_FANS.REMARK_NAME, <!--备注名-->
+			       T_WEIXIN_FANS.COUNTRY, <!--国家-->
+			       T_WEIXIN_FANS.PROVINCE, <!--省份-->
+			       T_WEIXIN_FANS.CITY, <!--城市-->
+			       T_WEIXIN_FANS.SUBSCRIBE_TIME  <!--关注时间-->
+		  FROM T_FANS_GROUP_MEMBER_REAL
+		  LEFT JOIN T_WEIXIN_FANS ON T_FANS_GROUP_MEMBER_REAL.FANS_ID = T_WEIXIN_FANS.FANS_ID
+		  WHERE 1=1 AND T_FANS_GROUP_MEMBER_REAL.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd') 
+		  		
+		  		<!-- 关系主键 -->	 
+				 <isNotEmpty prepend=" and " property="real_id">
+					(T_FANS_GROUP_MEMBER_REAL.REAL_ID) = (#real_id:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 粉丝群主键 -->    
+				 <isNotEmpty prepend=" and " property="fans_group_id">
+					(T_FANS_GROUP_MEMBER_REAL.FANS_GROUP_ID) = (#fans_group_id:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 粉丝主键 -->    
+				 <isNotEmpty prepend=" and " property="fans_id">
+					(T_FANS_GROUP_MEMBER_REAL.FANS_ID) = (#fans_id:VARCHAR#)
+			    </isNotEmpty>   
+			    
+			    
+			     <!-- 成员名称 --> 
+				 <isNotEmpty prepend=" and " property="member_name">
+					(T_FANS_GROUP_MEMBER_REAL.MEMBER_NAME) Like '%'||(#member_name:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    
+			    <!-- 标星成员 --> 
+				 <isNotEmpty prepend=" and " property="star_member">
+					(T_FANS_GROUP_MEMBER_REAL.STAR_MEMBER) Like '%'||(#star_member:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    
+			    
+			     <!-- 昵称 -->
+			    <isNotEmpty prepend=" and " property="nick_name">
+					(T_WEIXIN_FANS.NICK_NAME) Like '%'||(#nick_name:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    
+			    <!-- 备注名 -->
+			    <isNotEmpty prepend=" and " property="remark_name">
+					(T_WEIXIN_FANS.REMARK_NAME) Like '%'||(#remark_name:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    
+			    <!-- 是否订阅 -->   
+				 <isNotEmpty prepend=" and " property="subscribe">
+					(T_WEIXIN_FANS.subscribe) = (#subscribe:VARCHAR#)
+			    </isNotEmpty> 
+			        
+				<!-- 入群时间 -->
+				<isNotEmpty prepend=" and " property="in_group_startdate">
+					TO_CHAR(T_FANS_GROUP_MEMBER_REAL.CREATED_DATE, 'yyyy-MM-dd')   <![CDATA[>=]]> TO_CHAR((#in_group_startdate:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="in_group_enddate">
+					TO_CHAR(T_FANS_GROUP_MEMBER_REAL.CREATED_DATE, 'yyyy-MM-dd')	<![CDATA[<=]]> TO_CHAR((#in_group_enddate:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty> 
+				
+			    <!-- 公众号 -->   
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(T_FANS_GROUP_MEMBER_REAL.PLATFORM_ID) = (#platform_id:VARCHAR#)
+			    </isNotEmpty>    
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+     
+     <!--用于查询某个粉丝群组下的所有群成员总数       -->
+     <select id="select_tFansGroupMemberRealList_count" parameterClass="com.wechat.fans.model.TFansGroupMemberRealQueryBean" resultClass="int">
+			SELECT  count(1)
+		  	FROM T_FANS_GROUP_MEMBER_REAL
+		  	LEFT JOIN T_WEIXIN_FANS ON T_FANS_GROUP_MEMBER_REAL.FANS_ID = T_WEIXIN_FANS.FANS_ID
+		  	WHERE 1=1 AND T_FANS_GROUP_MEMBER_REAL.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd') 
+				 <!-- 关系主键 -->	 
+				 <isNotEmpty prepend=" and " property="real_id">
+					(T_FANS_GROUP_MEMBER_REAL.REAL_ID) = (#real_id:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 粉丝群主键 -->    
+				 <isNotEmpty prepend=" and " property="fans_group_id">
+					(T_FANS_GROUP_MEMBER_REAL.FANS_GROUP_ID) = (#fans_group_id:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 粉丝主键 -->    
+				 <isNotEmpty prepend=" and " property="fans_id">
+					(T_FANS_GROUP_MEMBER_REAL.FANS_ID) = (#fans_id:VARCHAR#)
+			    </isNotEmpty>   
+			    
+			    
+			     <!-- 成员名称 --> 
+				 <isNotEmpty prepend=" and " property="member_name">
+					(T_FANS_GROUP_MEMBER_REAL.MEMBER_NAME) Like '%'||(#member_name:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    
+			    <!-- 标星成员 --> 
+				 <isNotEmpty prepend=" and " property="star_member">
+					(T_FANS_GROUP_MEMBER_REAL.STAR_MEMBER) Like '%'||(#star_member:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    
+			    
+			     <!-- 昵称 -->
+			    <isNotEmpty prepend=" and " property="nick_name">
+					(T_WEIXIN_FANS.NICK_NAME) Like '%'||(#nick_name:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    
+			    <!-- 备注名 -->
+			    <isNotEmpty prepend=" and " property="remark_name">
+					(T_WEIXIN_FANS.REMARK_NAME) Like '%'||(#remark_name:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    
+			    <!-- 是否订阅 -->   
+				 <isNotEmpty prepend=" and " property="subscribe">
+					(T_WEIXIN_FANS.subscribe) = (#subscribe:VARCHAR#)
+			    </isNotEmpty> 
+			        
+				<!-- 入群时间 -->
+				<isNotEmpty prepend=" and " property="in_group_startdate">
+					TO_CHAR(T_FANS_GROUP_MEMBER_REAL.CREATED_DATE, 'yyyy-MM-dd')   <![CDATA[>=]]> TO_CHAR((#in_group_startdate:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="in_group_enddate">
+					TO_CHAR(T_FANS_GROUP_MEMBER_REAL.CREATED_DATE, 'yyyy-MM-dd')	<![CDATA[<=]]> TO_CHAR((#in_group_enddate:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty> 
+				
+			    <!-- 公众号 -->   
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(T_FANS_GROUP_MEMBER_REAL.PLATFORM_ID)= (#platform_id:VARCHAR#)
+			    </isNotEmpty>    
+	 </select>
+	 
+	 
+	 <!-- 删除粉丝群的同时  删除粉丝关系 -->
+	 <update id="del_delByfansGroupId" parameterClass="com.wechat.fans.model.dto.TFansGroupMemberRealDto">
+	 		UPDATE T_FANS_GROUP_MEMBER_REAL  
+	 		SET 	
+	 				T_FANS_GROUP_MEMBER_REAL.UPDATED_DATE = SYSDATE,
+	 				T_FANS_GROUP_MEMBER_REAL.UPDATED_USER_CD = (#updated_user_cd:VARCHAR#),
+					T_FANS_GROUP_MEMBER_REAL.END_DATE = SYSDATE
+	 		WHERE 1=1 AND T_FANS_GROUP_MEMBER_REAL.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+	 		<isNotEmpty prepend=" and " property="fans_group_id">
+					(T_FANS_GROUP_MEMBER_REAL.FANS_GROUP_ID) Like '%'||(#fans_group_id:VARCHAR#)||'%'
+			</isNotEmpty>   
+			
+			<isNotEmpty prepend=" and " property="platform_id">
+					(T_FANS_GROUP_MEMBER_REAL.PLATFORM_ID)= (#platform_id:VARCHAR#)
+			</isNotEmpty> 
+			
+	 </update>
+	 
+	 
+	  <!-- 删除多条粉丝关系 -->
+	 <update id="del_delfansByPkids" parameterClass="com.wechat.fans.model.TFansGroupMemberRealQueryBean">
+	 		UPDATE T_FANS_GROUP_MEMBER_REAL  
+	 		SET 	
+	 				T_FANS_GROUP_MEMBER_REAL.UPDATED_DATE = SYSDATE,
+					T_FANS_GROUP_MEMBER_REAL.END_DATE = SYSDATE
+	 		WHERE 1=1 AND T_FANS_GROUP_MEMBER_REAL.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+	 		
+	 		<isNotEmpty property="delsqlStr">
+					$delsqlStr$
+			</isNotEmpty>
+			
+	 </update>
+
+     <!--用于粉丝所在的粉丝群-->
+     <select id="query_tFansGroupAndFansList" parameterClass="com.wechat.fans.model.TFansGroupMemberRealQueryBean" resultClass="java.util.HashMap">
+          SELECT  
+	          RE.MEMBER_NAME AS MEMBER_NAME
+	          ,GUP.GROUP_NAME AS GROUP_NAME
+	          ,GUP.REMARK AS REMARK 
+	          ,RE.UPDATED_DATE
+		  FROM T_FANS_GROUP_MEMBER_REAL RE LEFT JOIN T_FANS_GROUP  GUP ON GUP.FANS_GROUP_ID=RE.FANS_GROUP_ID
+		  WHERE 1=1 
+		    AND GUP.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+		    AND RE.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+				 <isNotEmpty prepend=" and " property="fans_id">
+					(RE.FANS_ID) = (#fans_id:VARCHAR#)
+			    </isNotEmpty>    
+			   <isNotEmpty prepend=" and " property="platform_id">
+					(RE.PLATFORM_ID)=(#platform_id:VARCHAR#)
+			    </isNotEmpty>       	
+			    <isNotEmpty prepend=" and " property="platform_id">
+					(GUP.PLATFORM_ID)=(#platform_id:VARCHAR#)
+			    </isNotEmpty>    	      	
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+     
+     <!--用于查询粉丝所在的粉丝群总数-->
+     <select id="query_tFansGroupAndFansList_cnt" parameterClass="com.wechat.fans.model.TFansGroupMemberRealQueryBean" resultClass="int">
+			SELECT 
+			 count(RE.REAL_ID)
+		   FROM T_FANS_GROUP_MEMBER_REAL RE LEFT JOIN T_FANS_GROUP  GUP ON GUP.FANS_GROUP_ID=RE.FANS_GROUP_ID
+		  WHERE 1=1 
+		     AND GUP.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+		     AND RE.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+				 <isNotEmpty prepend=" and " property="fans_id">
+					(RE.FANS_ID) = (#fans_id:VARCHAR#)
+			    </isNotEmpty> 
+			    <isNotEmpty prepend=" and " property="platform_id">
+					(RE.PLATFORM_ID)=(#platform_id:VARCHAR#)
+			    </isNotEmpty>       	
+			    <isNotEmpty prepend=" and " property="platform_id">
+					(GUP.PLATFORM_ID)=(#platform_id:VARCHAR#)
+			    </isNotEmpty>    	      		
+	 </select>
+	 
+	  <!--用于查询不在某个群下的其他粉丝-->
+     <select id="queryTWeixinFansListPageByGroupId_List" parameterClass="com.wechat.fans.model.TWeixinFansQueryBean" resultClass="java.util.HashMap">
+				
+				SELECT T.* FROM ( 
+				
+				SELECT  
+				 
+				T_WEIXIN_FANS.FANS_ID<!-- 粉丝ID -->
+		 		,T_WEIXIN_FANS.NICK_NAME  <!--昵称-->
+		  		,T_WEIXIN_FANS.SEX   <!--性别-->
+		  		,T_WEIXIN_FANS.REMARK_NAME  <!--备注名-->
+		  		,T_WEIXIN_FANS.SUBSCRIBE  <!--是否订阅 -->
+		  		,T_WEIXIN_FANS.COUNTRY  <!--国家-->
+		  		,T_WEIXIN_FANS.PROVINCE  <!--省份-->
+		  		,T_WEIXIN_FANS.CITY  <!--城市-->
+		  		,T_WEIXIN_FANS.SUBSCRIBE_TIME  <!--关注时间-->
+		  		,T_WEIXIN_FANS.REMARK   <!-- 备注 -->
+                ,T_WEIXIN_FANS.HEAD_IMG_URL  <!--头像URL-->
+		        ,T_WEIXIN_FANS.OPENID  <!--OPENID-->
+		        ,T_WEIXIN_FANS.UPDATED_USER_CD<!-- 更新人 -->
+		        ,T_WEIXIN_FANS.UPDATED_DATE<!-- 更新时间 -->
+		        
+		        ,T_WEIXIN_GROUP.GROUP_NAME <!--微信分组名-->
+		  		,T_MAIN_ACCOUNT.MACCOUNT_NO <!--一帐通账号代码-->
+		  		,T_MAIN_ACCOUNT.MOBILE  <!--手机-->
+		        ,T_ACCOUNT_RELA.SACCOUNT_NO  <!-- 主账号 -->
+		        ,T_MAIN_ACCOUNT.MACCOUNT_ID <!--一帐通ID-->
+		  		,nvl(T_MAIN_ACCOUNT.OPENID_VERIFY,'100000000002') AS OPENID_VERIFY <!--绑定标识-->  
+		  		
+		  		
+		        
+		        
+		       	FROM T_WEIXIN_FANS
+		       	LEFT JOIN T_WEIXIN_GROUP  ON T_WEIXIN_FANS.WEIXIN_GROUP_ID = T_WEIXIN_GROUP.WEIXIN_GROUP_ID <!-- 关联微信分组查询分组NAME -->
+           		LEFT JOIN T_MAIN_ACCOUNT ON T_MAIN_ACCOUNT.OPENID = T_WEIXIN_FANS.OPENID <!-- 根据 微信唯一ID查询MACCOUNT_NO,
+           																					MACCOUNT_ID 和OPENID_VERIFY ,
+           																					MOBILE-->
+            	LEFT JOIN T_ACCOUNT_RELA ON T_MAIN_ACCOUNT.MACCOUNT_NO = T_ACCOUNT_RELA.MACCOUNT_NO AND 
+            									(T_ACCOUNT_RELA.REF_TYPE='500200000001' OR T_ACCOUNT_RELA.REF_TYPE='500200000002')<!--  -->
+				
+				WHERE T_WEIXIN_FANS.FANS_ID NOT IN
+					(SELECT FANS.FANS_ID 
+					
+					FROM T_WEIXIN_FANS FANS 
+					LEFT JOIN T_FANS_GROUP_MEMBER_REAL REA ON FANS.FANS_ID=REA.FANS_ID 
+					AND REA.END_DATE = TO_DATE('9999-12-31', 'YYYY-MM-DD')
+					
+					WHERE 1=1 
+					<!-- 粉丝群ID -->  
+				    <isNotEmpty prepend=" and " property="fans_group_id">
+						(REA.FANS_GROUP_ID)=(#fans_group_id:VARCHAR#)
+				    </isNotEmpty> 
+				    <!-- 公众号ID -->
+				    <isNotEmpty prepend=" and " property="platform_id">
+						(FANS.PLATFORM_ID)=(#platform_id:VARCHAR#)
+				    </isNotEmpty> 
+					)
+				<!-- 公众号ID -->
+			    <isNotEmpty prepend=" and " property="platform_id">
+					(T_WEIXIN_FANS.PLATFORM_ID)=(#platform_id:VARCHAR#)
+			    </isNotEmpty> 
+			    <!-- 是否订阅 -->
+			    <isNotEmpty prepend=" and " property="subscribe">
+					(T_WEIXIN_FANS.SUBSCRIBE) Like '%'||(#subscribe:VARCHAR#)||'%'
+			    </isNotEmpty> 
+			    <!-- 昵称 -->   
+				 <isNotEmpty prepend=" and " property="nick_name">
+					(T_WEIXIN_FANS.NICK_NAME) Like '%'||(#nick_name:VARCHAR#)||'%'
+			    </isNotEmpty>  
+			   <!-- 性别 -->  
+				 <isNotEmpty prepend=" and " property="sex">
+					(T_WEIXIN_FANS.SEX) = (#sex:VARCHAR#)
+			    </isNotEmpty>  
+			    
+			     
+			    <!--微信分组 --> 
+				 <isNotEmpty prepend=" and " property="weixin_group_id">
+					(T_WEIXIN_FANS.WEIXIN_GROUP_ID) Like '%'||(#weixin_group_id:VARCHAR#)||'%'
+			    </isNotEmpty> 
+			    
+			    <!-- 一帐通账号 -->
+			    <isNotEmpty prepend=" and " property="maccount_no">
+					(T_MAIN_ACCOUNT.MACCOUNT_NO) Like '%'||(#maccount_no:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    
+			    <!-- 开始关注时间 -->  
+			 	<isNotEmpty prepend=" and " property="subscribe_time_start">
+					<![CDATA[TO_CHAR(T_WEIXIN_FANS.SUBSCRIBE_TIME, 'yyyy-MM-dd') >= TO_CHAR((#subscribe_time_start:DATE#),'yyyy-MM-dd')]]>
+			    </isNotEmpty>  
+			    <!-- 结束关注时间 -->
+			    <isNotEmpty prepend=" and " property="subscribe_time_end">
+					<![CDATA[TO_CHAR(T_WEIXIN_FANS.SUBSCRIBE_TIME, 'yyyy-MM-dd') <= TO_CHAR((#subscribe_time_end:DATE#),'yyyy-MM-dd')]]>
+			    </isNotEmpty>  
+			    <isNotEmpty property="orderStr">
+					$orderStr$
+			    </isNotEmpty> 
+			    
+			    ) T WHERE 1=1 
+			     <!-- 一帐通是否绑定 -->
+			    <isNotEmpty prepend=" and " property="openid_verify">
+					(T.OPENID_VERIFY) Like '%'||(#openid_verify:VARCHAR#)||'%'
+			    </isNotEmpty>   
+	 </select>
+	 
+	  
+	  <!--用于查询不在某个群下的其他粉丝总数-->
+     <select id="queryTWeixinFansListPageByGroupId_Count" parameterClass="com.wechat.fans.model.TWeixinFansQueryBean" resultClass="int">
+     			SELECT COUNT(1) FROM ( 
+				
+				SELECT  
+				 
+				T_WEIXIN_FANS.FANS_ID<!-- 粉丝ID -->
+		 		,T_WEIXIN_FANS.NICK_NAME  <!--昵称-->
+		  		,T_WEIXIN_FANS.SEX   <!--性别-->
+		  		,T_WEIXIN_FANS.REMARK_NAME  <!--备注名-->
+		  		,T_WEIXIN_FANS.SUBSCRIBE  <!--是否订阅 -->
+		  		,T_WEIXIN_FANS.COUNTRY  <!--国家-->
+		  		,T_WEIXIN_FANS.PROVINCE  <!--省份-->
+		  		,T_WEIXIN_FANS.CITY  <!--城市-->
+		  		,T_WEIXIN_FANS.SUBSCRIBE_TIME  <!--关注时间-->
+		  		,T_WEIXIN_FANS.REMARK   <!-- 备注 -->
+                ,T_WEIXIN_FANS.HEAD_IMG_URL  <!--头像URL-->
+		        ,T_WEIXIN_FANS.OPENID  <!--OPENID-->
+		        ,T_WEIXIN_FANS.UPDATED_USER_CD<!-- 更新人 -->
+		        ,T_WEIXIN_FANS.UPDATED_DATE<!-- 更新时间 -->
+		        
+		        ,T_WEIXIN_GROUP.GROUP_NAME <!--微信分组名-->
+		  		,T_MAIN_ACCOUNT.MACCOUNT_NO <!--一帐通账号代码-->
+		  		,T_MAIN_ACCOUNT.MOBILE  <!--手机-->
+		        ,T_ACCOUNT_RELA.SACCOUNT_NO  <!-- 主账号 -->
+		        ,T_MAIN_ACCOUNT.MACCOUNT_ID <!--一帐通ID-->
+		  		,nvl(T_MAIN_ACCOUNT.OPENID_VERIFY,'100000000002') AS OPENID_VERIFY <!--绑定标识-->  
+		  		
+		  		
+		        
+		        
+		       	FROM T_WEIXIN_FANS
+		       	LEFT JOIN T_WEIXIN_GROUP  ON T_WEIXIN_FANS.WEIXIN_GROUP_ID = T_WEIXIN_GROUP.WEIXIN_GROUP_ID <!-- 关联微信分组查询分组NAME -->
+           		LEFT JOIN T_MAIN_ACCOUNT ON T_MAIN_ACCOUNT.OPENID = T_WEIXIN_FANS.OPENID <!-- 根据 微信唯一ID查询MACCOUNT_NO,
+           																					MACCOUNT_ID 和OPENID_VERIFY ,
+           																					MOBILE-->
+            	LEFT JOIN T_ACCOUNT_RELA ON T_MAIN_ACCOUNT.MACCOUNT_NO = T_ACCOUNT_RELA.MACCOUNT_NO AND 
+            									(T_ACCOUNT_RELA.REF_TYPE='500200000001' OR T_ACCOUNT_RELA.REF_TYPE='500200000002')<!--  -->
+				
+				WHERE T_WEIXIN_FANS.FANS_ID NOT IN
+					(SELECT FANS.FANS_ID 
+					
+					FROM T_WEIXIN_FANS FANS 
+					LEFT JOIN T_FANS_GROUP_MEMBER_REAL REA ON FANS.FANS_ID=REA.FANS_ID 
+					AND REA.END_DATE = TO_DATE('9999-12-31', 'YYYY-MM-DD')
+					
+					WHERE 1=1 
+					<!-- 粉丝群ID -->  
+				    <isNotEmpty prepend=" and " property="fans_group_id">
+						(REA.FANS_GROUP_ID)=(#fans_group_id:VARCHAR#)
+				    </isNotEmpty> 
+				    <!-- 公众号ID -->
+				    <isNotEmpty prepend=" and " property="platform_id">
+						(FANS.PLATFORM_ID)=(#platform_id:VARCHAR#)
+				    </isNotEmpty> 
+					)
+				<!-- 公众号ID -->
+			    <isNotEmpty prepend=" and " property="platform_id">
+					(T_WEIXIN_FANS.PLATFORM_ID)=(#platform_id:VARCHAR#)
+			    </isNotEmpty> 
+			    <!-- 是否订阅 -->
+			    <isNotEmpty prepend=" and " property="subscribe">
+					(T_WEIXIN_FANS.SUBSCRIBE) Like '%'||(#subscribe:VARCHAR#)||'%'
+			    </isNotEmpty> 
+			    <!-- 昵称 -->   
+				 <isNotEmpty prepend=" and " property="nick_name">
+					(T_WEIXIN_FANS.NICK_NAME) Like '%'||(#nick_name:VARCHAR#)||'%'
+			    </isNotEmpty>  
+			   <!-- 性别 -->  
+				 <isNotEmpty prepend=" and " property="sex">
+					(T_WEIXIN_FANS.SEX) = (#sex:VARCHAR#)
+			    </isNotEmpty>  
+			    
+			     
+			    <!--微信分组 --> 
+				 <isNotEmpty prepend=" and " property="weixin_group_id">
+					(T_WEIXIN_FANS.WEIXIN_GROUP_ID) Like '%'||(#weixin_group_id:VARCHAR#)||'%'
+			    </isNotEmpty> 
+			    
+			    <!-- 一帐通账号 -->
+			    <isNotEmpty prepend=" and " property="maccount_no">
+					(T_MAIN_ACCOUNT.MACCOUNT_NO) Like '%'||(#maccount_no:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    
+			    <!-- 开始关注时间 -->  
+			 	<isNotEmpty prepend=" and " property="subscribe_time_start">
+					<![CDATA[TO_CHAR(T_WEIXIN_FANS.SUBSCRIBE_TIME, 'yyyy-MM-dd') >= TO_CHAR((#subscribe_time_start:DATE#),'yyyy-MM-dd')]]>
+			    </isNotEmpty>  
+			    <!-- 结束关注时间 -->
+			    <isNotEmpty prepend=" and " property="subscribe_time_end">
+					<![CDATA[TO_CHAR(T_WEIXIN_FANS.SUBSCRIBE_TIME, 'yyyy-MM-dd') <= TO_CHAR((#subscribe_time_end:DATE#),'yyyy-MM-dd')]]>
+			    </isNotEmpty>  
+			    <isNotEmpty property="orderStr">
+					$orderStr$
+			    </isNotEmpty> 
+			    
+			    ) T WHERE 1=1 
+			     <!-- 一帐通是否绑定 -->
+			    <isNotEmpty prepend=" and " property="openid_verify">
+					(T.OPENID_VERIFY) Like '%'||(#openid_verify:VARCHAR#)||'%'
+			    </isNotEmpty>   
+	 </select>
+	 
+	 
+	  <!--	查询粉丝已有的粉丝群 -->
+	 <select id="query_getFansGroup" parameterClass="com.wechat.fans.model.TFansGroupMemberRealQueryBean" resultClass="com.wechat.fans.model.dto.TFansGroupMemberRealDto" >
+	       SELECT 
+	              REAL_ID,
+			      FANS_GROUP_ID,
+			      FANS_ID,
+			      MEMBER_NAME,
+			      STAR_MEMBER,
+			      MEMBER_MEMO,
+			      CREATED_DATE,
+			      UPDATED_DATE,
+			      CREATED_USER_CD,
+			      UPDATED_USER_CD,
+			      END_DATE,
+			      PLATFORM_ID
+		  FROM T_FANS_GROUP_MEMBER_REAL
+		  WHERE 1=1 AND T_FANS_GROUP_MEMBER_REAL.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd') 
+			    <!-- 粉丝主键 -->    
+				 <isNotEmpty prepend=" and " property="fans_id">
+					(T_FANS_GROUP_MEMBER_REAL.FANS_ID) = (#fans_id:VARCHAR#)
+			    </isNotEmpty>   
+			    <!-- 公众号 -->   
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(T_FANS_GROUP_MEMBER_REAL.PLATFORM_ID) = (#platform_id:VARCHAR#)
+			    </isNotEmpty>    
+	 </select>
+</sqlMap>

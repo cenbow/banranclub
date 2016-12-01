@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_login"  extends="struts_common">
+	
+	  
+	 	<!--欢迎画面-->
+        <action name="welcome" class="tUserLoginAction" method="welcome">
+        	<result name="success">/welcome.jsp</result>
+		</action>
+		
+		<!-- 用户登录切换公众号-->
+        <action name="loginChangePlatformAction" class="tUserLoginAction" method="loginChangePlatform">
+        	<result name="success" type="redirectAction">
+        		<param name="actionName">welcome</param>
+        	</result>
+		</action>
+		
+		<!-- 用户登录 -->
+        <action name="loginAction" class="tUserLoginAction" method="login">
+        	<result name="success">/welcome.jsp</result>
+        </action>
+        
+		<!--用户登出 -->
+        <action name="logoutAction" class="tUserLoginAction" method="logout">
+        	<result name="success">/login.jsp</result>
+		</action>
+		
+		<!--image-->
+        <action name="showImageAction" class="showImageAction"></action>
+	</package>
+</struts>

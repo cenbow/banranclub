@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="article">
+    <!--图文项结果Map-->
+    <resultMap id="articleItemResult" class="com.wechat.article.model.vo.ArticleItemVo">
+        <result property="rela_id" column="RELA_ID" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="article_group_id" column="ARTICLE_GROUP_ID" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="rela_sort" column="RELA_SORT" jdbcType="BIGINT" javaType = "java.lang.Long" />
+        <result property="pub_startdate" column="PUB_STARTDATE" jdbcType="TIMESTAMP" javaType = "java.sql.Timestamp" />
+        <result property="pub_enddate" column="PUB_ENDDATE" jdbcType="TIMESTAMP" javaType = "java.sql.Timestamp" />
+        <result property="created_date" column="CREATED_DATE" jdbcType="TIMESTAMP" javaType = "java.sql.Timestamp" />
+        <result property="created_user_cd" column="CREATED_USER_CD" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="created_user_name" column="CREATED_USER_NAME" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="updated_date" column="UPDATED_DATE" jdbcType="TIMESTAMP" javaType = "java.sql.Timestamp" />
+        <result property="updated_user_cd" column="UPDATED_USER_CD" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="updated_user_name" column="UPDATED_USER_NAME" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="article_item_id" column="ARTICLE_ITEM_ID" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="title" column="TITLE" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="author" column="AUTHOR" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="article_type" column="ARTICLE_TYPE" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="article_state" column="ARTICLE_STATE" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="summary" column="SUMMARY" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="pic_org" column="PIC_ORG" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="pic_cover" column="PIC_COVER" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="pic_thumbnail" column="PIC_THUMBNAIL" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="org_flag" column="ORG_FLAG" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="org_url" column="ORG_URL" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="templet_flag" column="TEMPLET_FLAG" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="cite_url" column="CITE_URL" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="remark" column="REMARK" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="content" column="CONTENT" jdbcType="CLOB" javaType = "java.lang.String" />
+        <result property="org_store_name" column="ORG_STORE_NAME" jdbcType="VARCHAR" javaType = "java.lang.String" />
+        <result property="org_store_path" column="ORG_STORE_PATH" jdbcType="VARCHAR" javaType = "java.lang.String" />
+
+    </resultMap>
+
+    <!--图文组列表-->
+    <select id="select_tArticleGroupList" parameterClass="com.wechat.article.model.TArticleGroupQueryBean" resultClass="java.util.HashMap">
+    SELECT
+        ARTICLE_GROUP_ID  <!--图文组ID-->
+        ,AG_CODE  <!--图文组编号-->
+        ,AG_NAME  <!--图文组名称-->
+        ,AG_MANAGER  <!--图文组管理人-->
+        ,T_MANAGER_USER.USER_NAME AG_MANAGER_NAME  <!--图文组管理人姓名-->
+        ,ARTICLE_TYPE  <!--图文素材类型【CS:5051】-->
+        ,ENABLE_AGFLAG  <!--启用标志【CS:1000】-->
+        ,MAX_ITEMS_COUNT  <!--最大条目数-->
+        ,T_ARTICLE_GROUP.CREATED_DATE  <!--创建日期-->
+        ,T_ARTICLE_GROUP.CREATED_USER_CD <!--创建用户-->
+        ,T_CREATED_USER.USER_NAME CREATED_USER_NAME <!--创建用户名-->
+        ,T_ARTICLE_GROUP.UPDATED_DATE <!--更新日期-->
+        ,T_ARTICLE_GROUP.UPDATED_USER_CD <!--更新用户-->
+        ,T_UPDATED_USER.USER_NAME UPDATED_USER_NAME <!--更新用户名-->
+    FROM T_ARTICLE_GROUP
+        LEFT JOIN T_EMP_USER T_MANAGER_USER ON T_ARTICLE_GROUP.AG_MANAGER = T_MANAGER_USER.USER_CD
+        LEFT JOIN T_EMP_USER T_CREATED_USER ON T_ARTICLE_GROUP.CREATED_USER_CD=T_CREATED_USER.USER_CD
+        LEFT JOIN T_EMP_USER T_UPDATED_USER ON T_ARTICLE_GROUP.UPDATED_USER_CD=T_UPDATED_USER.USER_CD
+    WHERE T_ARTICLE_GROUP.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+        <isNotEmpty prepend=" and " property="ag_code">
+        (AG_CODE) Like '%'||(#ag_code:VARCHAR#)||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="ag_name">
+        (AG_NAME) Like '%'||(#ag_name:VARCHAR#)||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="ag_manager_name">
+        (T_MANAGER_USER.USER_NAME) Like '%'||(#ag_manager_name:VARCHAR#)||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="article_type">
+        (ARTICLE_TYPE) = (#article_type:VARCHAR#)
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="enable_agflag">
+        (ENABLE_AGFLAG) = (#enable_agflag:VARCHAR#)
+        </isNotEmpty>
+        <isNotNull property="max_items_count" prepend="and" >
+        (MAX_ITEMS_COUNT) =#max_items_count#
+        </isNotNull>
+        <isNotEmpty prepend=" and " property="updated_date_start">
+        TO_CHAR(T_ARTICLE_GROUP.UPDATED_DATE, 'yyyy-MM-dd') <![CDATA[>=]]> TO_CHAR((#updated_date_start:DATE#),'yyyy-MM-dd')
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="updated_date_end">
+        TO_CHAR(T_ARTICLE_GROUP.UPDATED_DATE, 'yyyy-MM-dd') <![CDATA[<=]]> TO_CHAR((#updated_date_end:DATE#),'yyyy-MM-dd')
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="created_user_name">
+        (T_CREATED_USER.USER_NAME) Like '%'||(#created_user_name:VARCHAR#)||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="updated_user_name">
+        (T_UPDATED_USER.USER_NAME) Like '%'||(#updated_user_name:VARCHAR#)||'%'
+        </isNotEmpty>
+        <isNotEmpty property="orderStr">
+        $orderStr$
+        </isNotEmpty>
+    </select>
+
+    <!--图文组总数-->
+    <select id="select_tArticleGroupList_count" parameterClass="com.wechat.article.model.TArticleGroupQueryBean" resultClass="int">
+    SELECT  count(1)
+    FROM T_ARTICLE_GROUP
+        LEFT JOIN T_EMP_USER T_MANAGER_USER ON T_ARTICLE_GROUP.AG_MANAGER = T_MANAGER_USER.USER_CD
+        LEFT JOIN T_EMP_USER T_CREATED_USER ON T_ARTICLE_GROUP.CREATED_USER_CD=T_CREATED_USER.USER_CD
+        LEFT JOIN T_EMP_USER T_UPDATED_USER ON T_ARTICLE_GROUP.UPDATED_USER_CD=T_UPDATED_USER.USER_CD
+    WHERE T_ARTICLE_GROUP.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+        <isNotEmpty prepend=" and " property="ag_code">
+        (AG_CODE) Like '%'||(#ag_code:VARCHAR#)||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="ag_name">
+        (AG_NAME) Like '%'||(#ag_name:VARCHAR#)||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="ag_manager_name">
+        (T_MANAGER_USER.USER_NAME) Like '%'||(#ag_manager_name:VARCHAR#)||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="article_type">
+        (ARTICLE_TYPE) = (#article_type:VARCHAR#)
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="enable_agflag">
+        (ENABLE_AGFLAG) = (#enable_agflag:VARCHAR#)
+        </isNotEmpty>
+        <isNotNull property="max_items_count" prepend="and" >
+        (MAX_ITEMS_COUNT) =#max_items_count#
+        </isNotNull>
+        <isNotEmpty prepend=" and " property="updated_date_start">
+        TO_CHAR(T_ARTICLE_GROUP.UPDATED_DATE, 'yyyy-MM-dd') <![CDATA[>=]]> TO_CHAR((#updated_date_start:DATE#),'yyyy-MM-dd')
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="updated_date_end">
+        TO_CHAR(T_ARTICLE_GROUP.UPDATED_DATE, 'yyyy-MM-dd') <![CDATA[<=]]> TO_CHAR((#updated_date_end:DATE#),'yyyy-MM-dd')
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="created_user_name">
+        (T_CREATED_USER.USER_NAME) Like '%'||(#created_user_name:VARCHAR#)||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="updated_user_name">
+        (T_UPDATED_USER.USER_NAME) Like '%'||(#updated_user_name:VARCHAR#)||'%'
+        </isNotEmpty>
+    </select>
+
+    <!--图文组基本信息（图文组详细）-->
+    <select id="select_getArticleGroup" parameterClass="com.wechat.article.model.TArticleGroupQueryBean" resultClass="com.wechat.article.model.TArticleGroupQueryBean">
+    SELECT
+        ARTICLE_GROUP_ID article_group_id  <!--图文组ID-->
+        ,AG_CODE ag_code  <!--图文组编号-->
+        ,AG_NAME ag_name <!--图文组名称-->
+        ,AG_MANAGER ag_manager <!--图文组管理人-->
+        ,T_MANAGER_USER.USER_NAME ag_manager_name  <!--图文组管理人姓名-->
+        ,ARTICLE_TYPE article_type <!--图文素材类型【CS:5051】-->
+        ,ENABLE_AGFLAG enable_agflag <!--启用标志【CS:1000】-->
+        ,MAX_ITEMS_COUNT max_items_count <!--最大条目数-->
+        ,T_ARTICLE_GROUP.CREATED_DATE created_date <!--创建日期-->
+        ,T_ARTICLE_GROUP.CREATED_USER_CD created_user_cd <!--创建用户-->
+        ,T_CREATED_USER.USER_NAME created_user_name <!--创建用户名-->
+        ,T_ARTICLE_GROUP.UPDATED_DATE updated_date <!--更新日期-->
+        ,T_ARTICLE_GROUP.UPDATED_USER_CD updated_user_cd <!--更新用户-->
+        ,T_UPDATED_USER.USER_NAME updated_user_name <!--更新用户名-->
+    FROM T_ARTICLE_GROUP
+        LEFT JOIN T_EMP_USER T_MANAGER_USER ON T_ARTICLE_GROUP.AG_MANAGER = T_MANAGER_USER.USER_CD
+        LEFT JOIN T_EMP_USER T_CREATED_USER ON T_ARTICLE_GROUP.CREATED_USER_CD=T_CREATED_USER.USER_CD
+        LEFT JOIN T_EMP_USER T_UPDATED_USER ON T_ARTICLE_GROUP.UPDATED_USER_CD=T_UPDATED_USER.USER_CD
+    WHERE T_ARTICLE_GROUP.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+        AND ARTICLE_GROUP_ID = #article_group_id#
+    </select>
+
+    <!--图文项列表（图文组详细）-->
+    <select id="select_tArticleGroupItemList" parameterClass="com.wechat.article.model.TArticleItemQueryBean" resultClass="java.util.HashMap">
+    SELECT
+        T_ARTICLE_RELA.RELA_ID <!--图文关系ID-->
+        ,T_ARTICLE_RELA.ARTICLE_GROUP_ID <!--图文组ID-->
+        ,T_ARTICLE_RELA.RELA_SORT  <!--权重-->
+        ,T_ARTICLE_RELA.PUB_STARTDATE  <!--发布开始日期-->
+        ,T_ARTICLE_RELA.PUB_ENDDATE  <!--发布截至日期-->
+        ,T_ARTICLE_RELA.CREATED_DATE  <!--创建日期-->
+        ,T_ARTICLE_RELA.CREATED_USER_CD <!--创建用户-->
+        ,T_CREATED_USER.USER_NAME CREATED_USER_NAME <!--创建用户名-->
+        ,T_ARTICLE_RELA.UPDATED_DATE <!--更新日期-->
+        ,T_ARTICLE_RELA.UPDATED_USER_CD <!--更新用户-->
+        ,T_UPDATED_USER.USER_NAME UPDATED_USER_NAME <!--更新用户名-->
+
+        ,T_ARTICLE_ITEM.ARTICLE_ITEM_ID  <!--图文ID-->
+        ,T_ARTICLE_ITEM.TITLE  <!--标题-->
+        ,T_ARTICLE_ITEM.AUTHOR  <!--作者-->
+        ,T_ARTICLE_ITEM.ARTICLE_TYPE  <!--图文项类型[CS:5055]-->
+        ,T_ARTICLE_ITEM.ARTICLE_STATE  <!--图文项目状态[CS:5056]-->
+        ,T_ARTICLE_ITEM.SUMMARY  <!--摘要-->
+        ,T_ARTICLE_ITEM.PIC_ORG  <!--封面图原图附件ID-->
+        ,T_ARTICLE_ITEM.PIC_COVER  <!--封面图处理图附件ID （900*500）-->
+        ,T_ARTICLE_ITEM.PIC_THUMBNAIL  <!--封面图缩略图附件ID （200*200）-->
+        ,T_ARTICLE_ITEM.ORG_FLAG  <!--微信图文链接启用标志[CS:1000]-->
+        ,T_ARTICLE_ITEM.ORG_URL  <!--微信图文链接-->
+        ,T_ARTICLE_ITEM.TEMPLET_FLAG  <!--是否动态模版[CS:1000]-->
+        ,T_ARTICLE_ITEM.CITE_URL  <!--推广链接-->
+        ,T_ARTICLE_ITEM.REMARK  <!--备注说明-->
+
+    FROM T_ARTICLE_RELA
+        LEFT JOIN T_ARTICLE_ITEM ON T_ARTICLE_ITEM.ARTICLE_ITEM_ID=T_ARTICLE_RELA.ARTICLE_ITEM_ID
+        LEFT JOIN T_EMP_USER T_CREATED_USER ON T_CREATED_USER.USER_CD=T_ARTICLE_RELA.CREATED_USER_CD
+        LEFT JOIN T_EMP_USER T_UPDATED_USER ON T_UPDATED_USER.USER_CD=T_ARTICLE_RELA.UPDATED_USER_CD
+    WHERE T_ARTICLE_RELA.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+        <isNotEmpty prepend=" and " property="article_group_id">
+        (T_ARTICLE_RELA.ARTICLE_GROUP_ID) = (#article_group_id:VARCHAR#)
+        </isNotEmpty>
+        <isNotEmpty property="orderStr">
+        $orderStr$
+        </isNotEmpty>
+    </select>
+
+    <!--图文项总数（图文组详细）-->
+    <select id="select_tArticleGroupItemList_count" parameterClass="com.wechat.article.model.TArticleItemQueryBean" resultClass="int">
+    SELECT  count(1)
+    FROM T_ARTICLE_RELA
+    WHERE T_ARTICLE_RELA.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+        <isNotEmpty prepend=" and " property="article_group_id">
+        (ARTICLE_GROUP_ID) = (#article_group_id:VARCHAR#)
+        </isNotEmpty>
+    </select>
+
+    <!--根据图文关系取得图文项（图文项详细）-->
+    <select id="select_getArticleGroupItem" parameterClass="com.wechat.article.model.TArticleRelaQueryBean" resultMap="articleItemResult">
+    SELECT
+        T_ARTICLE_RELA.RELA_ID <!--图文关系ID-->
+        ,T_ARTICLE_RELA.ARTICLE_GROUP_ID <!--图文组ID-->
+        ,T_ARTICLE_RELA.RELA_SORT  <!--权重-->
+        ,T_ARTICLE_RELA.PUB_STARTDATE  <!--发布开始日期-->
+        ,T_ARTICLE_RELA.PUB_ENDDATE  <!--发布截至日期-->
+        ,T_ARTICLE_RELA.CREATED_DATE  <!--创建日期-->
+        ,T_ARTICLE_RELA.CREATED_USER_CD <!--创建用户-->
+        ,T_CREATED_USER.USER_NAME CREATED_USER_NAME <!--创建用户名-->
+        ,T_ARTICLE_RELA.UPDATED_DATE <!--更新日期-->
+        ,T_ARTICLE_RELA.UPDATED_USER_CD <!--更新用户-->
+        ,T_UPDATED_USER.USER_NAME UPDATED_USER_NAME <!--更新用户名-->
+
+        ,T_ARTICLE_ITEM.ARTICLE_ITEM_ID  <!--图文ID-->
+        ,T_ARTICLE_ITEM.TITLE  <!--标题-->
+        ,T_ARTICLE_ITEM.AUTHOR  <!--作者-->
+        ,T_ARTICLE_ITEM.ARTICLE_TYPE  <!--图文项类型[CS:5055]-->
+        ,T_ARTICLE_ITEM.ARTICLE_STATE  <!--图文项目状态[CS:5056]-->
+        ,T_ARTICLE_ITEM.SUMMARY  <!--摘要-->
+        ,T_ARTICLE_ITEM.PIC_ORG  <!--封面图原图附件ID-->
+        ,T_ARTICLE_ITEM.PIC_COVER  <!--封面图处理图附件ID （900*500）-->
+        ,T_ARTICLE_ITEM.PIC_THUMBNAIL  <!--封面图缩略图附件ID （200*200）-->
+        ,T_ARTICLE_ITEM.ORG_FLAG  <!--微信图文链接启用标志[CS:1000]-->
+        ,T_ARTICLE_ITEM.ORG_URL  <!--微信图文链接-->
+        ,T_ARTICLE_ITEM.TEMPLET_FLAG  <!--是否动态模版[CS:1000]-->
+        ,T_ARTICLE_ITEM.CITE_URL  <!--推广链接-->
+        ,T_ARTICLE_ITEM.REMARK  <!--备注说明-->
+        ,T_ARTICLE_ITEM.CONTENT  <!--富文本内容-->
+
+        ,T_ATTACH_MATERIAL_ORG.STORET_NAME ORG_STORE_NAME <!--原图STORET_NAME-->
+        ,T_ATTACH_MATERIAL_ORG.STORE_PATH ORG_STORE_PATH <!--原图STORE_PATH-->
+    FROM T_ARTICLE_RELA
+        LEFT JOIN T_ARTICLE_ITEM ON T_ARTICLE_ITEM.ARTICLE_ITEM_ID=T_ARTICLE_RELA.ARTICLE_ITEM_ID
+        LEFT JOIN T_EMP_USER T_CREATED_USER ON T_CREATED_USER.USER_CD=T_ARTICLE_RELA.CREATED_USER_CD
+        LEFT JOIN T_EMP_USER T_UPDATED_USER ON T_UPDATED_USER.USER_CD=T_ARTICLE_RELA.UPDATED_USER_CD
+        LEFT JOIN T_ATTACH_MATERIAL T_ATTACH_MATERIAL_ORG ON T_ARTICLE_ITEM.PIC_ORG=T_ATTACH_MATERIAL_ORG.FILE_ID
+    WHERE T_ARTICLE_RELA.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+        AND T_ARTICLE_RELA.RELA_ID = #rela_id#
+    </select>
+
+    <!--图文项列表（图文项选择）-->
+    <select id="select_tArticleItemList" parameterClass="com.wechat.article.model.TArticleItemQueryBean" resultClass="java.util.HashMap">
+    SELECT
+         T_ARTICLE_ITEM.ARTICLE_ITEM_ID  <!--图文ID-->
+        ,T_ARTICLE_ITEM.TITLE  <!--标题-->
+        ,T_ARTICLE_ITEM.AUTHOR  <!--作者-->
+        ,T_ARTICLE_ITEM.ARTICLE_TYPE  <!--图文项类型[CS:5055]-->
+        ,T_ARTICLE_ITEM.ARTICLE_STATE  <!--图文项目状态[CS:5056]-->
+        ,T_ARTICLE_ITEM.SUMMARY  <!--摘要-->
+        ,T_ARTICLE_ITEM.PIC_ORG  <!--封面图原图附件ID-->
+        ,T_ARTICLE_ITEM.PIC_COVER  <!--封面图处理图附件ID （900*500）-->
+        ,T_ARTICLE_ITEM.PIC_THUMBNAIL  <!--封面图缩略图附件ID （200*200）-->
+        ,T_ARTICLE_ITEM.ORG_FLAG  <!--微信图文链接启用标志[CS:1000]-->
+        ,T_ARTICLE_ITEM.ORG_URL  <!--微信图文链接-->
+        ,T_ARTICLE_ITEM.TEMPLET_FLAG  <!--是否动态模版[CS:1000]-->
+        ,T_ARTICLE_ITEM.CITE_URL  <!--推广链接-->
+        ,T_ARTICLE_ITEM.REMARK  <!--备注说明-->
+        ,T_ARTICLE_ITEM.CREATED_DATE  <!--创建日期-->
+        ,T_ARTICLE_ITEM.CREATED_USER_CD <!--创建用户-->
+        ,T_CREATED_USER.USER_NAME CREATED_USER_NAME <!--创建用户名-->
+        ,T_ARTICLE_ITEM.UPDATED_DATE <!--更新日期-->
+        ,T_ARTICLE_ITEM.UPDATED_USER_CD <!--更新用户-->
+        ,T_UPDATED_USER.USER_NAME UPDATED_USER_NAME <!--更新用户名-->
+
+    FROM T_ARTICLE_ITEM
+        LEFT JOIN T_EMP_USER T_CREATED_USER ON T_CREATED_USER.USER_CD=T_ARTICLE_ITEM.CREATED_USER_CD
+        LEFT JOIN T_EMP_USER T_UPDATED_USER ON T_UPDATED_USER.USER_CD=T_ARTICLE_ITEM.UPDATED_USER_CD
+    WHERE T_ARTICLE_ITEM.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+        <isNotEmpty prepend=" and " property="title">
+        (T_ARTICLE_ITEM.TITLE) Like '%'||(#title:VARCHAR#)||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="article_type">
+        (T_ARTICLE_ITEM.ARTICLE_TYPE) = (#article_type:VARCHAR#)
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="article_state">
+        (T_ARTICLE_ITEM.ARTICLE_STATE) = (#article_state:VARCHAR#)
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="updated_date_start">
+        TO_CHAR(T_ARTICLE_ITEM.UPDATED_DATE, 'yyyy-MM-dd') <![CDATA[>=]]> TO_CHAR((#updated_date_start:DATE#),'yyyy-MM-dd')
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="updated_date_end">
+        TO_CHAR(T_ARTICLE_ITEM.UPDATED_DATE, 'yyyy-MM-dd') <![CDATA[<=]]> TO_CHAR((#updated_date_end:DATE#),'yyyy-MM-dd')
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="created_user_name">
+        (T_CREATED_USER.USER_NAME) Like '%'||(#created_user_name:VARCHAR#)||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="updated_user_name">
+        (T_UPDATED_USER.USER_NAME) Like '%'||(#updated_user_name:VARCHAR#)||'%'
+        </isNotEmpty>
+        <isNotEmpty property="orderStr">
+        $orderStr$
+        </isNotEmpty>
+    </select>
+
+    <!--图文项总数（图文项选择）-->
+    <select id="select_tArticleItemList_count" parameterClass="com.wechat.article.model.TArticleItemQueryBean" resultClass="int">
+    SELECT  count(1)
+    FROM T_ARTICLE_ITEM
+        LEFT JOIN T_EMP_USER T_CREATED_USER ON T_CREATED_USER.USER_CD=T_ARTICLE_ITEM.CREATED_USER_CD
+        LEFT JOIN T_EMP_USER T_UPDATED_USER ON T_UPDATED_USER.USER_CD=T_ARTICLE_ITEM.UPDATED_USER_CD
+    WHERE T_ARTICLE_ITEM.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+        <isNotEmpty prepend=" and " property="title">
+        (T_ARTICLE_ITEM.TITLE) Like '%'||(#title:VARCHAR#)||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="article_type">
+        (T_ARTICLE_ITEM.ARTICLE_TYPE) = (#article_type:VARCHAR#)
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="article_state">
+        (T_ARTICLE_ITEM.ARTICLE_STATE) = (#article_state:VARCHAR#)
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="updated_date_start">
+        TO_CHAR(T_ARTICLE_ITEM.UPDATED_DATE, 'yyyy-MM-dd') <![CDATA[>=]]> TO_CHAR((#updated_date_start:DATE#),'yyyy-MM-dd')
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="updated_date_end">
+        TO_CHAR(T_ARTICLE_ITEM.UPDATED_DATE, 'yyyy-MM-dd') <![CDATA[<=]]> TO_CHAR((#updated_date_end:DATE#),'yyyy-MM-dd')
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="created_user_name">
+        (T_CREATED_USER.USER_NAME) Like '%'||(#created_user_name:VARCHAR#)||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend=" and " property="updated_user_name">
+        (T_UPDATED_USER.USER_NAME) Like '%'||(#updated_user_name:VARCHAR#)||'%'
+        </isNotEmpty>
+    </select>
+
+    <!--取得指定图文组中符合发布条件的图文项-->
+    <select id="select_getArticleGroupPublishableItems" parameterClass="java.util.HashMap" resultClass="com.wechat.article.model.vo.ArticleItemVo">
+    SELECT * from (
+    SELECT
+         T_ARTICLE_ITEM.ARTICLE_ITEM_ID article_item_id  <!--图文ID-->
+        ,T_ARTICLE_ITEM.TITLE title  <!--标题-->
+        ,T_ARTICLE_ITEM.AUTHOR author <!--作者-->
+        ,T_ARTICLE_ITEM.SUMMARY summary <!--摘要-->
+        ,T_ARTICLE_ITEM.ORG_FLAG org_flag <!--微信图文链接启用标志[CS:1000]-->
+        ,T_ARTICLE_ITEM.ORG_URL org_url <!--微信图文链接-->
+        ,T_ARTICLE_ITEM.PIC_ORG pic_org <!--封面图原图附件ID-->
+        ,T_ARTICLE_ITEM.PIC_COVER pic_cover <!--封面图处理图附件ID （900*500）-->
+        ,T_ARTICLE_ITEM.PIC_THUMBNAIL pic_thumbnail <!--封面图缩略图附件ID （200*200）-->
+        ,T_ARTICLE_ITEM.ARTICLE_TYPE article_type <!--图文项类型[CS:5055]-->
+        ,T_ARTICLE_ITEM.ARTICLE_STATE article_state <!--图文项目状态[CS:5056]-->
+        ,T_ARTICLE_ITEM.TEMPLET_FLAG templet_flag <!--是否动态模版[CS:1000]-->
+        ,T_ARTICLE_ITEM.CITE_URL cite_url <!--推广链接-->
+        ,T_ARTICLE_ITEM.REMARK remark <!--备注说明-->
+        ,T_ARTICLE_RELA.RELA_ID rela_id <!--图文关系ID-->
+        ,T_ARTICLE_RELA.ARTICLE_GROUP_ID article_group_id <!--图文组ID-->
+        ,T_ARTICLE_RELA.RELA_SORT rela_sort <!--权重-->
+        ,T_ARTICLE_RELA.PUB_STARTDATE  pub_startdate <!--发布开始日期-->
+        ,T_ARTICLE_RELA.PUB_ENDDATE pub_enddate <!--发布截至日期-->
+        ,T_ARTICLE_RELA.CREATED_DATE created_date <!--创建日期-->
+        ,T_ARTICLE_RELA.CREATED_USER_CD created_user_cd <!--创建用户-->
+        ,T_ARTICLE_RELA.UPDATED_DATE updated_date <!--更新日期-->
+        ,T_ARTICLE_RELA.UPDATED_USER_CD updated_user_cd <!--更新用户-->
+        ,T_ARTICLE_GROUP.MAX_ITEMS_COUNT <!--最大条目数-->
+        ,T_ATTACH_MATERIAL_ORG.STORET_NAME org_store_name <!--原图STORET_NAME-->
+        ,T_ATTACH_MATERIAL_ORG.STORE_PATH org_store_path <!--原图STORE_PATH-->
+        ,T_ATTACH_MATERIAL_COVER.STORET_NAME cover_store_name <!--封面图STORET_NAME-->
+        ,T_ATTACH_MATERIAL_COVER.STORE_PATH cover_store_path <!--封面图STORE_PATH-->
+        ,T_ATTACH_MATERIAL_THUMBNAIL.STORET_NAME thumbnail_store_name <!--缩略图STORET_NAME-->
+        ,T_ATTACH_MATERIAL_THUMBNAIL.STORE_PATH thumbnail_store_path <!--缩略图STORE_PATH-->
+    FROM T_ARTICLE_RELA
+        ,T_ARTICLE_ITEM
+        ,T_ARTICLE_GROUP
+        ,T_ATTACH_MATERIAL T_ATTACH_MATERIAL_ORG
+        ,T_ATTACH_MATERIAL T_ATTACH_MATERIAL_COVER
+        ,T_ATTACH_MATERIAL T_ATTACH_MATERIAL_THUMBNAIL
+    WHERE T_ARTICLE_RELA.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+      AND T_ARTICLE_RELA.ARTICLE_ITEM_ID=T_ARTICLE_ITEM.ARTICLE_ITEM_ID
+      AND T_ARTICLE_RELA.ARTICLE_GROUP_ID=T_ARTICLE_GROUP.ARTICLE_GROUP_ID
+      AND T_ARTICLE_ITEM.PIC_ORG=T_ATTACH_MATERIAL_ORG.FILE_ID
+      AND T_ARTICLE_ITEM.PIC_COVER=T_ATTACH_MATERIAL_COVER.FILE_ID
+      AND T_ARTICLE_ITEM.PIC_THUMBNAIL=T_ATTACH_MATERIAL_THUMBNAIL.FILE_ID
+      AND T_ARTICLE_GROUP.ENABLE_AGFLAG='100000000001'<!--图文组启用状态为TRUE-->
+      AND T_ARTICLE_ITEM.ARTICLE_STATE='505600000003'<!--图文项发布状态为 审核通过-->
+      AND T_ARTICLE_RELA.ARTICLE_GROUP_ID = #article_group_id#
+        <isNotEmpty prepend=" AND " property="pub_base_date">
+        TO_CHAR(T_ARTICLE_RELA.PUB_STARTDATE, 'yyyy-MM-dd') <![CDATA[<=]]> TO_CHAR((#pub_base_date:DATE#),'yyyy-MM-dd')
+        </isNotEmpty>
+        <isNotEmpty prepend=" AND " property="pub_base_date">
+        TO_CHAR(T_ARTICLE_RELA.PUB_ENDDATE, 'yyyy-MM-dd') <![CDATA[>=]]> TO_CHAR((#pub_base_date:DATE#),'yyyy-MM-dd')
+        </isNotEmpty>
+    ORDER BY
+        <!-- 2015/04/13 COMMENT BY ZHUBD T_ARTICLE_RELA.RELA_SORT ASC ,T_ARTICLE_RELA.PUB_STARTDATE ASC ,T_ARTICLE_RELA.UPDATED_DATE DESC  权重小、发布开始日期小、更新时间大的靠前-->
+        T_ARTICLE_ITEM.ARTICLE_STATE ASC, T_ARTICLE_RELA.RELA_SORT ASC ,T_ARTICLE_RELA.UPDATED_DATE DESC <!-- 有效在前 , 权重小的优先、更新时间大的靠前-->
+    )
+    WHERE rownum <![CDATA[<=]]>  MAX_ITEMS_COUNT <!--只取最大条目数限定的条目-->
+    </select>
+</sqlMap>

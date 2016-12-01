@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<package name="struts_ld_tReplySpecial"  extends="struts_common">
+	  
+	  	<!-- 特殊回复规则列表信息 -->
+        <action name="searchTReplySpecialAction" class="searchTReplySpecialAction">
+			<result name="success" >/jsp/autoReplyManage/searchSpecialReply.jsp</result>
+		</action>
+		
+        <!-- 特殊回复规则新增页面-->
+        <action name="addTReplySpecialPage" class="addTReplySpecialPage">
+			<result name="success" >/jsp/autoReplyManage/addSpecialReply.jsp</result>
+		</action>
+		
+		<!-- 特殊回复规则新增动作	-->
+        <action name="addTReplySpecialAction" class="addTReplySpecialAction"> 
+			<result name="success" type="chain"><param name="actionName">searchTReplySpecialAction</param> </result>
+		</action>
+		
+		<!-- 特殊回复规则编辑页面 -->
+		<action name="editTReplySpecialPage" class="editTReplySpecialPage">
+			<result name="success" >/jsp/autoReplyManage/editSpecialReply.jsp</result>
+		</action>
+
+		<!-- 特殊回复规则删除页面	-->
+		<action name="delTReplySpecialAction" class="delTReplySpecialAction">
+			<result name="success" type="chain"><param name="actionName">searchTReplySpecialAction</param> </result>
+		</action>		
+		
+		<!-- 特殊回复规则编辑动作-->
+		<action name="editTReplySpecialAction" class="editTReplySpecialAction">
+			<result name="success" type="chain"><param name="actionName">searchTReplySpecialAction</param> </result>
+		</action>
+		
+		<!-- 详细画面动作-->
+		<action name="detailTReplySpecialPage" class="detailTReplySpecialPage">
+			<result name="success" >/jsp/autoReplyManage/detailSpecialReply.jsp</result>
+		</action>
+		
+         <!-- 检查当前公众号的首次关注回复已存在-->
+        <action name="checkTReplySpecialAction" class="checkTReplySpecialAction">
+			<result name="success" >/jsp/autoReplyManage/addSpecialReply.jsp</result>
+		</action>
+	</package>
+</struts>

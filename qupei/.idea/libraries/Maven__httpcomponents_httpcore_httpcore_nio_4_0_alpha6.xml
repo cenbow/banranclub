@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: httpcomponents-httpcore:httpcore-nio:4.0-alpha6">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/httpcomponents-httpcore/httpcore-nio/4.0-alpha6/httpcore-nio-4.0-alpha6.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/httpcomponents-httpcore/httpcore-nio/4.0-alpha6/httpcore-nio-4.0-alpha6-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/httpcomponents-httpcore/httpcore-nio/4.0-alpha6/httpcore-nio-4.0-alpha6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

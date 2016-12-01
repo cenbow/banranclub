@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tReplyKeyword">
+
+  <!--用分页查询模糊查询-->
+     <select id="select_tReplyKeywordList" parameterClass="com.wechat.replycfg.model.TReplyKeywordQueryBean" resultClass="java.util.HashMap">
+          SELECT
+		 		T_REPLY_KEYWORD.KREPLY_ID  <!--主键ID-->
+		  		,T_REPLY_KEYWORD.KEYWORD  <!--关键字-->
+		  		,T_REPLY_KEYWORD.EFFECT_FLAG <!-- 生效标志 -->
+		  		,T_REPLY_KEYWORD.CUST_SRV_FLAG <!-- 启用客服模式 -->
+		  		,T_REPLY_KEYWORD.MATCH_TYPE  <!--匹配模式【CS:5053】-->
+		  		,T_REPLY_KEYWORD.REPLY_TYPE  <!--回复类型【CS:5052】-->
+		  		,T_REPLY_KEYWORD.MATERIAL_ID  <!--消息素材ID(不同类型关联不同表)-->
+		  		,T_REPLY_KEYWORD.TEXT_MSG  <!--文本内容-->
+		  		,T_REPLY_KEYWORD.TEMPLET_FLAG  <!--是否动态模版[CS:1000]-->
+		  		,T_REPLY_KEYWORD.PLATFORM_ID  <!--公众账号-->
+		  		,T_REPLY_KEYWORD.PUB_STARTDATE <!-- 发布开始日期-->
+		  		,T_REPLY_KEYWORD.PUB_ENDDATE  <!--发布截至日期-->
+		  		,T_REPLY_KEYWORD.CREATED_DATE  <!-- 创建日期-->
+		  		,T_REPLY_KEYWORD.CREATED_USER_CD  <!--创建用户-->
+		  		,T_REPLY_KEYWORD.UPDATED_USER_CD  <!--更新用户-->
+		  		,T_REPLY_KEYWORD.UPDATED_DATE  <!--最后更新时间-->
+		  		,T_REPLY_KEYWORD.END_DATE	<!-- 终止时间 -->
+		  		,T_WX_PLATFORM.PLATFORM_NAME <!-- 公众名称 -->
+		  FROM T_REPLY_KEYWORD
+		  LEFT JOIN T_WX_PLATFORM ON T_WX_PLATFORM.PLATFORM_ID = T_REPLY_KEYWORD.PLATFORM_ID<!-- 关联公众号表查询出对应的name -->
+		  WHERE 1=1 AND T_REPLY_KEYWORD.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+		  		<!-- 主键 -->
+				 <isNotEmpty prepend=" and " property="kreply_id">
+					(T_REPLY_KEYWORD.KREPLY_ID) =(#kreply_id:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 关键字 -->
+				 <isNotEmpty prepend=" and " property="keyword">
+					(T_REPLY_KEYWORD.KEYWORD) Like '%'||(#keyword:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    <!-- 生效标志 -->
+			    <isNotEmpty prepend=" and " property="effect_flag">
+					(T_REPLY_KEYWORD.EFFECT_FLAG) =(#effect_flag:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 匹配类型 -->
+				<isNotEmpty prepend=" and " property="match_type">
+					(T_REPLY_KEYWORD.MATCH_TYPE) =(#match_type:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 回复类型 -->
+				 <isNotEmpty prepend=" and " property="reply_type">
+					(T_REPLY_KEYWORD.REPLY_TYPE) =(#reply_type:VARCHAR#)
+			    </isNotEmpty>
+
+			     <!-- 素材ID -->
+			    <isNotEmpty prepend=" and " property="material_id">
+					(T_REPLY_KEYWORD.MATERIAL_ID) =(#material_id:VARCHAR#)
+			    </isNotEmpty>
+
+			    <!-- 公众号 -->
+			    <isNotEmpty prepend=" and " property="platform_id">
+					(T_REPLY_KEYWORD.PLATFORM_ID) =(#platform_id:VARCHAR#)
+			    </isNotEmpty>
+
+			     <!-- 更新时间 -->
+			 	<isNotEmpty prepend=" and " property="cxstartdate">
+					TO_CHAR(T_REPLY_KEYWORD.UPDATED_DATE, 'yyyy-MM-dd')	<![CDATA[>=]]> TO_CHAR((#cxstartdate:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>
+			 	<isNotEmpty prepend=" and " property="cxenddate">
+					TO_CHAR(T_REPLY_KEYWORD.UPDATED_DATE, 'yyyy-MM-dd')	<![CDATA[<=]]> TO_CHAR((#cxenddate:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>
+
+			     <!-- 发布时间 -->
+			 	<isNotEmpty prepend=" and " property="pub_startdate">
+					TO_CHAR(T_REPLY_KEYWORD.PUB_STARTDATE, 'yyyy-MM-dd')   <![CDATA[>=]]> TO_CHAR((#pub_startdate:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>
+			 	<isNotEmpty prepend=" and " property="pub_enddate">
+					TO_CHAR(T_REPLY_KEYWORD.PUB_ENDDATE, 'yyyy-MM-dd')	<![CDATA[<=]]> TO_CHAR((#pub_enddate:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>
+
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(T_REPLY_KEYWORD.CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    <isNotEmpty prepend=" and " property="updated_user_cd">
+					(T_REPLY_KEYWORD.UPDATED_USER_CD) Like '%'||(#updated_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>
+			     <!-- 客服模式-->
+			    <isNotEmpty prepend=" and " property="cust_srv_flag">
+					(T_REPLY_KEYWORD.CUST_SRV_FLAG) =(#cust_srv_flag:VARCHAR#)
+			    </isNotEmpty>
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+
+     <!--用于查询总数-->
+     <select id="select_tReplyKeywordList_count" parameterClass="com.wechat.replycfg.model.TReplyKeywordQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_REPLY_KEYWORD
+			WHERE 1=1 AND T_REPLY_KEYWORD.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+				<!-- 主键 -->
+				 <isNotEmpty prepend=" and " property="kreply_id">
+					(KREPLY_ID)=(#kreply_id:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 关键字 -->
+				 <isNotEmpty prepend=" and " property="keyword">
+					(KEYWORD) Like '%'||(#keyword:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    <!-- 匹配类型 -->
+				 <isNotEmpty prepend=" and " property="match_type">
+					(MATCH_TYPE) =(#match_type:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 回复类型 -->
+				 <isNotEmpty prepend=" and " property="reply_type">
+					(REPLY_TYPE) =(#reply_type:VARCHAR#)
+			    </isNotEmpty>
+			      <!-- 素材ID -->
+			    <isNotEmpty prepend=" and " property="material_id">
+					(MATERIAL_ID) =(#material_id:VARCHAR#)
+			    </isNotEmpty>
+			    <!-- 公众号 -->
+				<isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) =(#platform_id:VARCHAR#)
+			    </isNotEmpty>
+
+			     <!-- 更新时间 -->
+			 	<isNotEmpty prepend=" and " property="cxstartdate">
+					TO_CHAR(T_REPLY_KEYWORD.UPDATED_DATE, 'yyyy-MM-dd')	<![CDATA[>=]]> TO_CHAR((#cxstartdate:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>
+			 	<isNotEmpty prepend=" and " property="cxenddate">
+					TO_CHAR(T_REPLY_KEYWORD.UPDATED_DATE, 'yyyy-MM-dd')	<![CDATA[<=]]> TO_CHAR((#cxenddate:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>
+
+			     <!-- 发布时间 -->
+			 	<isNotEmpty prepend=" and " property="pub_startdate">
+					TO_CHAR(T_REPLY_KEYWORD.PUB_STARTDATE, 'yyyy-MM-dd')   <![CDATA[>=]]> TO_CHAR((#pub_startdate:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>
+			 	<isNotEmpty prepend=" and " property="pub_enddate">
+					TO_CHAR(T_REPLY_KEYWORD.PUB_ENDDATE, 'yyyy-MM-dd')	<![CDATA[<=]]> TO_CHAR((#pub_enddate:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>
+
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>
+			     <isNotEmpty prepend=" and " property="updated_user_cd">
+					(UPDATED_USER_CD) Like '%'||(#updated_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>
+			     <!-- 客服模式-->
+			    <isNotEmpty prepend=" and " property="cust_srv_flag">
+					(T_REPLY_KEYWORD.CUST_SRV_FLAG) =(#cust_srv_flag:VARCHAR#)
+			    </isNotEmpty>
+	 </select>
+
+	 <!--用于回复消息的精确匹配处理-->
+     <select id="select_queryReplyKeywordDtosByAccurateMode" parameterClass="com.wechat.replycfg.model.TReplyKeywordQueryBean" resultClass="com.wechat.replycfg.model.dto.TReplyKeywordDto">
+          SELECT
+		 		KREPLY_ID  <!--主键ID-->
+		  		,KEYWORD  <!--关键字-->
+		  		,EFFECT_FLAG <!-- 生效标志 -->
+		  		,MATCH_TYPE  <!--匹配模式【CS:5053】-->
+		  		,REPLY_TYPE  <!--回复类型【CS:5052】-->
+		  		,MATERIAL_ID  <!--消息素材ID(不同类型关联不同表)-->
+		  		,TEXT_MSG  <!--文本内容-->
+		  		,TEMPLET_FLAG  <!--是否动态模版[CS:1000]-->
+		  		,CUST_SRV_FLAG  <!--客服模式[CS:1000]-->
+		  		,PLATFORM_ID  <!--公众账号-->
+		  		,PUB_STARTDATE <!-- 发布开始日期-->
+		  		,PUB_ENDDATE  <!--发布截至日期-->
+		  		,CREATED_DATE  <!-- 创建日期-->
+		  		,CREATED_USER_CD  <!--创建用户-->
+		  		,UPDATED_USER_CD  <!--更新用户-->
+		  		,UPDATED_DATE  <!--最后更新时间-->
+		  		,END_DATE	<!-- 终止时间 -->
+		  FROM T_REPLY_KEYWORD
+		  WHERE 1=1 AND T_REPLY_KEYWORD.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+
+		  		<!-- 关键字 -->
+				 <isNotEmpty prepend=" and " property="keyword">
+					(KEYWORD) = (#keyword:VARCHAR#)
+			    </isNotEmpty>
+
+			    <!-- 生效标志 -->
+			    <isNotEmpty prepend=" and " property="effect_flag">
+					(EFFECT_FLAG) = (#effect_flag:VARCHAR#)
+			    </isNotEmpty>
+
+			    <!-- 匹配类型 -->
+				<isNotEmpty prepend=" and " property="match_type">
+					(MATCH_TYPE) = (#match_type:VARCHAR#)
+			    </isNotEmpty>
+
+			     <!-- 公众号ID -->
+			    <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) =(#platform_id:VARCHAR#)
+			    </isNotEmpty>
+
+			    <!-- 发布时间          当前系统时间大于发布开始时间并且小于发布结束时间-->
+			 	<isNotEmpty prepend=" and " property="pub_startdate">
+					TO_CHAR(PUB_STARTDATE, 'yyyy-MM-dd')   <![CDATA[<=]]>  TO_CHAR((#pub_startdate:DATE#), 'yyyy-MM-dd')
+			    </isNotEmpty>
+			 	<isNotEmpty prepend=" and " property="pub_enddate">
+					TO_CHAR(PUB_ENDDATE, 'yyyy-MM-dd')	<![CDATA[>=]]>  TO_CHAR((#pub_enddate:DATE#), 'yyyy-MM-dd')
+			    </isNotEmpty>
+			    ORDER BY T_REPLY_KEYWORD.UPDATED_DATE DESC
+     </select>
+
+
+     <!--用于回复消息的模糊匹配处理-->
+     <select id="select_queryReplyKeywordDtosByLikeMode" parameterClass="com.wechat.replycfg.model.TReplyKeywordQueryBean" resultClass="com.wechat.replycfg.model.dto.TReplyKeywordDto">
+          SELECT
+		 		KREPLY_ID  <!--主键ID-->
+		  		,KEYWORD  <!--关键字-->
+		  		,EFFECT_FLAG <!-- 生效标志 -->
+		  		,MATCH_TYPE  <!--匹配模式【CS:5053】-->
+		  		,REPLY_TYPE  <!--回复类型【CS:5052】-->
+		  		,MATERIAL_ID  <!--消息素材ID(不同类型关联不同表)-->
+		  		,TEXT_MSG  <!--文本内容-->
+		  		,TEMPLET_FLAG  <!--是否动态模版[CS:1000]-->
+		  		,PLATFORM_ID  <!--公众账号-->
+		  		,PUB_STARTDATE <!-- 发布开始日期-->
+		  		,PUB_ENDDATE  <!--发布截至日期-->
+		  		,CREATED_DATE  <!-- 创建日期-->
+		  		,CREATED_USER_CD  <!--创建用户-->
+		  		,UPDATED_USER_CD  <!--更新用户-->
+		  		,UPDATED_DATE  <!--最后更新时间-->
+		  		,END_DATE	<!-- 终止时间 -->
+		  FROM T_REPLY_KEYWORD
+		  WHERE 1=1 AND T_REPLY_KEYWORD.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+
+		  		<!-- 关键字 -->
+				<isNotEmpty prepend=" and " property="keyword">
+					(KEYWORD) Like '%'||(#keyword:VARCHAR#)||'%'
+			    </isNotEmpty>
+
+			    <!-- 生效标志 -->
+			    <isNotEmpty prepend=" and " property="effect_flag">
+					(EFFECT_FLAG) = (#effect_flag:VARCHAR#)
+			    </isNotEmpty>
+
+			    <!-- 匹配类型 -->
+				<isNotEmpty prepend=" and " property="match_type">
+					(MATCH_TYPE) = (#match_type:VARCHAR#)
+			    </isNotEmpty>
+
+			    <!-- 公众号ID -->
+			    <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) =(#platform_id:VARCHAR#)
+			    </isNotEmpty>
+
+			 	 <!-- 发布时间          当前系统时间大于发布开始时间并且小于发布结束时间-->
+			 	<isNotEmpty prepend=" and " property="pub_startdate">
+					TO_CHAR(PUB_STARTDATE, 'yyyy-MM-dd')   <![CDATA[<=]]>  TO_CHAR((#pub_startdate:DATE#), 'yyyy-MM-dd')
+			    </isNotEmpty>
+			 	<isNotEmpty prepend=" and " property="pub_enddate">
+					TO_CHAR(PUB_ENDDATE, 'yyyy-MM-dd')	<![CDATA[>=]]>  TO_CHAR((#pub_enddate:DATE#), 'yyyy-MM-dd')
+			    </isNotEmpty>
+
+			    ORDER BY T_REPLY_KEYWORD.UPDATED_DATE DESC
+
+     </select>
+
+      <!--用于校验记录是否已经存在-->
+     <select id="select_checkTReplyKeywordDto" parameterClass="com.wechat.replycfg.model.TReplyKeywordQueryBean" resultClass="com.wechat.replycfg.model.dto.TReplyKeywordDto">
+           SELECT
+		 		KREPLY_ID  <!--主键ID-->
+		  		,KEYWORD  <!--关键字-->
+		  		,EFFECT_FLAG <!-- 生效标志 -->
+		  		,MATCH_TYPE  <!--匹配模式【CS:5053】-->
+		  		,REPLY_TYPE  <!--回复类型【CS:5052】-->
+		  		,MATERIAL_ID  <!--消息素材ID(不同类型关联不同表)-->
+		  		,TEXT_MSG  <!--文本内容-->
+		  		,TEMPLET_FLAG  <!--是否动态模版[CS:1000]-->
+		  		,PLATFORM_ID  <!--公众账号-->
+		  		,PUB_STARTDATE <!-- 发布开始日期-->
+		  		,PUB_ENDDATE  <!--发布截至日期-->
+		  		,CREATED_DATE  <!-- 创建日期-->
+		  		,CREATED_USER_CD  <!--创建用户-->
+		  		,UPDATED_USER_CD  <!--更新用户-->
+		  		,UPDATED_DATE  <!--最后更新时间-->
+		  		,END_DATE	<!-- 终止时间 -->
+		  FROM T_REPLY_KEYWORD
+		  WHERE 1=1 AND T_REPLY_KEYWORD.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+
+		  		<!-- 关键字 -->
+				 <isNotEmpty prepend=" and " property="keyword">
+					(KEYWORD) = (#keyword:VARCHAR#)
+			    </isNotEmpty>
+
+			    <!-- 生效标志 -->
+			    <isNotEmpty prepend=" and " property="effect_flag">
+					(EFFECT_FLAG) = (#effect_flag:VARCHAR#)
+			    </isNotEmpty>
+
+			     <!-- 匹配类型 -->
+				<isNotEmpty prepend=" and " property="match_type">
+					(MATCH_TYPE) = (#match_type:VARCHAR#)
+			    </isNotEmpty>
+
+			    <!-- 素材ID -->
+			    <isNotEmpty prepend=" and " property="material_id">
+					(MATERIAL_ID) = (#material_id:VARCHAR#)
+			    </isNotEmpty>
+
+			     <!-- 公众号ID -->
+			    <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) =(#platform_id:VARCHAR#)
+			    </isNotEmpty>
+
+			    <!-- 发布时间          当前系统时间大于发布开始时间并且小于发布结束时间-->
+			 	<isNotEmpty prepend=" and " property="pub_startdate">
+					TO_CHAR(PUB_STARTDATE, 'yyyy-MM-dd')   <![CDATA[<=]]>  TO_CHAR((#pub_startdate:DATE#), 'yyyy-MM-dd')
+			    </isNotEmpty>
+			 	<isNotEmpty prepend=" and " property="pub_enddate">
+					TO_CHAR(PUB_ENDDATE, 'yyyy-MM-dd')	<![CDATA[>=]]>  TO_CHAR((#pub_enddate:DATE#), 'yyyy-MM-dd')
+			    </isNotEmpty>
+     </select>
+
+
+     <!-- 自定义更新方法，用于将已存在数据的字段更新为NULL -->
+     <update id="update_updateTReplyKeywordDto" parameterClass="com.wechat.replycfg.model.dto.TReplyKeywordDto">
+           UPDATE     T_REPLY_KEYWORD
+           SET
+		  		T_REPLY_KEYWORD.KEYWORD  = #keyword# <!--关键字-->
+		  		,T_REPLY_KEYWORD.MATCH_TYPE = #match_type# <!--匹配模式【CS:5053】-->
+		  		,T_REPLY_KEYWORD.REPLY_TYPE  = #reply_type# <!--回复类型【CS:5052】-->
+		  		,T_REPLY_KEYWORD.MATERIAL_ID = #material_id# <!--消息素材ID(不同类型关联不同表)-->
+		  		,T_REPLY_KEYWORD.TEXT_MSG  = #text_msg# <!--文本内容-->
+		  		,T_REPLY_KEYWORD.TEMPLET_FLAG  = #templet_flag#<!--是否动态模版[CS:1000]-->
+		  		,T_REPLY_KEYWORD.EFFECT_FLAG = #effect_flag# <!-- 生效标志 -->
+		  		,T_REPLY_KEYWORD.CUST_SRV_FLAG = #cust_srv_flag# <!-- 启用客服模式 -->
+		  		,T_REPLY_KEYWORD.PUB_STARTDATE = #pub_startdate# <!-- 发布开始日期-->
+		  		,T_REPLY_KEYWORD.PUB_ENDDATE  = #pub_enddate#<!--发布截至日期-->
+		  		,T_REPLY_KEYWORD.PLATFORM_ID = #platform_id#  <!--公众账号-->
+		  		,T_REPLY_KEYWORD.UPDATED_DATE = #updated_date# <!--更新日期-->
+		  		,T_REPLY_KEYWORD.UPDATED_USER_CD = #updated_user_cd# <!--更新用户-->
+
+		  WHERE 1=1 AND T_REPLY_KEYWORD.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+		  			AND T_REPLY_KEYWORD.KREPLY_ID = #kreply_id#  <!-- ID主键 -->
+     </update>
+
+
+      <!--用于校验是否此ID数据与关键字有关联-->
+     <select id="select_countTReplyKeywordList_count" parameterClass="com.wechat.replycfg.model.TReplyKeywordQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_REPLY_KEYWORD
+			WHERE 1=1 AND T_REPLY_KEYWORD.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+			      <!-- 素材ID -->
+			    <isNotEmpty prepend=" and " property="material_id">
+					(MATERIAL_ID) =(#material_id:VARCHAR#)
+			    </isNotEmpty>
+	 </select>
+
+</sqlMap>

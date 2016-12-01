@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tReplySpecial">
+
+  <!--用于模糊查询-->
+     <select id="select_tReplySpecialList" parameterClass="com.wechat.replycfg.model.TReplySpecialQueryBean" resultClass="java.util.HashMap">
+          SELECT  
+		 		FREPLY_ID  <!--特殊回复规则ID-->
+		  		,REPLY_TYPE  <!--特殊回复规则类型-->
+		  		,EFFECT_FLAG  <!--生效标志-->
+		  		,RULE_TYPE  <!--回复类型-->
+		  		,PLATFORM_ID  <!--公众号ID-->
+		  		,UPDATED_DATE  <!--最后更新时间-->
+		  		,CREATED_USER_CD  <!--创建人-->
+		  		,UPDATED_USER_CD  <!--更新人-->
+		  FROM T_REPLY_SPECIAL
+		  WHERE 1=1 AND T_REPLY_SPECIAL.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="reply_type">
+					(REPLY_TYPE) Like '%'||(#reply_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="effect_flag">
+					(EFFECT_FLAG) Like '%'||(#effect_flag:VARCHAR#)||'%'
+			    </isNotEmpty>    
+		 
+				 <isNotEmpty prepend=" and " property="rule_type">
+					(RULE_TYPE) Like '%'||(#rule_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID)  = (#platform_id:VARCHAR#)
+			    </isNotEmpty>      
+			    <isNotEmpty prepend=" and " property="updated_date_start">
+			    	 <![CDATA[ TO_CHAR(UPDATED_DATE, 'yyyy-MM-dd') >= TO_CHAR((#updated_date_start:DATE#),'yyyy-MM-dd') ]]>
+			    </isNotEmpty>  
+                  <isNotEmpty prepend=" and " property="updated_date_end">
+			    	 <![CDATA[ TO_CHAR(UPDATED_DATE, 'yyyy-MM-dd') <= TO_CHAR((#updated_date_end:DATE#),'yyyy-MM-dd') ]]>
+			    </isNotEmpty>  
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="updated_user_cd">
+					(UPDATED_USER_CD) Like '%'||(#updated_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+     
+     <!--用于查询总数-->
+     <select id="select_tReplySpecialList_count" parameterClass="com.wechat.replycfg.model.TReplySpecialQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_REPLY_SPECIAL
+			WHERE 1=1 AND T_REPLY_SPECIAL.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	
+				 <isNotEmpty prepend=" and " property="reply_type">
+					(REPLY_TYPE) Like '%'||(#reply_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="effect_flag">
+					(EFFECT_FLAG) Like '%'||(#effect_flag:VARCHAR#)||'%'
+			    </isNotEmpty>    	
+				 <isNotEmpty prepend=" and " property="rule_type">
+					(RULE_TYPE) Like '%'||(#rule_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				<isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) = (#platform_id:VARCHAR#)
+			    </isNotEmpty> 
+			    <isNotEmpty prepend=" and " property="updated_date_start">
+			    	 <![CDATA[ TO_CHAR(UPDATED_DATE, 'yyyy-MM-dd') >= TO_CHAR((#updated_date_start:DATE#),'yyyy-MM-dd') ]]>
+			    </isNotEmpty>  
+                  <isNotEmpty prepend=" and " property="updated_date_end">
+			    	 <![CDATA[ TO_CHAR(UPDATED_DATE, 'yyyy-MM-dd') <= TO_CHAR((#updated_date_end:DATE#),'yyyy-MM-dd') ]]>
+			    </isNotEmpty>  
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="updated_user_cd">
+					(UPDATED_USER_CD) Like '%'||(#updated_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>    
+	 </select>
+	 
+     <!--用于回复消息的处理-->
+     <select id="select_queryReplySpecialList" parameterClass="com.wechat.replycfg.model.TReplySpecialQueryBean" resultClass="com.wechat.replycfg.model.dto.TReplySpecialDto">
+          SELECT  
+		 		FREPLY_ID  <!--特殊回复规则ID-->
+		  		,REPLY_TYPE  <!--特殊回复规则类型-->
+		  		,EFFECT_FLAG  <!--生效标志-->
+		  		,MATERIAL_ID  <!--素材ID-->
+		  		,TEXT_MSG  <!--文本信息-->
+		  		,TEMPLET_FLAG  <!--是否动态模板-->
+		  		,CUST_SRV_FLAG  <!--客服模式[CS:1000]-->
+		  		,RULE_TYPE  <!--回复类型-->
+		  		,PLATFORM_ID  <!--公众号ID-->
+		  		,PUB_STARTDATE  <!--发布开始日期-->
+		  		,PUB_ENDDATE  <!--发布截止日期-->
+		  		,UPDATED_DATE  <!--最后更新时间-->
+		  		,CREATED_USER_CD  <!--创建人-->
+		  		,UPDATED_USER_CD  <!--更新人-->
+		  FROM T_REPLY_SPECIAL
+		  WHERE 1=1 AND T_REPLY_SPECIAL.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+		         <isNotEmpty prepend=" and " property="rule_type">
+					(RULE_TYPE) =(#rule_type:VARCHAR#)
+			    </isNotEmpty>    	 			
+				 <isNotEmpty prepend=" and " property="reply_type">
+					(REPLY_TYPE) =(#reply_type:VARCHAR#)
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID)  = (#platform_id:VARCHAR#)
+			    </isNotEmpty>
+			    <isNotEmpty prepend=" and " property="effect_flag">
+					(EFFECT_FLAG) =(#effect_flag:VARCHAR#)
+			    </isNotEmpty>  
+     </select>
+     
+          <!--用于检查首次关注或关键字无匹配只有一个的处理-->
+     <select id="select_tReplySpecialOnlyOneList" parameterClass="com.wechat.replycfg.model.TReplySpecialQueryBean" resultClass="com.wechat.replycfg.model.dto.TReplySpecialDto">
+          SELECT  
+		 		FREPLY_ID  <!--特殊回复规则ID-->
+		  		,REPLY_TYPE  <!--特殊回复规则类型-->
+		  		,EFFECT_FLAG  <!--生效标志-->
+		  		,MATERIAL_ID  <!--素材ID-->
+		  		,TEXT_MSG  <!--文本信息-->
+		  		,TEMPLET_FLAG  <!--是否动态模板-->
+		  		,RULE_TYPE  <!--回复类型-->
+		  		,PLATFORM_ID  <!--公众号ID-->
+                ,CREATED_USER_CD
+                ,UPDATED_USER_CD
+		  FROM T_REPLY_SPECIAL
+		  WHERE 1=1 AND T_REPLY_SPECIAL.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')
+		         <isNotEmpty prepend=" and " property="rule_type">
+					(RULE_TYPE) =(#rule_type:VARCHAR#)
+			    </isNotEmpty>    	 			
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID)  = (#platform_id:VARCHAR#)
+			    </isNotEmpty>  
+     </select>
+
+     <!-- 检查素材是否与特殊回复有关联 -->
+     <select id="select_checkRelated" parameterClass="com.wechat.replycfg.model.TReplySpecialQueryBean" resultClass="int">
+		  SELECT  count(1) <!--数目-->
+		  FROM T_REPLY_SPECIAL
+		  WHERE 1=1 AND T_REPLY_SPECIAL.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 			
+				 <isNotEmpty prepend=" and " property="material_id">
+					(MATERIAL_ID)  = (#material_id:VARCHAR#)
+			    </isNotEmpty>  
+			     <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID)  = (#platform_id:VARCHAR#)
+			    </isNotEmpty>  
+     </select>
+</sqlMap>
+
+
+

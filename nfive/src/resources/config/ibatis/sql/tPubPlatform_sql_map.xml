@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tPubPlatform">
+
+  <!--用于模糊查询-->
+     <select id="select_tPubPlatformList" parameterClass="com.wechat.pfcfg.model.TPubPlatformQueryBean" resultClass="java.util.HashMap">
+          SELECT  
+		 		 TP.PLATFORM_ID  		<!--公众平台号ID-->
+		  		,TP.WECHART_ACCOUNT  	<!--公众微信号-->
+		  		,TP.PLATFORM_EMAIL  	<!--登录邮箱-->
+		  		,TP.PLATFORM_NAME  		<!--公众号名称-->
+		  		,TP.PLATFORM_TYPE  		<!--公众号类型[CS:5010]-->
+		  		,TP.PLATFORM_DESC  		<!--说明信息-->
+		  		,TP.TOKEN  				<!--令牌-->
+		  		,TP.APPID  				<!--应用ID-->
+		  		,TP.APPSECRET  			<!--应用密钥-->
+		  		,TP.ORG_ID  			<!--原始ID-->
+		  		,TP.CREATED_DATE  		<!--创建日期-->
+		  		,TP.UPDATED_DATE  		<!--修改日期-->
+		  		,TP.CREATED_USER_CD  	<!--创建用户-->
+		  		,TP.UPDATED_USER_CD  	<!--修改用户-->
+		  FROM T_PUB_PLATFORM TP
+		  WHERE 1=1 AND TP.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) Like '%'||(#platform_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="wechart_account">
+					(WECHART_ACCOUNT) Like '%'||(#wechart_account:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_email">
+					(PLATFORM_EMAIL) Like '%'||(#platform_email:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_name">
+					(PLATFORM_NAME) Like '%'||(#platform_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_type">
+					(PLATFORM_TYPE) Like '%'||(#platform_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_desc">
+					(PLATFORM_DESC) Like '%'||(#platform_desc:VARCHAR#)||'%'
+			    </isNotEmpty>
+			     <isNotEmpty prepend=" and " property="token">
+					(TOKEN) Like '%'||(#token:VARCHAR#)||'%'
+			    </isNotEmpty>   
+				 <isNotEmpty prepend=" and " property="appid">
+					(APPID) Like '%'||(#appid:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="appsecret">
+					(APPSECRET) Like '%'||(#appsecret:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="created_date">
+					TO_CHAR(CREATED_DATE, 'yyyy-MM-dd')	=TO_CHAR((#created_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>
+			     
+            	<isNotEmpty prepend=" and " property="user_cd">
+			        not exists (select 1 from T_PLATFORMEMP_CFG TPC where TPC.USER_CD = (#user_cd:VARCHAR#) and TPC.PLATFORM_ID = TP.PLATFORM_ID and TPC.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd') )
+			    </isNotEmpty>      
+			    
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+     
+     <!--用于查询总数-->
+     <select id="select_tPubPlatformList_count" parameterClass="com.wechat.pfcfg.model.TPubPlatformQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_PUB_PLATFORM TP
+			WHERE 1=1 AND TP.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) Like '%'||(#platform_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="wechart_account">
+					(WECHART_ACCOUNT) Like '%'||(#wechart_account:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_email">
+					(PLATFORM_EMAIL) Like '%'||(#platform_email:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_name">
+					(PLATFORM_NAME) Like '%'||(#platform_name:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_type">
+					(PLATFORM_TYPE) Like '%'||(#platform_type:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_desc">
+					(PLATFORM_DESC) Like '%'||(#platform_desc:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="appid">
+					(APPID) Like '%'||(#appid:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="appsecret">
+					(APPSECRET) Like '%'||(#appsecret:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="created_date">
+					TO_CHAR(CREATED_DATE, 'yyyy-MM-dd')=TO_CHAR((#created_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="created_user_cd">
+					(CREATED_USER_CD) Like '%'||(#created_user_cd:VARCHAR#)||'%'
+			    </isNotEmpty>
+			    <isNotEmpty prepend=" and " property="user_cd">
+			        not exists (select 1 from T_PLATFORMEMP_CFG TPC where TPC.USER_CD = (#user_cd:VARCHAR#) and TPC.PLATFORM_ID = TP.PLATFORM_ID and TPC.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd') )
+			    </isNotEmpty>      
+			        
+	 </select>
+	 
+	 
+	 <!--查询当前用户可切换的 PubPlatformBean信息-->
+     <select id="select_pubPlatformBeanList" parameterClass="String" resultClass="com.platform.common.tools.wechat.PubPlatformBean">
+          SELECT  
+		 		 TP.PLATFORM_ID      <!--公众平台号ID-->
+		  		,TP.WECHART_ACCOUNT  <!--公众微信号-->
+		  		,TP.PLATFORM_EMAIL   <!--登录邮箱-->
+		  		,TP.PLATFORM_NAME    <!--公众号名称-->
+		  		,TP.PLATFORM_TYPE    <!--公众号类型[CS:5010]-->
+		  		,TP.PLATFORM_DESC    <!--说明信息-->
+		  		,TP.TOKEN  			 <!--令牌-->
+		  		,TP.APPID  			 <!--应用ID-->
+		  		,TP.APPSECRET  		 <!--应用密钥-->
+		  		,TP.CREATED_DATE     <!--创建日期-->
+		  		,TP.UPDATED_DATE     <!--修改日期-->
+		  		,TP.CREATED_USER_CD  <!--创建用户-->
+		  		,TP.UPDATED_USER_CD  <!--修改用户-->
+		  		,CFG.IS_USE			 <!--是否使用-->
+		  		,CFG.IS_VALID		 <!--是否有效-->
+		  		,CFG.USER_CD 		 <!--当前用户-->
+		  FROM T_PUB_PLATFORM TP,T_PLATFORMEMP_CFG CFG  
+		  WHERE 1=1 
+		  AND TP.END_DATE    = TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+		  AND CFG.END_DATE   = TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+		  AND TP.PLATFORM_ID = CFG.PLATFORM_ID <!--公众平台号ID必须相等-->
+          AND CFG.IS_VALID   = '100000000001' 
+          AND CFG.USER_CD    = #USER_CD#
+		  ORDER BY TP.CREATED_DATE DESC
+     </select>
+</sqlMap>

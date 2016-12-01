@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tLatestfansSyncHistory">
+
+  <!--用于模糊查询-->
+     <select id="select_tLatestfansSyncHistoryList" parameterClass="com.wechat.fans.model.TLatestfansSyncHistoryQueryBean" resultClass="java.util.HashMap">
+          SELECT  
+		 		HISTORY_ID  <!--履历ID-->
+		  		,SYNC_START_DATE  <!--同步开始时间-->
+		  		,SYNC_END_DATE  <!--同步结束时间-->
+		  		,SYNC_STATE  <!--同步状态【5065】-->
+		  		,REMARK  <!--备注说明-->
+		  		,PLATFORM_ID  <!--公众平台号ID-->
+		  FROM T_LATESTFANS_SYNC_HISTORY
+		  WHERE 1=1 AND T_LATESTFANS_SYNC_HISTORY.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	 
+				 <isNotEmpty prepend=" and " property="history_id">
+					(HISTORY_ID) Like '%'||(#history_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="sync_start_date">
+					TO_CHAR(SYNC_START_DATE, 'yyyy-MM-dd')	=TO_CHAR((#sync_start_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="sync_end_date">
+					TO_CHAR(SYNC_END_DATE, 'yyyy-MM-dd')	=TO_CHAR((#sync_end_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="sync_state">
+					(SYNC_STATE) Like '%'||(#sync_state:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="remark">
+					(REMARK) Like '%'||(#remark:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) Like '%'||(#platform_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			   <isNotEmpty property="orderStr">
+					$orderStr$
+			   </isNotEmpty>
+     </select>
+     
+     <!--用于查询总数-->
+     <select id="select_tLatestfansSyncHistoryList_count" parameterClass="com.wechat.fans.model.TLatestfansSyncHistoryQueryBean" resultClass="int">
+			SELECT  count(1)
+		    FROM T_LATESTFANS_SYNC_HISTORY
+			WHERE 1=1 AND T_LATESTFANS_SYNC_HISTORY.END_DATE=TO_DATE('9999-12-31', 'yyyy-MM-dd')	
+				 <isNotEmpty prepend=" and " property="history_id">
+					(HISTORY_ID) Like '%'||(#history_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="sync_start_date">
+					TO_CHAR(SYNC_START_DATE, 'yyyy-MM-dd')=TO_CHAR((#sync_start_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+			 	<isNotEmpty prepend=" and " property="sync_end_date">
+					TO_CHAR(SYNC_END_DATE, 'yyyy-MM-dd')=TO_CHAR((#sync_end_date:DATE#),'yyyy-MM-dd')
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="sync_state">
+					(SYNC_STATE) Like '%'||(#sync_state:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="remark">
+					(REMARK) Like '%'||(#remark:VARCHAR#)||'%'
+			    </isNotEmpty>    
+				 <isNotEmpty prepend=" and " property="platform_id">
+					(PLATFORM_ID) Like '%'||(#platform_id:VARCHAR#)||'%'
+			    </isNotEmpty>    
+	 </select>
+	 
+</sqlMap>
